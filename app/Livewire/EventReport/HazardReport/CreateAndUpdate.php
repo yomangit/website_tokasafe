@@ -47,7 +47,7 @@ class CreateAndUpdate extends Component
             $reportBy = (auth()->user()->lookup_name)?auth()->user()->lookup_name:auth()->user()->name;
             $this->report_byName = $reportBy;
             $this->report_by = auth()->user()->id;
-        
+
     }
     public function rules()
     {
@@ -109,13 +109,13 @@ class CreateAndUpdate extends Component
             $this->report_toName = $this->report_to_nolist;
         }
     }
-    
+
     public function render()
     {
         if (choseEventType::where('route_name','LIKE',Request::getPathInfo())->exists()) {
             $eventType = choseEventType::where('route_name','LIKE',Request::getPathInfo())->pluck('event_type_id');
             $Event_type = TypeEventReport::whereIn('id', $eventType)->get();
-           
+
            }else{
             $Event_type =[];
            }
@@ -123,16 +123,16 @@ class CreateAndUpdate extends Component
             $this->show=true;
         }
         if ($this->division_id) {
-           
+
             $divisi = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company','Section'])->whereId($this->division_id)->first();
              if (!empty($divisi->company_id) && !empty($divisi->section_id)) {
-                
+
                 $this->workgroup_name =  $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company . '-' . $divisi->Section->name;
             }
             elseif($divisi->company_id){
                 $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company;
             }
-           
+
             elseif ($divisi->section_id) {
                 $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name. '-' . $divisi->Section->name;
             }
@@ -149,7 +149,7 @@ class CreateAndUpdate extends Component
             $WorkflowDetail = WorkflowDetail::where('workflow_administration_id',$this->workflow_template_id)->first();
             $this->workflow_detail_id = $WorkflowDetail->id;
             $this->ResponsibleRole = $WorkflowDetail->responsible_role_id;
-           
+
         }
         $this->ReportByAndReportTo();
         if ($this->documentation) {
@@ -222,7 +222,7 @@ class CreateAndUpdate extends Component
         $this->division_id = null;
         $this->select_divisi=null;
     }
-    
+
     public function riskId($risk_likelihood_id, $risk_consequence_id, $risk_assessment_id)
     {
         // $this->tablerisk_id = TableRiskAssessment::where('risk_likelihood_id', $risk_likelihood_id)->where('risk_consequence_id', $risk_consequence_id)->where('risk_assessment_id', $risk_assessment_id)->first()->id;
@@ -235,7 +235,7 @@ class CreateAndUpdate extends Component
 
         $this->RiskAssessment = TableRiskAssessment::with(['RiskAssessment'])->where('risk_likelihood_id', $this->risk_likelihood_id)->where('risk_consequence_id', $this->risk_consequence_id)->get();
 
-       
+
         if ($this->risk_consequence_id) {
             $this->risk_consequence_doc = RiskConsequence::where('id',  $this->risk_consequence_id)->first()->description;
         }
@@ -249,7 +249,7 @@ class CreateAndUpdate extends Component
         }
         $this->TableRisk = TableRiskAssessment::with(['RiskAssessment', 'RiskConsequence', 'RiskLikelihood'])->get();
     }
-  
+
     public function reportedBy($id)
     {
         $this->report_by = $id;
@@ -267,9 +267,6 @@ class CreateAndUpdate extends Component
     public function store()
     {
 
-       
-
-       
         $hazard = HazardReport::exists();
         $referenceHazard = "TT–OHS–HZD-";
         if (!$hazard) {
@@ -287,11 +284,11 @@ class CreateAndUpdate extends Component
             $file_name = $this->documentation->getClientOriginalName();
             $this->fileUpload = pathinfo($file_name, PATHINFO_EXTENSION);
             $this->documentation->storeAs('public/documents/hzd', $file_name);
-        } 
+        }
         else {
             $file_name = "";
         }
-       
+
         $HazardReport = HazardReport::create([
             'reference' => $this->reference,
             'event_type_id' => $this->event_type_id,
@@ -332,36 +329,36 @@ class CreateAndUpdate extends Component
         );
         $this->redirectRoute('hazardReportDetail', ['id' => $HazardReport->id]);
 
-        // $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->pluck('user_id')->toArray();
-        // $User = User::whereIn('id', $getModerator)->get();
-        // $url = $HazardReport->id;
-        // foreach ($User as $key => $value) {
-        //     $users = User::whereId($value->id)->get();
-        //     $offerData = [
-        //         'greeting' => 'Dear' . ' ' . $value->lookup_name,
-        //         'subject' => $this->task_being_done,
-        //         'line' =>  $this->report_byName . ' ' . 'enters the event report data',
-        //         'line2' => 'Please check by click the button below',
-        //         'line3' => 'Thank you',
-        //         'actionUrl' => url("http://127.0.0.1:8000/eventReport/hazardReportDetail/$url"),
+        $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->pluck('user_id')->toArray();
+        $User = User::whereIn('id', $getModerator)->get();
+        $url = $HazardReport->id;
+        foreach ($User as $key => $value) {
+            $users = User::whereId($value->id)->get();
+            $offerData = [
+                'greeting' => $value->lookup_name,
+                'subject' => $this->task_being_done,
+                'line' =>  $this->report_byName . ' ' . 'has submitted a hazard report, please review',
+                'line2' => 'Please review this report',
+                'line3' => 'Thank you',
+                'actionUrl' => url("http://127.0.0.1:8000/eventReport/hazardReportDetail/$url"),
 
-        //     ];
-        //     Notification::send($users, new toModerator($offerData));
-        // }
-        // $Users = User::where('id', $this->report_to)->whereNotNull('email')->get();
-        // foreach ($Users as $key => $value) {
-        //     if (!empty($value->email)) {
-        //         $report_to = User::whereId($value->id)->get();
-        //         $offerData = [
-        //             'greeting' => 'Dear' . '' . $this->report_toName,
-        //             'subject' => $this->task_being_done,
-        //             'line' =>  $this->report_byName . '' . 'reports event report to you',
-        //             'line2' => 'Please check by click the button below',
-        //             'line3' => 'Thank you',
-        //             'actionUrl' => url("http://127.0.0.1:8000/eventReport/hazardReportDetail/$url"),
-        //         ];
-        //         Notification::send($report_to, new toModerator($offerData));
-        //     }
-        // }
+            ];
+            Notification::send($users, new toModerator($offerData));
+        }
+        $Users = User::where('id', $this->report_to)->whereNotNull('email')->get();
+        foreach ($Users as $key => $value) {
+            if (!empty($value->email)) {
+                $report_to = User::whereId($value->id)->get();
+                $offerData = [
+                    'greeting' => 'Dear' . '' . $this->report_toName,
+                    'subject' => $this->task_being_done,
+                    'line' =>  $this->report_byName . '' . 'has sent a hazard report to you, please review it',
+                    'line2' => 'Please check by click the button below',
+                    'line3' => 'Thank you',
+                    'actionUrl' => url("http://127.0.0.1:8000/eventReport/hazardReportDetail/$url"),
+                ];
+                Notification::send($report_to, new toModerator($offerData));
+            }
+        }
     }
 }
