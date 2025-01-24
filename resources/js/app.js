@@ -7,7 +7,6 @@ import "flatpickr/dist/flatpickr.min.css";
 import monthSelectPlugin from "flatpickr/dist/plugins/monthSelect";
 import "flatpickr/dist/themes/dark.css";
 import "flatpickr/dist/plugins/monthSelect/style.css";
-
 if ('serviceWorker' in navigator) 
 {
     navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(function (registration) {
