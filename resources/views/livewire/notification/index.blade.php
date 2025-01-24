@@ -17,7 +17,7 @@
                         <tbody>
                             @foreach(auth()->user()->unreadNotifications as $notification)
                             <tr>
-                                <td class="text-xs font-signika">{{ $notification->data['greeting'] }} send notification to you</td>
+                                <td class="text-xs font-signika text-sky-400"><a href="{{ $notification->data['url'] }}">{{ $notification->data['greeting'] }} send notification to you</a></td>
                             </tr>
                             @endforeach
                         </tbody>
