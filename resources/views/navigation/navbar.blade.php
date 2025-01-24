@@ -1,5 +1,5 @@
-<div class=" px-2  flex items-center shadow-md bg-base-300 shadow-black/5 sticky top-0 left-0 z-50">
-    <button type="button" class="text-lg py-3 text-gray-600 sidebar-toggle">
+<div class="sticky top-0 left-0 z-50 flex items-center px-2 shadow-md bg-base-300 shadow-black/5">
+    <button type="button" class="py-3 text-lg text-gray-600 sidebar-toggle">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
             <path fill-rule="evenodd"
                 d="M2 3.75A.75.75 0 0 1 2.75 3h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 3.75ZM2 8a.75.75 0 0 1 .75-.75h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 8Zm0 4.25a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z"
@@ -7,15 +7,37 @@
         </svg>
 
     </button>
-   <div class="ml-4 hidden sm:block"> @yield('bradcrumbs')</div>
-    
-    <div class="ml-auto flex items-center gap-1">
+   <div class="hidden ml-4 sm:block"> @yield('bradcrumbs')</div>
+
+    <div class="flex items-center gap-1 ml-auto">
         @auth
-        
-            
-            
+
+        <div class="dropdown dropdown-end">
+            <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">
+                <div class="indicator">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                    </svg>
+                    <span class="text-xs badge badge-xs indicator-item">8</span>
+                </div>
+            </label>
+            <div tabindex="0" class="mt-3 z-[1] card card-compact dropdown-content w-96 bg-base-100 shadow">
+                <div class="card-body">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="text-xs font-signika">yoman banea send notification to you</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
             <div class="dropdown dropdown-bottom dropdown-end">
-                <div tabindex="0" role="button" class=" ">
+                <div tabindex="0" role="button" class="">
                     <p
                         class="capitalize text-xs font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#03346E] to-[#021526]">
                         {{ isset(auth()->user()->lookup_name) ? auth()->user()->lookup_name : 'guest' }}</p>
@@ -45,9 +67,9 @@
                     <path fill-rule="evenodd" d="M11 5a.75.75 0 0 1 .688.452l3.25 7.5a.75.75 0 1 1-1.376.596L12.89 12H9.109l-.67 1.548a.75.75 0 1 1-1.377-.596l3.25-7.5A.75.75 0 0 1 11 5Zm-1.24 5.5h2.48L11 7.636 9.76 10.5ZM5 1a.75.75 0 0 1 .75.75v1.261a25.27 25.27 0 0 1 2.598.211.75.75 0 1 1-.2 1.487c-.22-.03-.44-.056-.662-.08A12.939 12.939 0 0 1 5.92 8.058c.237.304.488.595.752.873a.75.75 0 0 1-1.086 1.035A13.075 13.075 0 0 1 5 9.307a13.068 13.068 0 0 1-2.841 2.546.75.75 0 0 1-.827-1.252A11.566 11.566 0 0 0 4.08 8.057a12.991 12.991 0 0 1-.554-.938.75.75 0 1 1 1.323-.707c.049.09.099.181.15.271.388-.68.708-1.405.952-2.164a23.941 23.941 0 0 0-4.1.19.75.75 0 0 1-.2-1.487c.853-.114 1.72-.185 2.598-.211V1.75A.75.75 0 0 1 5 1Z" clip-rule="evenodd" />
                   </svg>
               </label>
-           
+
             <ul tabindex="0" class="dropdown-content menu menu-xs bg-base-300  rounded-box z-[1] w-52 shadow">
-               
+
               <li><a href="{{route('locale','en')}}" ><x-flag-language-en class="w-4 h-4"/>English</a></li>
               <li><a href="{{route('locale','id')}}"><x-flag-language-id class="w-4 h-4"/>Indonesia</a></li>
             </ul>
