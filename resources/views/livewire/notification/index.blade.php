@@ -15,11 +15,15 @@
                 <div class="card-body">
                     <table>
                         <tbody>
-                            @foreach(auth()->user()->unreadNotifications as $notification)
+                            @forelse(auth()->user()->unreadNotifications as $notification)
                             <tr>
-                                <td class="text-xs font-signika text-sky-400"><a href="{{ $notification->data['url'] }}">{{ $notification->data['greeting'] }} send notification to you</a></td>
+                                <td wire:click="read({{ $notification->id }})" class="text-xs font-signika text-sky-500">{{ $notification->data['line'] }}</td>
                             </tr>
-                            @endforeach
+                            @empty
+                             <tr>
+                                <td class="text-xs font-signika ">{{ $notification->data['line'] }}</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

@@ -10,4 +10,8 @@ class Index extends Component
     {
         return view('livewire.notification.index');
     }
+    public function read($id)
+    {
+        dd($id);
+    }
 }
