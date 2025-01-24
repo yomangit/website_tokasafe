@@ -10,8 +10,17 @@ class Index extends Component
     {
         return view('livewire.notification.index');
     }
-    public function read($id)
+    public function readNotification($id)
     {
-        dd($id);
+        $notificationId = $id;
+
+        $userUnreadNotification = auth()->user()
+                                    ->unreadNotifications
+                                    ->where('id','like', $notificationId)
+                                    ->first();
+        
+        if($userUnreadNotification) {
+            $userUnreadNotification->markAsRead();
+        }
     }
 }
