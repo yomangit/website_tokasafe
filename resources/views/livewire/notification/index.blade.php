@@ -1,4 +1,4 @@
-<div>
+<div >
     <div class="dropdown dropdown-end">
         <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">
             <div class="indicator">
@@ -7,21 +7,27 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                 </svg>
-                <span class="text-xs badge badge-xs indicator-item">{{ auth()->user()->unreadNotifications->count() }}</span>
+                <span class="text-[9px] text-white badge badge-xs bg-rose-500 indicator-item">{{ (auth()->user()->unreadNotifications->count()<=99)?auth()->user()->unreadNotifications->count():"99+" }}</span>
             </div>
         </label>
-        <div tabindex="0" class="mt-3 z-[1] card card-compact dropdown-content w-96 bg-base-100 shadow">
-            <div class="card-body">
-                <table>
+        <div tabindex="0" class=" z-[1] card card-compact dropdown-content w-56 lg:w-96 bg-base-100 shadow">
+            <div wire:poll class="card-body">
+                <table class="table table-zebra table-xs">
                     <tbody>
+                        <tr>
+                            <th class="font-thin font-signika text-sky-500">Unread</th>
+                        </tr>
                         @foreach(auth()->user()->unreadNotifications as $notification)
                         <tr>
-                        <td ><label wire:click="readNotification('{{ $notification->id }}')" class="text-xs font-signika text-sky-500"> {{ $notification->data['line'] }}</label></td>
+                        <td ><label wire:click="readNotification('{{ $notification->id }}','{{ $notification->data['url'] }}')" class="text-xs cursor-pointer font-signika text-sky-500"> {{ $notification->data['line'] }}</label></td>
                         </tr>
                         @endforeach
-                        @foreach(auth()->user()->notifications  as $notification)
+                        <tr>
+                            <th class="font-thin font-signika">Read</th>
+                        </tr>
+                        @foreach($Notif as $notification)
                          <tr>
-                            <td class="text-xs font-signika ">{{ $notification->data['line'] }}</td>
+                            <td ><label wire:click="goTo('{{ $notification->data['url'] }}')" class="text-xs cursor-pointer font-signika"> {{ $notification->data['line'] }}</label></td>
                         </tr>
                         @endforeach
                     </tbody>

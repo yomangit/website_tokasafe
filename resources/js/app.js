@@ -18,36 +18,36 @@ if ('serviceWorker' in navigator)
 }
 // flatpickr datepicker
 flatpickr("#tanggal", {
-    disableMobile: false,
+    disableMobile: true,
     dateFormat: "d-m-Y : H:i", //defaults to "F Y"
     enableTime: true,
 });
 flatpickr("#due_date", {
-    disableMobile: false,
+    disableMobile: true,
     dateFormat: "d-m-Y ",
 });
 flatpickr("#completion_date", {
-    disableMobile: false,
+    disableMobile: true,
     dateFormat: "d-m-Y ",
 });
 flatpickr("#tanggal_komplite", {
-    disableMobile: "false",
+    disableMobile: "true",
     dateFormat: "d-m-Y ",
 });
 flatpickr("#date_birth", {
-    disableMobile: "false",
+    disableMobile: "true",
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#date_commenced", {
-    disableMobile: "false",
+    disableMobile: "true",
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#end_date", {
-    disableMobile: "false",
+    disableMobile: "true",
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#month", {
-    disableMobile: "false",
+    disableMobile: "true",
     plugins: [
         new monthSelectPlugin({
             shorthand: true, //defaults to false
