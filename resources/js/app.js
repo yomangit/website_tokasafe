@@ -1,54 +1,53 @@
 import "./bootstrap";
-if ('serviceWorker' in navigator)
-    {
-        navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(function (registration) {
-            console.log(`SW registered successfully!`);
-        }).catch(function (registrationError) {
-            console.log(`SW registration failed`);
-        });
-    }
 import "toastify-js/src/toastify.css";
 import Toastify from "toastify-js";
 window.Toastify = Toastify;
-const flatpickr = require("flatpickr");
-
-import "flatpickr/dist/flatpickr.css";
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
 import monthSelectPlugin from "flatpickr/dist/plugins/monthSelect";
 import "flatpickr/dist/themes/dark.css";
 import "flatpickr/dist/plugins/monthSelect/style.css";
-import flatpickr from "flatpickr";
+
+if ('serviceWorker' in navigator)
+{
+    navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(function (registration) {
+        console.log(`SW registered successfully!`);
+    }).catch(function (registrationError) {
+        console.log(`SW registration failed`);
+    });
+}
 // flatpickr datepicker
 flatpickr("#tanggal", {
-    disableMobile: "true",
+    disableMobile: false,
     dateFormat: "d-m-Y : H:i", //defaults to "F Y"
     enableTime: true,
 });
 flatpickr("#due_date", {
-    disableMobile: "true",
+    disableMobile: false,
     dateFormat: "d-m-Y ",
 });
 flatpickr("#completion_date", {
-    disableMobile: "true",
+    disableMobile: false,
     dateFormat: "d-m-Y ",
 });
 flatpickr("#tanggal_komplite", {
-    disableMobile: "true",
-    dateFormat: "d-m-Y",
+    disableMobile: "false",
+    dateFormat: "d-m-Y ",
 });
 flatpickr("#date_birth", {
-    disableMobile: "true",
+    disableMobile: "false",
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#date_commenced", {
-    disableMobile: "true",
+    disableMobile: "false",
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#end_date", {
-    disableMobile: "true",
+    disableMobile: "false",
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#month", {
-    disableMobile: "true",
+    disableMobile: "false",
     plugins: [
         new monthSelectPlugin({
             shorthand: true, //defaults to false
@@ -58,7 +57,6 @@ flatpickr("#month", {
         }),
     ],
 });
-
 
 // code for resposive side-bar menu
 
