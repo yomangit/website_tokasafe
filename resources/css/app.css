@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@source "../resources";
+@source "../views";
 
 .navbar {
     display: flex;
