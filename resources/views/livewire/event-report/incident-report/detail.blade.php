@@ -8,7 +8,7 @@
     @endsection
 
     <div
-        class=" font-semibold font-mono text-sm text-transparent divider divider-info bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">
+        class="font-mono text-sm font-semibold text-transparent  divider divider-info bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">
         {{ $divider }}</div>
 
 
@@ -16,7 +16,7 @@
         <form wire:submit.prevent='store'>
             @csrf
             @method('PATCH')
-            <div wire:target="store" wire:loading.class="skeleton" class=" left-0 rounded-sm border border-slate-300 p-2">
+            <div wire:target="store" wire:loading.class="skeleton" class="left-0 p-2 border rounded-sm  border-slate-300">
                 <x-btn-save wire:target="store" wire:loading.class="btn-disabled"
                     class="{{ $currentStep === 'Closed' || $currentStep === 'Cancelled' ? 'btn-disabled' : '' }}">
                     {{ __('Save') }}</x-btn-save>
@@ -24,8 +24,8 @@
                     class="{{ $currentStep === 'Closed' || $currentStep === 'Cancelled' ? 'btn-disabled' : '' }}"
                     wire:confirm.prompt="Are you sure delete {{ $reference }}?\n\nType DELETE to confirm|DELETE">{{ __('Delete') }}</x-btn-delete>
             </div>
-            <div wire:target="store" wire:loading.class="skeleton" class="rounded-sm border border-slate-300 p-2 my-1">
-                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-1">
+            <div wire:target="store" wire:loading.class="skeleton" class="p-2 my-1 border rounded-sm border-slate-300">
+                <div class="grid gap-1 sm:grid-cols-2 lg:grid-cols-3">
                     <div class="w-full max-w-md xl:max-w-xl form-control">
                         <x-label-req :value="__('event_type')" />
                         <x-select wire:model.live='event_type_id' :error="$errors->get('event_type_id')"
@@ -82,37 +82,37 @@
                                 <div class="flex flex-col w-full gap-1 lg:flex-row">
                                     <div class="grid flex-grow h-40 card bg-base-300 rounded-box ">
                                         <ul class="list-none text-[9px] list-inside overflow-auto">
-                                            <li class="cursor-pointer hover:bg-base-200 px-2">Company</li>
+                                            <li class="px-2 cursor-pointer hover:bg-base-200">Company</li>
                                             @foreach ($ParentCompany as $item)
                                                 <li wire:click="parentCompany({{ $item->id }})"
-                                                    class="cursor-pointer hover:bg-base-200 px-4 ">
+                                                    class="px-4 cursor-pointer hover:bg-base-200 ">
                                                     {{ $item->name_category_company }}</li>
                                             @endforeach
-                                            <li class="cursor-pointer hover:bg-base-200 px-2">Business Unit</li>
+                                            <li class="px-2 cursor-pointer hover:bg-base-200">Business Unit</li>
                                             @foreach ($BusinessUnit as $item)
                                                 <li wire:click="businessUnit({{ $item->name_company_id }})"
-                                                    class="cursor-pointer hover:bg-base-200 px-4">
+                                                    class="px-4 cursor-pointer hover:bg-base-200">
                                                     {{ $item->Company->name_company }}</li>
                                             @endforeach
-                                            <li class="cursor-pointer hover:bg-base-200 px-2">Department</li>
+                                            <li class="px-2 cursor-pointer hover:bg-base-200">Department</li>
                                             @foreach ($Department as $item)
                                                 <li wire:click="department({{ $item->id }})"
-                                                    class="cursor-pointer hover:bg-base-200 px-4">
+                                                    class="px-4 cursor-pointer hover:bg-base-200">
                                                     {{ $item->BusinesUnit->Company->name_company }}-{{ $item->Department->department_name }}
                                                 </li>
                                             @endforeach
-                                            <li class="cursor-pointer hover:bg-base-200 px-2">Division</li>
+                                            <li class="px-2 cursor-pointer hover:bg-base-200">Division</li>
                                             @foreach ($Divisi as $divisi)
                                                     <li wire:click="divisi({{ $divisi->company_id }})"
-                                                        class="cursor-pointer hover:bg-base-200 px-4">
+                                                        class="px-4 cursor-pointer hover:bg-base-200">
                                                         {{ $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company  }}
                                                     </li>
                                                 @endforeach
                                         </ul>
                                     </div>
-                                    <div class="grid flex-grow h-40 card bg-base-300 rounded-box overflow-auto">
-                                       <ul class=" bg-base-200 rounded-box w-56  list-inside list-disc py-2 px-4">
-                                            
+                                    <div class="grid flex-grow h-40 overflow-auto card bg-base-300 rounded-box">
+                                       <ul class="w-56 px-4 py-2 list-disc list-inside  bg-base-200 rounded-box">
+
                                         @forelse ($Division as $item)
                                           <li wire:click="select_division({{ $item->id }})" class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer"> {{ $item->DeptByBU->BusinesUnit->Company->name_company }}-{{ $item->DeptByBU->Department->department_name }}
                                                @if (!empty($item->company_id))
@@ -123,7 +123,7 @@
                                                 @endif
                                             </li>
                                             @empty
-                                            <li class='text-center font-semibold text-rose-500'>Division not found!! </li>
+                                            <li class='font-semibold text-center text-rose-500'>Division not found!! </li>
                                         @endforelse
                                 </ul>
                                     </div>
@@ -141,25 +141,25 @@
                             <div tabindex="0"
                                 class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
                                 <div class="relative">
-                                  
-                                    <div class="overflow-auto scroll-smooth focus:scroll-auto h-40  mb-2"
+
+                                    <div class="h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                         wire:target='report_byName' wire:loading.class='hidden'>
                                         @forelse ($Report_By as $report_by)
                                             <div wire:click="reportedBy({{ $report_by->id }})"
-                                                class="border-b border-base-200 flex flex-col cursor-pointer ">
+                                                class="flex flex-col border-b cursor-pointer border-base-200 ">
                                                 <strong
                                                     class="text-[10px] text-slate-800">{{ $report_by->lookup_name }}</strong>
                                             </div>
                                         @empty
                                             <strong
-                                                class="text-xs bg-clip-text text-transparent bg-gradient-to-r from-rose-400 to-rose-800">Name
+                                                class="text-xs text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-rose-800">Name
                                                 Not Found!!!</strong>
                                         @endforelse
                                     </div>
-                                    <div class="hidden text-center pt-5" wire:target='report_byName'
+                                    <div class="hidden pt-5 text-center" wire:target='report_byName'
                                         wire:loading.class.remove='hidden'> <x-loading-spinner /></div>
                                     <div class="pb-6">{{ $Report_By->links('pagination.minipaginate') }}</div>
-                                    <div class="fixed bottom-0 left-0 right-0 px-2 mb-1  bg-base-300 opacity-95 ">
+                                    <div class="fixed bottom-0 left-0 right-0 px-2 mb-1 bg-base-300 opacity-95 ">
                                         <x-input-no-req wire:model.live='report_by_nolist'
                                             placeholder="{{ __('name_notList') }}" />
                                     </div>
@@ -177,25 +177,25 @@
                             <div tabindex="0"
                                 class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
                                 <div class="relative">
-                                  
-                                    <div class="overflow-auto scroll-smooth focus:scroll-auto h-40 mb-2"
+
+                                    <div class="h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                         wire:target='report_toName' wire:loading.class='hidden'>
                                         @forelse ($Report_To as $report_to)
                                             <div wire:click="reportedTo({{ $report_to->id }})"
-                                                class="border-b border-base-200 flex flex-col cursor-pointer ">
+                                                class="flex flex-col border-b cursor-pointer border-base-200 ">
                                                 <strong
                                                     class="text-[10px] text-slate-800">{{ $report_to->lookup_name }}</strong>
                                             </div>
                                         @empty
                                             <strong
-                                                class="text-xs bg-clip-text text-transparent bg-gradient-to-r from-rose-400 to-rose-800">Name
+                                                class="text-xs text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-rose-800">Name
                                                 Not Found!!!</strong>
                                         @endforelse
                                     </div>
-                                    <div class="hidden text-center pt-5" wire:target='report_toName'
+                                    <div class="hidden pt-5 text-center" wire:target='report_toName'
                                         wire:loading.class.remove='hidden'> <x-loading-spinner /></div>
                                     <div class="pb-6">{{ $Report_To->links('pagination.minipaginate') }}</div>
-                                    <div class="fixed bottom-0 left-0 right-0 px-2 mb-1  bg-base-300 opacity-95 ">
+                                    <div class="fixed bottom-0 left-0 right-0 px-2 mb-1 bg-base-300 opacity-95 ">
                                         <x-input-no-req wire:model.live='report_to_nolist'
                                             placeholder="{{ __('name_notList') }}" />
                                     </div>
@@ -270,16 +270,16 @@
                     </div>
                 </div>
                 <div>
-                    <div wire:ignore class="w-full  form-control">
+                    <div wire:ignore class="w-full form-control">
                         <x-label-req :value="__('description')" />
                         <textarea id="description" wire:model.live='description'>{{ $description_temp }}</textarea>
                     </div>
                     <x-label-error :messages="$errors->get('description')" />
                 </div>
-                <div class="grid sm:grid-cols-2 gap-2">
+                <div class="grid gap-2 sm:grid-cols-2">
                     <div class="flex flex-col w-full border-opacity-50">
                         <x-label-req :value="__('involved Employees')" />
-                        <div class="grid  card border bg-white rounded-sm">
+                        <div class="grid bg-white border rounded-sm card">
                             <div class="mx-4 my-2 h-44">
                                 <x-btn-add data-tip="Add"
                                     class="{{ $currentStep === 'Closed' || $currentStep === 'Cancelled' ? 'btn-disabled ' : '' }}"
@@ -289,21 +289,21 @@
                         </div>
                     </div>
                     <div>
-                        <div wire:ignore class="w-full  form-control">
+                        <div wire:ignore class="w-full form-control">
                             <x-label-req :value="__('involved_eqipment')" />
                             <textarea id="involved_eqipment">{{ $involved_eqipment_temp }}</textarea>
                         </div>
                         <x-label-error :messages="$errors->get('involved_eqipment')" />
                     </div>
                     <div>
-                        <div wire:ignore class="w-full  form-control">
+                        <div wire:ignore class="w-full form-control">
                             <x-label-req :value="__('preliminary_cause')" />
                             <textarea id="preliminary_cause">{{ $preliminary_cause_temp }}</textarea>
                         </div>
                         <x-label-error :messages="$errors->get('preliminary_cause')" />
                     </div>
                     <div>
-                        <div wire:ignore class="w-full  form-control">
+                        <div wire:ignore class="w-full form-control">
                             <x-label-req :value="__('immediate_action_taken')" />
                             <textarea id="immediate_action_taken">{{ $immediate_action_taken_temp }}</textarea>
                         </div>
@@ -311,17 +311,17 @@
                     </div>
                 </div>
                 <div>
-                    <div wire:ignore class="w-full  form-control">
+                    <div wire:ignore class="w-full form-control">
                         <x-label-req :value="__('key_learning')" />
                         <textarea id="key_learning">{{ $key_learning_temp }}</textarea>
                     </div>
                     <x-label-error :messages="$errors->get('key_learning')" />
                 </div>
                 <div
-                    class="flex items-center flex-col-reverse md:flex-row md:divide-x-2 divide-late-400/25 rounded-sm border-2 mt-2 border-slate-400/25">
-                    <div class="flex-auto p-2  divide-y-2 divide-slate-400/25">
-                        <div class="flex flex-col md:flex-row items-center">
-                            <div class="flex-none w-52 px-2">
+                    class="flex flex-col-reverse items-center mt-2 border-2 rounded-sm md:flex-row md:divide-x-2 divide-late-400/25 border-slate-400/25">
+                    <div class="flex-auto p-2 divide-y-2 divide-slate-400/25">
+                        <div class="flex flex-col items-center md:flex-row">
+                            <div class="flex-none px-2 w-52">
                                 <div class="w-full max-w-md xl:max-w-xl form-control">
                                     <x-label-req :value="__('Potential Consequence')" />
                                     <x-select wire:model.live='risk_consequence_id' :error="$errors->get('risk_consequence_id')"
@@ -336,13 +336,13 @@
                                     <x-label-error :messages="$errors->get('risk_consequence_id')" />
                                 </div>
                             </div>
-                            <div class="px-2 w-full">
-                                <p class="text-justify font-mono font-semibold text-sm">
+                            <div class="w-full px-2">
+                                <p class="font-mono text-sm font-semibold text-justify">
                                     {{ $risk_consequence_doc }}</p>
                             </div>
                         </div>
-                        <div class="flex flex-col md:flex-row items-center">
-                            <div class="flex-none w-52 px-2">
+                        <div class="flex flex-col items-center md:flex-row">
+                            <div class="flex-none px-2 w-52">
                                 <div class="w-full max-w-md xl:max-w-xl form-control">
                                     <x-label-req :value="__('Potential Likelihood')" />
                                     <x-select wire:model.live='risk_likelihood_id' :error="$errors->get('risk_likelihood_id')"
@@ -358,21 +358,21 @@
                                 </div>
                             </div>
                             <div class="px-2 ">
-                                <p class="text-justify font-mono font-semibold text-sm">{{ $risk_likelihood_notes }}
+                                <p class="font-mono text-sm font-semibold text-justify">{{ $risk_likelihood_notes }}
                                 </p>
                             </div>
                         </div>
                     </div>
                     <div class="flex-none md:w-72 ">
                         <div
-                            class="overflow-x-auto  m-1 ">
+                            class="m-1 overflow-x-auto ">
                             <table class="table bg-base-300 table-xs">
                                 <caption class="caption-top">
                                     Table Initial Risk Assessment
                                 </caption>
                                 <thead>
                                     <tr class="">
-                                        <th colspan="2" class="border-2 border-black text-center p-0">Legand</th>
+                                        <th colspan="2" class="p-0 text-center border-2 border-black">Legand</th>
                                         @foreach ($RiskAssessments as $risk_assessment)
                                             <td
                                                 class="rotate_text text-start text-xs border-2 border-black   {{ $risk_assessment->colour }}">
@@ -381,9 +381,9 @@
                                         @endforeach
                                     </tr>
                                     <tr class="">
-                                        <th class="border-2 border-black text-center">Likelihood</th>
+                                        <th class="text-center border-2 border-black">Likelihood</th>
                                         @foreach ($RiskConsequence as $risk_consequence)
-                                            <th class="rotate_text text-start border-2 border-black">
+                                            <th class="border-2 border-black rotate_text text-start">
                                                 {{ $risk_consequence->risk_consequence_name }}</th>
                                         @endforeach
                                     </tr>
@@ -419,30 +419,30 @@
                     @foreach ($RiskAssessment as $item)
                         <tr>
                             <th class="w-40 text-xs border-2 border-slate-400">Potential Risk Rating</th>
-                            <td class="text-xs pl-2 border-slate-400 border-2">
+                            <td class="pl-2 text-xs border-2 border-slate-400">
                                 {{ $item->RiskAssessment->risk_assessments_name }}</td>
                         </tr>
                         <tr>
                             <th class="w-40 text-xs border-2 border-slate-400">Notify</th>
-                            <td class="text-xs pl-2 border-slate-400 border-2">
+                            <td class="pl-2 text-xs border-2 border-slate-400">
                                 {{ $item->RiskAssessment->reporting_obligation }}</td>
                         </tr>
                         <tr>
                             <th class="w-40 text-xs border-2 border-slate-400">Deadline</th>
-                            <td class="text-xs pl-2 border-slate-400 border-2">{{ $item->RiskAssessment->notes }}</td>
+                            <td class="pl-2 text-xs border-2 border-slate-400">{{ $item->RiskAssessment->notes }}</td>
                         </tr>
                         <tr>
                             <th class="w-40 text-xs border-2 border-slate-400">Coordinator</th>
-                            <td class="text-xs pl-2 border-slate-400 border-2">
+                            <td class="pl-2 text-xs border-2 border-slate-400">
                                 {{ $item->RiskAssessment->coordinator }}
                             </td>
                         </tr>
                     @endforeach
                 </table>
 
-                <div class="flex w-full flex-col border-opacity-50">
+                <div class="flex flex-col w-full border-opacity-50">
                     <div class="divider divider-accent">Final Documentation</div>
-                    <div class="card bg-base-300 rounded-box grid  ">
+                    <div class="grid card bg-base-300 rounded-box ">
                         <div class="m-4">
                             <x-btn-add data-tip="Add"
                                 class="{{ $currentStep === 'Closed' || $currentStep === 'Cancelled' ? 'btn-disabled ' : '' }}"
@@ -451,7 +451,7 @@
                         </div>
                     </div>
                     <div class="divider divider-accent">Additional Action</div>
-                    <div class="card bg-base-300 rounded-box grid ">
+                    <div class="grid card bg-base-300 rounded-box ">
                         <div class="m-4">
                             <x-btn-add data-tip="Add"  wire:click="$dispatch('modalActionIncident',{ dataIncident: {{ $data_id }} })"  class="{{ $current_step === 'Closed' || $current_step === 'Cancelled' ? 'btn-disabled' : '' }}" />
                             <livewire:event-report.incident-report.action.index :id="$data_id">
@@ -464,7 +464,7 @@
                         </div>
                     </div>
                     <div>
-                        <div wire:ignore class="w-full  form-control">
+                        <div wire:ignore class="w-full form-control">
                             <x-label-no-req :value="__('moderator comment')" />
                             <textarea id="comments">{{ $temp_coment }}</textarea>
                         </div>
@@ -474,152 +474,148 @@
             </div>
         </form>
         <livewire:event-report.incident-report.action.create >
-            
-        <script type="module">
+
+        <script type="module" nonce="{{ csp_nonce() }}">
+            // Short Description
+            ClassicEditor
+                .create(document.querySelector('#involved_person'), {
+                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
+
+                })
+                .then(newEditor => {
+                    newEditor.editing.view.change((writer) => {
+                        writer.setStyle(
+                            "height",
+                            "155px",
+                            newEditor.editing.view.document.getRoot()
+                        );
+                    });
+                    newEditor.model.document.on('change:data', () => {
+                        @this.set('involved_person', newEditor.getData())
+                    });
+                    window.addEventListener('articleStore', event => {
+                        newEditor.setData('');
+                    })
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            // involved person
             ClassicEditor
                 .create(document.querySelector('#description'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
+                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
+
                 })
-                .then(Deskripsion => {
-                    setInterval(() => Livewire.dispatch('ubahDataIncident'), 1000);
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdateIncident', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                Deskripsion.enableReadOnlyMode('description');
-                            } else {
-                                Deskripsion.disableReadOnlyMode('description');
-                            }
-                        });
+                .then(newEditor => {
+                    newEditor.editing.view.change((writer) => {
+                        writer.setStyle(
+                            "height",
+                            "155px",
+                            newEditor.editing.view.document.getRoot()
+                        );
                     });
-                    Deskripsion.model.document.on('change:data', () => {
-                        @this.set('description', Deskripsion.getData())
+                    newEditor.model.document.on('change:data', () => {
+                        @this.set('description', newEditor.getData())
                     });
+                    window.addEventListener('articleStore', event => {
+                        newEditor.setData('');
+                    })
                 })
                 .catch(error => {
                     console.error(error);
                 });
+            // involved Equipment
             ClassicEditor
                 .create(document.querySelector('#involved_eqipment'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
+                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
+
                 })
-                .then(Involved_eqipment => {
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdateIncident', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                Involved_eqipment.enableReadOnlyMode('involved_eqipment');
-                            } else {
-                                Involved_eqipment.disableReadOnlyMode('involved_eqipment');
-                            }
-                        });
+                .then(newEditor => {
+                    newEditor.editing.view.change((writer) => {
+                        writer.setStyle(
+                            "height",
+                            "155px",
+                            newEditor.editing.view.document.getRoot()
+                        );
                     });
-                    Involved_eqipment.model.document.on('change:data', () => {
-                        @this.set('involved_eqipment', Involved_eqipment.getData())
+                    newEditor.model.document.on('change:data', () => {
+                        @this.set('involved_eqipment', newEditor.getData())
                     });
+                    window.addEventListener('articleStore', event => {
+                        newEditor.setData('');
+                    })
                 })
                 .catch(error => {
                     console.error(error);
                 });
+            // preliminary cause
             ClassicEditor
                 .create(document.querySelector('#preliminary_cause'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
+                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
+
                 })
-                .then(Preliminary_cause => {
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdateIncident', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                Preliminary_cause.enableReadOnlyMode('preliminary_cause');
-                            } else {
-                                Preliminary_cause.disableReadOnlyMode('preliminary_cause');
-                            }
-                        });
+                .then(newEditor => {
+                    newEditor.editing.view.change((writer) => {
+                        writer.setStyle(
+                            "height",
+                            "155px",
+                            newEditor.editing.view.document.getRoot()
+                        );
                     });
-                    Preliminary_cause.model.document.on('change:data', () => {
-                        @this.set('preliminary_cause', Preliminary_cause.getData())
+                    newEditor.model.document.on('change:data', () => {
+                        @this.set('preliminary_cause', newEditor.getData())
                     });
+                    window.addEventListener('articleStore', event => {
+                        newEditor.setData('');
+                    })
                 })
                 .catch(error => {
                     console.error(error);
                 });
-
+            // immediate action taken
             ClassicEditor
                 .create(document.querySelector('#immediate_action_taken'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
+                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
+
                 })
-                .then(Immediate_action_taken => {
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdateIncident', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                Immediate_action_taken.enableReadOnlyMode('immediate_action_taken');
-                            } else {
-                                Immediate_action_taken.disableReadOnlyMode('immediate_action_taken');
-                            }
-                        });
+                .then(newEditor => {
+                    newEditor.editing.view.change((writer) => {
+                        writer.setStyle(
+                            "height",
+                            "155px",
+                            newEditor.editing.view.document.getRoot()
+                        );
                     });
-                    Immediate_action_taken.model.document.on('change:data', () => {
-                        @this.set('immediate_action_taken', Immediate_action_taken.getData())
+                    newEditor.model.document.on('change:data', () => {
+                        @this.set('immediate_action_taken', newEditor.getData())
                     });
+                    window.addEventListener('articleStore', event => {
+                        newEditor.setData('');
+                    })
                 })
                 .catch(error => {
                     console.error(error);
                 });
+            // key learning
             ClassicEditor
                 .create(document.querySelector('#key_learning'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
-                })
-                .then(Key_learnings => {
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdateIncident', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                Key_learnings.enableReadOnlyMode('key_learning');
-                            } else {
-                                Key_learnings.disableReadOnlyMode('key_learning');
-                            }
-                        });
-                    });
-                    Key_learnings.model.document.on('change:data', () => {
-                        console.log(Key_learnings.getData());
-                        @this.set('key_learning', Key_learnings.getData())
-                    })
-                    window.addEventListener('articleStore', event => {
-                        Key_learnings.setData('');
-                    })
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-            ClassicEditor
-                .create(document.querySelector('#comments'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
-                })
-                .then(Comment => {
-                    Comment.model.document.on('change:data', () => {
-                        @this.set('comments', Comment.getData())
-                    });
-                    window.addEventListener('articleStore', event => {
-                        Comment.setData('');
-                    })
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdateIncident', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                Comment.enableReadOnlyMode('comments');
-                            } else {
-                                Comment.disableReadOnlyMode('comments');
-                            }
-                        });
-                    });
+                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
 
+                })
+                .then(newEditor => {
+                    newEditor.editing.view.change((writer) => {
+                        writer.setStyle(
+                            "height",
+                            "155px",
+                            newEditor.editing.view.document.getRoot()
+                        );
+                    });
+                    newEditor.model.document.on('change:data', () => {
+                        @this.set('key_learning', newEditor.getData())
+                    });
+                    window.addEventListener('articleStore', event => {
+                        newEditor.setData('');
+                    })
                 })
                 .catch(error => {
                     console.error(error);

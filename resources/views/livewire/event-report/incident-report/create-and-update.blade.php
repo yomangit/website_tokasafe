@@ -451,7 +451,13 @@
 
             })
             .then(newEditor => {
-
+                newEditor.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        newEditor.editing.view.document.getRoot()
+                    );
+                });
                 newEditor.model.document.on('change:data', () => {
                     @this.set('description', newEditor.getData())
                 });
@@ -469,7 +475,13 @@
 
             })
             .then(newEditor => {
-
+                newEditor.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        newEditor.editing.view.document.getRoot()
+                    );
+                });
                 newEditor.model.document.on('change:data', () => {
                     @this.set('involved_eqipment', newEditor.getData())
                 });
@@ -487,7 +499,13 @@
 
             })
             .then(newEditor => {
-
+                newEditor.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        newEditor.editing.view.document.getRoot()
+                    );
+                });
                 newEditor.model.document.on('change:data', () => {
                     @this.set('preliminary_cause', newEditor.getData())
                 });
@@ -505,7 +523,13 @@
 
             })
             .then(newEditor => {
-
+                newEditor.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        newEditor.editing.view.document.getRoot()
+                    );
+                });
                 newEditor.model.document.on('change:data', () => {
                     @this.set('immediate_action_taken', newEditor.getData())
                 });
@@ -523,7 +547,13 @@
 
             })
             .then(newEditor => {
-
+                newEditor.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        newEditor.editing.view.document.getRoot()
+                    );
+                });
                 newEditor.model.document.on('change:data', () => {
                     @this.set('key_learning', newEditor.getData())
                 });
