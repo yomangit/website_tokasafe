@@ -30,19 +30,19 @@ flatpickr("#completion_date", {
     dateFormat: "d-m-Y ",
 });
 flatpickr("#tanggal_komplite", {
-    disableMobile: "true",
+    disableMobile: true,
     dateFormat: "d-m-Y",
 });
 flatpickr("#date_birth", {
-    disableMobile: "true",
+    disableMobile: true,
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#date_commenced", {
-    disableMobile: "true",
+    disableMobile: true,
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#end_date", {
-    disableMobile: "true",
+    disableMobile: true,
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#month", {
