@@ -2,8 +2,9 @@ import "./bootstrap";
 import "toastify-js/src/toastify.css";
 import Toastify from "toastify-js";
 window.Toastify = Toastify;
+const flatpickr = require("flatpickr");
 import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.min.css";
+// import "flatpickr/dist/flatpickr.min.css";
 import monthSelectPlugin from "flatpickr/dist/plugins/monthSelect";
 import "flatpickr/dist/themes/dark.css";
 import "flatpickr/dist/plugins/monthSelect/style.css";
@@ -17,36 +18,36 @@ if ('serviceWorker' in navigator)
 }
 // flatpickr datepicker
 flatpickr("#tanggal", {
-    disableMobile: false,
+    disableMobile: "true",
     dateFormat: "d-m-Y : H:i", //defaults to "F Y"
     enableTime: true,
 });
 flatpickr("#due_date", {
-    disableMobile: true,
+    disableMobile: "true",
     dateFormat: "d-m-Y ",
 });
 flatpickr("#completion_date", {
-    disableMobile: true,
+    disableMobile: "true",
     dateFormat: "d-m-Y ",
 });
 flatpickr("#tanggal_komplite", {
-    disableMobile: true,
+    disableMobile: "true",
     dateFormat: "d-m-Y",
 });
 flatpickr("#date_birth", {
-    disableMobile: true,
+    disableMobile: "true",
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#date_commenced", {
-    disableMobile: true,
+    disableMobile: "true",
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#end_date", {
-    disableMobile: true,
+    disableMobile: "true",
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#month", {
-    disableMobile: true,
+    disableMobile: "true",
     plugins: [
         new monthSelectPlugin({
             shorthand: true, //defaults to false
