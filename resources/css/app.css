@@ -52,7 +52,7 @@
     transition-duration: 150ms;
 }
     .ck-editor__editable_inline:not(.ck-comment__input *) {
-    height: 160 px;
+    height: 155 px;
     overflow-y: auto;
 }
     .ck-editor__editable[role="textbox"] {
