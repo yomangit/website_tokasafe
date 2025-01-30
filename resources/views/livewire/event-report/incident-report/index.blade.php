@@ -136,7 +136,7 @@
         </table>
         <div></div>
     </div>
-    <script nonce="{{ csp_nonce() }}" src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    {{-- <script nonce="{{ csp_nonce() }}" src="https://cdn.jsdelivr.net/npm/flatpickr"></script> --}}
     <script nonce="{{ csp_nonce() }}">
         flatpickr("#rangeDate", {
             mode: 'range',
