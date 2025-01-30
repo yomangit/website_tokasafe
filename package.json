@@ -3,7 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-       "build": "vite build"
+        "build": "vite build"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.10",
@@ -18,6 +18,7 @@
         "vite-plugin-manifest-sri": "^0.2.0"
     },
     "dependencies": {
+        "@tailwindcss/vite": "^4.0.1",
         "apexcharts": "^4.4.0",
         "ckeditor5": "^44.1.0",
         "ckeditor5-premium-features": "^44.1.0",
