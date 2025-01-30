@@ -7,7 +7,7 @@ import "flatpickr/dist/flatpickr.min.css";
 import monthSelectPlugin from "flatpickr/dist/plugins/monthSelect";
 import "flatpickr/dist/themes/dark.css";
 import "flatpickr/dist/plugins/monthSelect/style.css";
-if ('serviceWorker' in navigator) 
+if ('serviceWorker' in navigator)
 {
     navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(function (registration) {
         console.log(`SW registered successfully!`);
@@ -31,7 +31,7 @@ flatpickr("#completion_date", {
 });
 flatpickr("#tanggal_komplite", {
     disableMobile: "true",
-    dateFormat: "d-m-Y ",
+    dateFormat: "d-m-Y",
 });
 flatpickr("#date_birth", {
     disableMobile: "true",
