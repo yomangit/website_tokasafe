@@ -430,7 +430,7 @@
                 newEditor.editing.view.change((writer) => {
                     writer.setStyle(
                         "height",
-                        "200px",
+                        "155px",
                         newEditor.editing.view.document.getRoot()
                     );
                 });
