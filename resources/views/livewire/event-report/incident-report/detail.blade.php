@@ -8,7 +8,7 @@
     @endsection
 
     <div
-        class="font-mono text-sm font-semibold text-transparent  divider divider-info bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">
+        class="font-mono text-sm font-semibold text-transparent divider divider-info bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">
         {{ $divider }}</div>
 
 
@@ -16,7 +16,7 @@
         <form wire:submit.prevent='store'>
             @csrf
             @method('PATCH')
-            <div wire:target="store" wire:loading.class="skeleton" class="left-0 p-2 border rounded-sm  border-slate-300">
+            <div wire:target="store" wire:loading.class="skeleton" class="left-0 p-2 border rounded-sm border-slate-300">
                 <x-btn-save wire:target="store" wire:loading.class="btn-disabled"
                     class="{{ $currentStep === 'Closed' || $currentStep === 'Cancelled' ? 'btn-disabled' : '' }}">
                     {{ __('Save') }}</x-btn-save>
@@ -111,7 +111,7 @@
                                         </ul>
                                     </div>
                                     <div class="grid flex-grow h-40 overflow-auto card bg-base-300 rounded-box">
-                                       <ul class="w-56 px-4 py-2 list-disc list-inside  bg-base-200 rounded-box">
+                                       <ul class="w-56 px-4 py-2 list-disc list-inside bg-base-200 rounded-box">
 
                                         @forelse ($Division as $item)
                                           <li wire:click="select_division({{ $item->id }})" class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer"> {{ $item->DeptByBU->BusinesUnit->Company->name_company }}-{{ $item->DeptByBU->Department->department_name }}
@@ -612,6 +612,30 @@
                     });
                     newEditor.model.document.on('change:data', () => {
                         @this.set('key_learning', newEditor.getData())
+                    });
+                    window.addEventListener('articleStore', event => {
+                        newEditor.setData('');
+                    })
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+                // comment
+                ClassicEditor
+                .create(document.querySelector('#comments'), {
+                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
+
+                })
+                .then(newEditor => {
+                    newEditor.editing.view.change((writer) => {
+                        writer.setStyle(
+                            "height",
+                            "155px",
+                            newEditor.editing.view.document.getRoot()
+                        );
+                    });
+                    newEditor.model.document.on('change:data', () => {
+                        @this.set('comments', newEditor.getData())
                     });
                     window.addEventListener('articleStore', event => {
                         newEditor.setData('');
