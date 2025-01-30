@@ -11,12 +11,12 @@ import "toastify-js/src/toastify.css";
 import Toastify from "toastify-js";
 window.Toastify = Toastify;
 const flatpickr = require("flatpickr");
-import flatpickr from "flatpickr";
+
 import "flatpickr/dist/flatpickr.css";
 import monthSelectPlugin from "flatpickr/dist/plugins/monthSelect";
 import "flatpickr/dist/themes/dark.css";
 import "flatpickr/dist/plugins/monthSelect/style.css";
-
+import flatpickr from "flatpickr";
 // flatpickr datepicker
 flatpickr("#tanggal", {
     disableMobile: "true",
@@ -58,6 +58,7 @@ flatpickr("#month", {
         }),
     ],
 });
+
 
 // code for resposive side-bar menu
 
