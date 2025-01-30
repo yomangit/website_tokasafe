@@ -102,7 +102,7 @@
                                 </ul>
                             </div>
                             <div class="grid flex-grow h-40 overflow-auto card bg-base-300 rounded-box">
-                                <ul class="w-56 px-4 py-2 list-disc list-inside  bg-base-200 rounded-box">
+                                <ul class="w-56 px-4 py-2 list-disc list-inside bg-base-200 rounded-box">
 
                                     @forelse ($Division as $item)
                                         <li wire:click="select_division({{ $item->id }})"
@@ -431,7 +431,7 @@
                     writer.setStyle(
                         "height",
                         "200px",
-                        editor.editing.view.document.getRoot()
+                        newEditor.editing.view.document.getRoot()
                     );
                 });
                 newEditor.model.document.on('change:data', () => {
