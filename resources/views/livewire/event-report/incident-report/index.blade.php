@@ -24,7 +24,6 @@
             </div>
 
         </div>
-
         <div class="flex flex-col sm:flex-wrap sm:w-full sm:max-w-2xl gap-y-1 sm:pl-4 gap-x-4 sm:flex-row">
 
             <x-select-search wire:model.live='search_eventType'>
