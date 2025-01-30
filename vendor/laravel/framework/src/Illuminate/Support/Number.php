@@ -91,24 +91,6 @@ class Number
     }
 
     /**
-     * Spell out the given number in the given locale in ordinal form.
-     *
-     * @param  int|float  $number
-     * @param  string|null  $locale
-     * @return string
-     */
-    public static function spellOrdinal(int|float $number, ?string $locale = null)
-    {
-        static::ensureIntlExtensionIsInstalled();
-
-        $formatter = new NumberFormatter($locale ?? static::$locale, NumberFormatter::SPELLOUT);
-
-        $formatter->setTextAttribute(NumberFormatter::DEFAULT_RULESET, '%spellout-ordinal');
-
-        return $formatter->format($number);
-    }
-
-    /**
      * Convert the given number to its percentage equivalent.
      *
      * @param  int|float  $number
@@ -188,7 +170,7 @@ class Number
      * @param  int  $precision
      * @param  int|null  $maxPrecision
      * @param  bool  $abbreviate
-     * @return false|string
+     * @return bool|string
      */
     public static function forHumans(int|float $number, int $precision = 0, ?int $maxPrecision = null, bool $abbreviate = false)
     {
@@ -318,11 +300,11 @@ class Number
      */
     public static function withCurrency(string $currency, callable $callback)
     {
-        $previousCurrency = static::$currency;
+        $previousLCurrency = static::$currency;
 
         static::useCurrency($currency);
 
-        return tap($callback(), fn () => static::useCurrency($previousCurrency));
+        return tap($callback(), fn () => static::useCurrency($previousLCurrency));
     }
 
     /**

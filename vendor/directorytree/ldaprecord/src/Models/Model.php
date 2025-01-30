@@ -228,7 +228,7 @@ abstract class Model implements Arrayable, ArrayAccess, JsonSerializable, String
      */
     public static function on(?string $connection = null): Builder
     {
-        $instance = new static;
+        $instance = new static();
 
         $instance->setConnection($connection);
 
@@ -253,7 +253,7 @@ abstract class Model implements Arrayable, ArrayAccess, JsonSerializable, String
         /** @var Model $model */
         $model = static::getRootDseModel();
 
-        return $model::on($connection ?? (new $model)->getConnectionName())
+        return $model::on($connection ?? (new $model())->getConnectionName())
             ->in()
             ->read()
             ->whereHas('objectclass')
@@ -267,7 +267,7 @@ abstract class Model implements Arrayable, ArrayAccess, JsonSerializable, String
      */
     protected static function getRootDseModel(): string
     {
-        $instance = new static;
+        $instance = new static();
 
         return match (true) {
             $instance instanceof Types\ActiveDirectory => ActiveDirectory\Entry::class,
@@ -557,8 +557,6 @@ abstract class Model implements Arrayable, ArrayAccess, JsonSerializable, String
     public function is(?Model $model = null): bool
     {
         return ! is_null($model)
-            && ! empty($this->dn)
-            && ! empty($model->getDn())
             && $this->dn == $model->getDn()
             && $this->getConnectionName() == $model->getConnectionName();
     }
@@ -1084,7 +1082,7 @@ abstract class Model implements Arrayable, ArrayAccess, JsonSerializable, String
     {
         $count = 0;
 
-        $instance = new static;
+        $instance = new static();
 
         if ($dns instanceof Collection) {
             $dns = $dns->modelDns()->toArray();

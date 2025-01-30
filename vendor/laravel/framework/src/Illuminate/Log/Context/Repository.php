@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Log\Context\Events\ContextDehydrating as Dehydrating;
 use Illuminate\Log\Context\Events\ContextHydrated as Hydrated;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use RuntimeException;
@@ -22,7 +21,7 @@ class Repository
     /**
      * The event dispatcher instance.
      *
-     * @var \Illuminate\Contracts\Events\Dispatcher
+     * @var \Illuminate\Events\Dispatcher
      */
     protected $events;
 
@@ -291,23 +290,6 @@ class Repository
     }
 
     /**
-     * Pop the latest value from the key's stack.
-     *
-     * @param  string  $key
-     * @return mixed
-     *
-     * @throws \RuntimeException
-     */
-    public function pop($key)
-    {
-        if (! $this->isStackable($key) || ! count($this->data[$key])) {
-            throw new RuntimeException("Unable to pop value from context stack for key [{$key}].");
-        }
-
-        return array_pop($this->data[$key]);
-    }
-
-    /**
      * Push the given hidden values onto the key's stack.
      *
      * @param  string  $key
@@ -331,23 +313,6 @@ class Repository
     }
 
     /**
-     * Pop the latest hidden value from the key's stack.
-     *
-     * @param  string  $key
-     * @return mixed
-     *
-     * @throws \RuntimeException
-     */
-    public function popHidden($key)
-    {
-        if (! $this->isHiddenStackable($key) || ! count($this->hidden[$key])) {
-            throw new RuntimeException("Unable to pop value from hidden context stack for key [{$key}].");
-        }
-
-        return array_pop($this->hidden[$key]);
-    }
-
-    /**
      * Determine if the given value is in the given stack.
      *
      * @param  string  $key
@@ -368,7 +333,7 @@ class Repository
         }
 
         if ($value instanceof Closure) {
-            return (new Collection($this->data[$key]))->contains($value);
+            return collect($this->data[$key])->contains($value);
         }
 
         return in_array($value, $this->data[$key], $strict);
@@ -395,7 +360,7 @@ class Repository
         }
 
         if ($value instanceof Closure) {
-            return (new Collection($this->hidden[$key]))->contains($value);
+            return collect($this->hidden[$key])->contains($value);
         }
 
         return in_array($value, $this->hidden[$key], $strict);
@@ -547,8 +512,8 @@ class Repository
         };
 
         [$data, $hidden] = [
-            (new Collection($context['data'] ?? []))->map(fn ($value, $key) => $unserialize($value, $key, false))->all(),
-            (new Collection($context['hidden'] ?? []))->map(fn ($value, $key) => $unserialize($value, $key, true))->all(),
+            collect($context['data'] ?? [])->map(fn ($value, $key) => $unserialize($value, $key, false))->all(),
+            collect($context['hidden'] ?? [])->map(fn ($value, $key) => $unserialize($value, $key, true))->all(),
         ];
 
         $this->events->dispatch(new Hydrated(

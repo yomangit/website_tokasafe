@@ -4,7 +4,6 @@ namespace Illuminate\Log;
 
 use Closure;
 use Illuminate\Log\Context\Repository as ContextRepository;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Monolog\Formatter\LineFormatter;
@@ -281,13 +280,13 @@ class LogManager implements LoggerInterface
             $config['channels'] = explode(',', $config['channels']);
         }
 
-        $handlers = (new Collection($config['channels']))->flatMap(function ($channel) {
+        $handlers = collect($config['channels'])->flatMap(function ($channel) {
             return $channel instanceof LoggerInterface
                 ? $channel->getHandlers()
                 : $this->channel($channel)->getHandlers();
         })->all();
 
-        $processors = (new Collection($config['channels']))->flatMap(function ($channel) {
+        $processors = collect($config['channels'])->flatMap(function ($channel) {
             return $channel instanceof LoggerInterface
                 ? $channel->getProcessors()
                 : $this->channel($channel)->getProcessors();
@@ -406,7 +405,7 @@ class LogManager implements LoggerInterface
             );
         }
 
-        (new Collection($config['processors'] ?? []))->each(function ($processor) {
+        collect($config['processors'] ?? [])->each(function ($processor) {
             $processor = $processor['processor'] ?? $processor;
 
             if (! is_a($processor, ProcessorInterface::class, true)) {
@@ -426,7 +425,7 @@ class LogManager implements LoggerInterface
             $this->app->make($config['handler'], $with), $config
         );
 
-        $processors = (new Collection($config['processors'] ?? []))
+        $processors = collect($config['processors'] ?? [])
             ->map(fn ($processor) => $this->app->make($processor['processor'] ?? $processor, $processor['with'] ?? []))
             ->toArray();
 
@@ -634,7 +633,7 @@ class LogManager implements LoggerInterface
             $driver ??= 'null';
         }
 
-        return trim($driver);
+        return $driver;
     }
 
     /**

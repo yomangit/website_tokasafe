@@ -4,7 +4,6 @@ namespace Illuminate\Cache;
 
 use Closure;
 use Illuminate\Contracts\Cache\Repository as Cache;
-use Illuminate\Support\Collection;
 use Illuminate\Support\InteractsWithTime;
 
 use function Illuminate\Support\enum_value;
@@ -64,33 +63,7 @@ class RateLimiter
     {
         $resolvedName = $this->resolveLimiterName($name);
 
-        $limiter = $this->limiters[$resolvedName] ?? null;
-
-        if (! is_callable($limiter)) {
-            return;
-        }
-
-        return function (...$args) use ($limiter) {
-            $result = $limiter(...$args);
-
-            if (! is_array($result)) {
-                return $result;
-            }
-
-            $duplicates = (new Collection($result))->duplicates('key');
-
-            if ($duplicates->isEmpty()) {
-                return $result;
-            }
-
-            foreach ($result as $limit) {
-                if ($duplicates->contains($limit->key)) {
-                    $limit->key = $limit->fallbackKey();
-                }
-            }
-
-            return $result;
-        };
+        return $this->limiters[$resolvedName] ?? null;
     }
 
     /**

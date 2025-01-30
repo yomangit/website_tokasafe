@@ -83,12 +83,19 @@ final class Mapper
             }
         } else {
             if ($this->isUserDefinedClass($unit)) {
-                return CodeUnitCollection::fromList(
-                    ...array_merge(
-                        [CodeUnit::forClass($unit)],
-                        $this->traits(new ReflectionClass($unit)),
-                    ),
-                );
+                $units = [CodeUnit::forClass($unit)];
+
+                foreach ((new ReflectionClass($unit))->getTraits() as $trait) {
+                    if (!$trait->isUserDefined()) {
+                        // @codeCoverageIgnoreStart
+                        continue;
+                        // @codeCoverageIgnoreEnd
+                    }
+
+                    $units[] = CodeUnit::forTrait($trait->getName());
+                }
+
+                return CodeUnitCollection::fromList(...$units);
             }
 
             if ($this->isUserDefinedInterface($unit)) {
@@ -174,29 +181,5 @@ final class Mapper
         }
 
         return (new ReflectionMethod($className, $methodName))->isUserDefined();
-    }
-
-    /**
-     * @param ReflectionClass<object> $class
-     *
-     * @return list<TraitUnit>
-     */
-    private function traits(ReflectionClass $class): array
-    {
-        $result = [];
-
-        foreach ($class->getTraits() as $trait) {
-            if (!$trait->isUserDefined()) {
-                // @codeCoverageIgnoreStart
-                continue;
-                // @codeCoverageIgnoreEnd
-            }
-
-            $result[] = CodeUnit::forTrait($trait->getName());
-
-            $result = array_merge($result, $this->traits($trait));
-        }
-
-        return $result;
     }
 }

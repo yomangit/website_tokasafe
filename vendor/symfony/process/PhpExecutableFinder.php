@@ -32,8 +32,15 @@ class PhpExecutableFinder
     public function find(bool $includeArgs = true): string|false
     {
         if ($php = getenv('PHP_BINARY')) {
-            if (!is_executable($php) && !$php = $this->executableFinder->find($php)) {
-                return false;
+            if (!is_executable($php)) {
+                $command = '\\' === \DIRECTORY_SEPARATOR ? 'where' : 'command -v --';
+                if (\function_exists('exec') && $php = strtok(exec($command.' '.escapeshellarg($php)), \PHP_EOL)) {
+                    if (!is_executable($php)) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
             }
 
             if (@is_dir($php)) {
@@ -72,10 +79,6 @@ class PhpExecutableFinder
         $dirs = [\PHP_BINDIR];
         if ('\\' === \DIRECTORY_SEPARATOR) {
             $dirs[] = 'C:\xampp\php\\';
-        }
-
-        if ($herdPath = getenv('HERD_HOME')) {
-            $dirs[] = $herdPath.\DIRECTORY_SEPARATOR.'bin';
         }
 
         return $this->executableFinder->find('php', false, $dirs);

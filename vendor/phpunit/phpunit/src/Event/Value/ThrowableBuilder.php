@@ -37,7 +37,7 @@ final readonly class ThrowableBuilder
             $t::class,
             $t->getMessage(),
             ThrowableToStringMapper::map($t),
-            Filter::stackTraceFromThrowableAsString($t, false),
+            Filter::getFilteredStacktrace($t, false),
             $previous,
         );
     }

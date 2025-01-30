@@ -25,7 +25,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
- * @template-extends AbstractBrowser<Request, Response>
+ * @method Request  getRequest()
+ * @method Response getResponse()
  */
 class HttpKernelBrowser extends AbstractBrowser
 {

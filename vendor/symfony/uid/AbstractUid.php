@@ -14,7 +14,7 @@ namespace Symfony\Component\Uid;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
  */
-abstract class AbstractUid implements \JsonSerializable, \Stringable, HashableInterface
+abstract class AbstractUid implements \JsonSerializable, \Stringable
 {
     /**
      * The identifier in its canonic representation.
@@ -95,7 +95,7 @@ abstract class AbstractUid implements \JsonSerializable, \Stringable, HashableIn
      */
     public function toBase58(): string
     {
-        return strtr(\sprintf('%022s', BinaryUtil::toBase($this->toBinary(), BinaryUtil::BASE58)), '0', '1');
+        return strtr(sprintf('%022s', BinaryUtil::toBase($this->toBinary(), BinaryUtil::BASE58)), '0', '1');
     }
 
     /**
@@ -108,7 +108,7 @@ abstract class AbstractUid implements \JsonSerializable, \Stringable, HashableIn
     public function toBase32(): string
     {
         $uid = bin2hex($this->toBinary());
-        $uid = \sprintf('%02s%04s%04s%04s%04s%04s%04s',
+        $uid = sprintf('%02s%04s%04s%04s%04s%04s%04s',
             base_convert(substr($uid, 0, 2), 16, 32),
             base_convert(substr($uid, 2, 5), 16, 32),
             base_convert(substr($uid, 7, 5), 16, 32),
@@ -124,7 +124,7 @@ abstract class AbstractUid implements \JsonSerializable, \Stringable, HashableIn
     /**
      * Returns the identifier as a RFC 9562/4122 case-insensitive string.
      *
-     * @see https://datatracker.ietf.org/doc/html/rfc9562/#section-4
+     * @see https://tools.ietf.org/html/rfc4122#section-3
      *
      * @example 09748193-048a-4bfb-b825-8528cf74fdc1 (len=36)
      */
@@ -159,11 +159,6 @@ abstract class AbstractUid implements \JsonSerializable, \Stringable, HashableIn
         }
 
         return $this->uid === $other->uid;
-    }
-
-    public function hash(): string
-    {
-        return $this->uid;
     }
 
     public function compare(self $other): int

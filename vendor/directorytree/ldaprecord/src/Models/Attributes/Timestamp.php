@@ -127,12 +127,10 @@ class Timestamp
      */
     protected function convertLdapTimeToDateTime(string $value): DateTime|false
     {
-        return DateTime::createFromFormat(match (true) {
-            str_ends_with($value, '.000Z') => 'YmdHis.000\Z',
-            str_ends_with($value, '.0Z') => 'YmdHis.0\Z',
-            str_ends_with($value, 'Z') => 'YmdHis\Z',
-            default => 'YmdHisT',
-        }, $value);
+        return DateTime::createFromFormat(
+            str_contains($value, 'Z') ? 'YmdHis\Z' : 'YmdHisT',
+            $value
+        );
     }
 
     /**
@@ -141,9 +139,7 @@ class Timestamp
     protected function convertDateTimeToLdapTime(DateTime $date): string
     {
         return $date->format(
-            $date->getOffset() == 0
-                ? 'YmdHis\Z'
-                : 'YmdHisO'
+            $date->getOffset() == 0 ? 'YmdHis\Z' : 'YmdHisO'
         );
     }
 
@@ -152,10 +148,11 @@ class Timestamp
      */
     protected function convertWindowsTimeToDateTime(string $value): DateTime|false
     {
-        return DateTime::createFromFormat(match (true) {
-            str_ends_with($value, '.0Z') => 'YmdHis.0\Z',
-            default => 'YmdHis.0T'
-        }, $value, new DateTimeZone('UTC'));
+        return DateTime::createFromFormat(
+            str_contains($value, '0Z') ? 'YmdHis.0\Z' : 'YmdHis.0T',
+            $value,
+            new DateTimeZone('UTC')
+        );
     }
 
     /**
@@ -164,9 +161,7 @@ class Timestamp
     protected function convertDateTimeToWindows(DateTime $date): string
     {
         return $date->format(
-            $date->getOffset() == 0
-                ? 'YmdHis.0\Z'
-                : 'YmdHis.0O'
+            $date->getOffset() == 0 ? 'YmdHis.0\Z' : 'YmdHis.0O'
         );
     }
 
@@ -189,7 +184,7 @@ class Timestamp
             return (int) $value;
         }
 
-        return (new DateTime)->setTimestamp(
+        return (new DateTime())->setTimestamp(
             round($value / 10000000) - 11644473600
         );
     }

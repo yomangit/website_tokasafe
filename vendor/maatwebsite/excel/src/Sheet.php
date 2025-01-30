@@ -189,6 +189,10 @@ class Sheet
                 $this->hasStrictNullComparison($sheetExport)
             );
         }
+
+        if ($sheetExport instanceof WithCharts) {
+            $this->addCharts($sheetExport->charts());
+        }
     }
 
     /**
@@ -325,7 +329,7 @@ class Sheet
      * @param  bool  $formatData
      * @return array
      */
-    public function toArray($import, ?int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false)
+    public function toArray($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false)
     {
         if ($startRow > $this->worksheet->getHighestRow()) {
             return [];
@@ -376,7 +380,7 @@ class Sheet
      * @param  bool  $formatData
      * @return Collection
      */
-    public function toCollection($import, ?int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false): Collection
+    public function toCollection($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false): Collection
     {
         $rows = $this->toArray($import, $startRow, $nullValue, $calculateFormulas, $formatData);
 
@@ -392,10 +396,6 @@ class Sheet
      */
     public function close($sheetExport)
     {
-        if ($sheetExport instanceof WithCharts) {
-            $this->addCharts($sheetExport->charts());
-        }
-
         if ($sheetExport instanceof WithDrawings) {
             $this->addDrawings($sheetExport->drawings());
         }
@@ -544,7 +544,7 @@ class Sheet
      * @param  string|null  $startCell
      * @param  bool  $strictNullComparison
      */
-    public function append(array $rows, ?string $startCell = null, bool $strictNullComparison = false)
+    public function append(array $rows, string $startCell = null, bool $strictNullComparison = false)
     {
         if (!$startCell) {
             $startCell = 'A1';

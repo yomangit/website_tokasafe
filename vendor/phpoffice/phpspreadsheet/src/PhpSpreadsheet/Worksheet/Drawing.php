@@ -123,21 +123,8 @@ class Drawing extends BaseDrawing
             $this->isUrl = true;
             $ctx = null;
             // https://github.com/php/php-src/issues/16023
-            // https://github.com/php/php-src/issues/17121
-            if (preg_match('/^https?:/', $path) === 1) {
-                $ctxArray = [
-                    'http' => [
-                        'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-                        'header' => [
-                            //'Connection: keep-alive', // unacceptable performance
-                            'Accept: image/*;q=0.9,*/*;q=0.8',
-                        ],
-                    ],
-                ];
-                if (preg_match('/^https:/', $path) === 1) {
-                    $ctxArray['ssl'] = ['crypto_method' => STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT];
-                }
-                $ctx = stream_context_create($ctxArray);
+            if (substr($path, 0, 6) === 'https:') {
+                $ctx = stream_context_create(['ssl' => ['crypto_method' => STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT]]);
             }
             $imageContents = @file_get_contents($path, false, $ctx);
             if ($imageContents !== false) {
@@ -173,12 +160,6 @@ class Drawing extends BaseDrawing
             throw new PhpSpreadsheetException("File $path not found!");
         }
 
-        if ($this->worksheet !== null) {
-            if ($this->path !== '') {
-                $this->worksheet->getCell($this->coordinates);
-            }
-        }
-
         return $this;
     }
 
@@ -186,7 +167,7 @@ class Drawing extends BaseDrawing
     {
         $mime = (string) @mime_content_type($path);
         $retVal = false;
-        if (strpos($mime, 'image/') === 0) {
+        if (str_starts_with($mime, 'image/')) {
             $retVal = true;
         } elseif ($mime === 'application/octet-stream') {
             $extension = pathinfo($path, PATHINFO_EXTENSION);
@@ -208,8 +189,6 @@ class Drawing extends BaseDrawing
      * Set isURL.
      *
      * @return $this
-     *
-     * @deprecated 3.7.0 not needed, property is set by setPath
      */
     public function setIsURL(bool $isUrl): self
     {

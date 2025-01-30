@@ -14,22 +14,22 @@ namespace SebastianBergmann\CodeCoverage\Test\TestSize;
  */
 abstract class TestSize
 {
-    public static function unknown(): Unknown
+    public static function unknown(): self
     {
         return new Unknown;
     }
 
-    public static function small(): Small
+    public static function small(): self
     {
         return new Small;
     }
 
-    public static function medium(): Medium
+    public static function medium(): self
     {
         return new Medium;
     }
 
-    public static function large(): Large
+    public static function large(): self
     {
         return new Large;
     }

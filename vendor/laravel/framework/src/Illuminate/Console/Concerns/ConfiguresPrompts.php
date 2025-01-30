@@ -7,7 +7,6 @@ use Laravel\Prompts\ConfirmPrompt;
 use Laravel\Prompts\MultiSearchPrompt;
 use Laravel\Prompts\MultiSelectPrompt;
 use Laravel\Prompts\PasswordPrompt;
-use Laravel\Prompts\PausePrompt;
 use Laravel\Prompts\Prompt;
 use Laravel\Prompts\SearchPrompt;
 use Laravel\Prompts\SelectPrompt;
@@ -49,16 +48,6 @@ trait ConfiguresPrompts
 
         PasswordPrompt::fallbackUsing(fn (PasswordPrompt $prompt) => $this->promptUntilValid(
             fn () => $this->components->secret($prompt->label) ?? '',
-            $prompt->required,
-            $prompt->validate
-        ));
-
-        PausePrompt::fallbackUsing(fn (PausePrompt $prompt) => $this->promptUntilValid(
-            function () use ($prompt) {
-                $this->components->ask($prompt->message, $prompt->value());
-
-                return $prompt->value();
-            },
             $prompt->required,
             $prompt->validate
         ));

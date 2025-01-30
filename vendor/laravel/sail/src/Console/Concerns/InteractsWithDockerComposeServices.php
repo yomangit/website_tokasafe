@@ -16,9 +16,7 @@ trait InteractsWithDockerComposeServices
         'mysql',
         'pgsql',
         'mariadb',
-        'mongodb',
         'redis',
-        'valkey',
         'memcached',
         'meilisearch',
         'typesense',
@@ -94,7 +92,7 @@ trait InteractsWithDockerComposeServices
         // Merge volumes...
         collect($services)
             ->filter(function ($service) {
-                return in_array($service, ['mysql', 'pgsql', 'mariadb', 'mongodb', 'redis', 'valkey', 'meilisearch', 'typesense', 'minio']);
+                return in_array($service, ['mysql', 'pgsql', 'mariadb', 'redis', 'meilisearch', 'typesense', 'minio']);
             })->filter(function ($service) use ($compose) {
                 return ! array_key_exists($service, $compose['volumes'] ?? []);
             })->each(function ($service) use (&$compose) {
@@ -108,7 +106,7 @@ trait InteractsWithDockerComposeServices
 
         $yaml = Yaml::dump($compose, Yaml::DUMP_OBJECT_AS_MAP);
 
-        $yaml = str_replace('{{PHP_VERSION}}', $this->hasOption('php') ? $this->option('php') : '8.4', $yaml);
+        $yaml = str_replace('{{PHP_VERSION}}', $this->hasOption('php') ? $this->option('php') : '8.3', $yaml);
 
         file_put_contents($this->laravel->basePath('docker-compose.yml'), $yaml);
     }
@@ -163,15 +161,6 @@ trait InteractsWithDockerComposeServices
 
         if (in_array('redis', $services)) {
             $environment = str_replace('REDIS_HOST=127.0.0.1', 'REDIS_HOST=redis', $environment);
-        }
-
-        if (in_array('valkey',$services)){
-            $environment = str_replace('REDIS_HOST=127.0.0.1', 'REDIS_HOST=valkey', $environment);
-        }
-
-        if (in_array('mongodb', $services)) {
-            $environment .= "\nMONGODB_URI=mongodb://mongodb:27017";
-            $environment .= "\nMONGODB_DATABASE=laravel";
         }
 
         if (in_array('meilisearch', $services)) {

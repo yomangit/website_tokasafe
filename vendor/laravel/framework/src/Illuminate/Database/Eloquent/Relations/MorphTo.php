@@ -4,7 +4,7 @@ namespace Illuminate\Database\Eloquent\Relations;
 
 use BadMethodCallException;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Concerns\InteractsWithDictionary;
 
@@ -24,13 +24,6 @@ class MorphTo extends BelongsTo
      * @var string
      */
     protected $morphType;
-
-    /**
-     * The associated key on the parent model.
-     *
-     * @var string|null
-     */
-    protected $ownerKey;
 
     /**
      * The models whose relations are being eager loaded.
@@ -80,7 +73,7 @@ class MorphTo extends BelongsTo
      * @param  \Illuminate\Database\Eloquent\Builder<TRelatedModel>  $query
      * @param  TDeclaringModel  $parent
      * @param  string  $foreignKey
-     * @param  string|null  $ownerKey
+     * @param  string  $ownerKey
      * @param  string  $type
      * @param  string  $relation
      * @return void
@@ -93,10 +86,9 @@ class MorphTo extends BelongsTo
     }
 
     /** @inheritDoc */
-    #[\Override]
     public function addEagerConstraints(array $models)
     {
-        $this->buildDictionary($this->models = new EloquentCollection($models));
+        $this->buildDictionary($this->models = Collection::make($models));
     }
 
     /**
@@ -105,7 +97,7 @@ class MorphTo extends BelongsTo
      * @param  \Illuminate\Database\Eloquent\Collection<int, TRelatedModel>  $models
      * @return void
      */
-    protected function buildDictionary(EloquentCollection $models)
+    protected function buildDictionary(Collection $models)
     {
         foreach ($models as $model) {
             if ($model->{$this->morphType}) {
@@ -162,7 +154,7 @@ class MorphTo extends BelongsTo
         $whereIn = $this->whereInMethod($instance, $ownerKey);
 
         return $query->{$whereIn}(
-            $instance->qualifyColumn($ownerKey), $this->gatherKeysByType($type, $instance->getKeyType())
+            $instance->getTable().'.'.$ownerKey, $this->gatherKeysByType($type, $instance->getKeyType())
         )->get();
     }
 
@@ -200,8 +192,7 @@ class MorphTo extends BelongsTo
     }
 
     /** @inheritDoc */
-    #[\Override]
-    public function match(array $models, EloquentCollection $results, $relation)
+    public function match(array $models, Collection $results, $relation)
     {
         return $models;
     }
@@ -213,7 +204,7 @@ class MorphTo extends BelongsTo
      * @param  \Illuminate\Database\Eloquent\Collection<int, TRelatedModel>  $results
      * @return void
      */
-    protected function matchToMorphParents($type, EloquentCollection $results)
+    protected function matchToMorphParents($type, Collection $results)
     {
         foreach ($results as $result) {
             $ownerKey = ! is_null($this->ownerKey) ? $this->getDictionaryKey($result->{$this->ownerKey}) : $result->getKey();
@@ -232,7 +223,6 @@ class MorphTo extends BelongsTo
      * @param  TRelatedModel|null  $model
      * @return TDeclaringModel
      */
-    #[\Override]
     public function associate($model)
     {
         if ($model instanceof Model) {
@@ -257,7 +247,6 @@ class MorphTo extends BelongsTo
      *
      * @return TDeclaringModel
      */
-    #[\Override]
     public function dissociate()
     {
         $this->parent->setAttribute($this->foreignKey, null);
@@ -267,8 +256,11 @@ class MorphTo extends BelongsTo
         return $this->parent->setRelation($this->relationName, null);
     }
 
-    /** @inheritDoc */
-    #[\Override]
+    /**
+     * Touch all of the related models for the relationship.
+     *
+     * @return void
+     */
     public function touch()
     {
         if (! is_null($this->getParentKey())) {
@@ -277,7 +269,6 @@ class MorphTo extends BelongsTo
     }
 
     /** @inheritDoc */
-    #[\Override]
     protected function newRelatedInstanceFor(Model $parent)
     {
         return $parent->{$this->getRelationName()}()->getRelated()->newInstance();
@@ -412,17 +403,6 @@ class MorphTo extends BelongsTo
         }
 
         return $query;
-    }
-
-    /** @inheritDoc */
-    #[\Override]
-    public function getQualifiedOwnerKeyName()
-    {
-        if (is_null($this->ownerKey)) {
-            return '';
-        }
-
-        return parent::getQualifiedOwnerKeyName();
     }
 
     /**

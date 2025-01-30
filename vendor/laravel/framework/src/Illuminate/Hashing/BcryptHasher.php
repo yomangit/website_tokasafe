@@ -2,7 +2,6 @@
 
 namespace Illuminate\Hashing;
 
-use Error;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 use RuntimeException;
 
@@ -45,11 +44,11 @@ class BcryptHasher extends AbstractHasher implements HasherContract
      */
     public function make(#[\SensitiveParameter] $value, array $options = [])
     {
-        try {
-            $hash = password_hash($value, PASSWORD_BCRYPT, [
-                'cost' => $this->cost($options),
-            ]);
-        } catch (Error) {
+        $hash = password_hash($value, PASSWORD_BCRYPT, [
+            'cost' => $this->cost($options),
+        ]);
+
+        if ($hash === false) {
             throw new RuntimeException('Bcrypt hashing not supported.');
         }
 

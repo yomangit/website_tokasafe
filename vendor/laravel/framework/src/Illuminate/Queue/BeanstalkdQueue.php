@@ -50,13 +50,12 @@ class BeanstalkdQueue extends Queue implements QueueContract
      * @param  bool  $dispatchAfterCommit
      * @return void
      */
-    public function __construct(
-        $pheanstalk,
-        $default,
-        $timeToRun,
-        $blockFor = 0,
-        $dispatchAfterCommit = false,
-    ) {
+    public function __construct($pheanstalk,
+                                $default,
+                                $timeToRun,
+                                $blockFor = 0,
+                                $dispatchAfterCommit = false)
+    {
         $this->default = $default;
         $this->blockFor = $blockFor;
         $this->timeToRun = $timeToRun;

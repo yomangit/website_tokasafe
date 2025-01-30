@@ -80,7 +80,7 @@ trait BuildsQueries
      */
     public function chunkMap(callable $callback, $count = 1000)
     {
-        $collection = new Collection;
+        $collection = Collection::make();
 
         $this->chunk($count, function ($items) use ($collection, $callback) {
             $items->each(function ($item) use ($collection, $callback) {
@@ -236,7 +236,7 @@ trait BuildsQueries
 
         $this->enforceOrderBy();
 
-        return new LazyCollection(function () use ($chunkSize) {
+        return LazyCollection::make(function () use ($chunkSize) {
             $page = 1;
 
             while (true) {
@@ -304,7 +304,7 @@ trait BuildsQueries
 
         $alias ??= $column;
 
-        return new LazyCollection(function () use ($chunkSize, $column, $alias, $descending) {
+        return LazyCollection::make(function () use ($chunkSize, $column, $alias, $descending) {
             $lastId = null;
 
             while (true) {

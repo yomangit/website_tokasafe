@@ -93,7 +93,7 @@ class Authenticate implements AuthenticatesRequests
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  array  $guards
-     * @return never
+     * @return void
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */

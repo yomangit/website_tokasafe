@@ -216,14 +216,10 @@ class Arr
     /**
      * Return the last element in an array passing a given truth test.
      *
-     * @template TKey
-     * @template TValue
-     * @template TLastDefault
-     *
-     * @param  iterable<TKey, TValue>  $array
-     * @param  (callable(TValue, TKey): bool)|null  $callback
-     * @param  TLastDefault|(\Closure(): TLastDefault)  $default
-     * @return TValue|TLastDefault
+     * @param  array  $array
+     * @param  callable|null  $callback
+     * @param  mixed  $default
+     * @return mixed
      */
     public static function last($array, ?callable $callback = null, $default = null)
     {
@@ -489,7 +485,7 @@ class Arr
      */
     public static function keyBy($array, $keyBy)
     {
-        return (new Collection($array))->keyBy($keyBy)->all();
+        return Collection::make($array)->keyBy($keyBy)->all();
     }
 
     /**
@@ -816,7 +812,7 @@ class Arr
      */
     public static function sort($array, $callback = null)
     {
-        return (new Collection($array))->sortBy($callback)->all();
+        return Collection::make($array)->sortBy($callback)->all();
     }
 
     /**
@@ -828,7 +824,7 @@ class Arr
      */
     public static function sortDesc($array, $callback = null)
     {
-        return (new Collection($array))->sortByDesc($callback)->all();
+        return Collection::make($array)->sortByDesc($callback)->all();
     }
 
     /**

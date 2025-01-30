@@ -19,12 +19,13 @@ final class EmailAttachmentCount extends Constraint
 {
     public function __construct(
         private int $expectedValue,
+        private ?string $transport = null,
     ) {
     }
 
     public function toString(): string
     {
-        return \sprintf('has sent "%d" attachment(s)', $this->expectedValue);
+        return sprintf('has sent "%d" attachment(s)', $this->expectedValue);
     }
 
     /**

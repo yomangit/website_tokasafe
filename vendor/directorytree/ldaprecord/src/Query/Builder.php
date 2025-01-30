@@ -135,7 +135,7 @@ class Builder
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->grammar = new Grammar;
+        $this->grammar = new Grammar();
     }
 
     /**
@@ -686,11 +686,11 @@ class Builder
         $result = $this->limit(2)->get($columns);
 
         if (empty($result)) {
-            throw new ObjectsNotFoundException;
+            throw new ObjectsNotFoundException();
         }
 
         if (count($result) > 1) {
-            throw new MultipleObjectsFoundException;
+            throw new MultipleObjectsFoundException();
         }
 
         return reset($result);
@@ -850,23 +850,19 @@ class Builder
     /**
      * Add an order by control to the query.
      */
-    public function orderBy(string $attribute, string $direction = 'asc', array $options = []): static
+    public function orderBy(string $attribute, string $direction = 'asc'): static
     {
         return $this->addControl(LDAP_CONTROL_SORTREQUEST, true, [
-            [
-                ...$options,
-                'attr' => $attribute,
-                'reverse' => $direction === 'desc',
-            ],
+            ['attr' => $attribute, 'reverse' => $direction === 'desc'],
         ]);
     }
 
     /**
      * Add an order by descending control to the query.
      */
-    public function orderByDesc(string $attribute, array $options = []): static
+    public function orderByDesc(string $attribute): static
     {
-        return $this->orderBy($attribute, 'desc', $options);
+        return $this->orderBy($attribute, 'desc');
     }
 
     /**
@@ -1317,7 +1313,7 @@ class Builder
      */
     public function hasSelects(): bool
     {
-        return count($this->columns ?? []) > 0;
+        return count($this->columns) > 0;
     }
 
     /**

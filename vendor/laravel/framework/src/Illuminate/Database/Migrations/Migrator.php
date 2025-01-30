@@ -87,12 +87,11 @@ class Migrator
      * @param  \Illuminate\Contracts\Events\Dispatcher|null  $dispatcher
      * @return void
      */
-    public function __construct(
-        MigrationRepositoryInterface $repository,
-        Resolver $resolver,
-        Filesystem $files,
-        ?Dispatcher $dispatcher = null,
-    ) {
+    public function __construct(MigrationRepositoryInterface $repository,
+                                Resolver $resolver,
+                                Filesystem $files,
+                                ?Dispatcher $dispatcher = null)
+    {
         $this->files = $files;
         $this->events = $dispatcher;
         $this->resolver = $resolver;
@@ -134,7 +133,7 @@ class Migrator
      */
     protected function pendingMigrations($files, $ran)
     {
-        return (new Collection($files))
+        return Collection::make($files)
             ->reject(fn ($file) => in_array($this->getMigrationName($file), $ran))
             ->values()
             ->all();
@@ -169,7 +168,7 @@ class Migrator
 
         $step = $options['step'] ?? false;
 
-        $this->fireMigrationEvent(new MigrationsStarted('up', $options));
+        $this->fireMigrationEvent(new MigrationsStarted('up'));
 
         $this->write(Info::class, 'Running migrations.');
 
@@ -184,7 +183,7 @@ class Migrator
             }
         }
 
-        $this->fireMigrationEvent(new MigrationsEnded('up', $options));
+        $this->fireMigrationEvent(new MigrationsEnded('up'));
 
         $this->output?->writeln('');
     }
@@ -278,7 +277,7 @@ class Migrator
 
         $this->requireFiles($files = $this->getMigrationFiles($paths));
 
-        $this->fireMigrationEvent(new MigrationsStarted('down', $options));
+        $this->fireMigrationEvent(new MigrationsStarted('down'));
 
         $this->write(Info::class, 'Rolling back migrations.');
 
@@ -302,7 +301,7 @@ class Migrator
             );
         }
 
-        $this->fireMigrationEvent(new MigrationsEnded('down', $options));
+        $this->fireMigrationEvent(new MigrationsEnded('down'));
 
         return $rolledBack;
     }
@@ -345,7 +344,7 @@ class Migrator
         // Since the getRan method that retrieves the migration name just gives us the
         // migration name, we will format the names into objects with the name as a
         // property on the objects so that we can pass it to the rollback method.
-        $migrations = (new Collection($migrations))->map(fn ($m) => (object) ['migration' => $m])->all();
+        $migrations = collect($migrations)->map(fn ($m) => (object) ['migration' => $m])->all();
 
         return $this->rollbackMigrations(
             $migrations, $paths, compact('pretend')
@@ -431,7 +430,7 @@ class Migrator
 
         $this->write(
             BulletList::class,
-            (new Collection($this->getQueries($migration, $method)))->map(fn ($query) => $query['query'])
+            collect($this->getQueries($migration, $method))->map(fn ($query) => $query['query'])
         );
     }
 
@@ -536,7 +535,7 @@ class Migrator
      */
     public function getMigrationFiles($paths)
     {
-        return (new Collection($paths))
+        return Collection::make($paths)
             ->flatMap(fn ($path) => str_ends_with($path, '.php') ? [$path] : $this->files->glob($path.'/*_*.php'))
             ->filter()
             ->values()

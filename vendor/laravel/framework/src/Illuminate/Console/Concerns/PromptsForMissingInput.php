@@ -5,7 +5,6 @@ namespace Illuminate\Console\Concerns;
 use Closure;
 use Illuminate\Contracts\Console\PromptsForMissingInput as PromptsForMissingInputContract;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -39,7 +38,7 @@ trait PromptsForMissingInput
      */
     protected function promptForMissingArguments(InputInterface $input, OutputInterface $output)
     {
-        $prompted = (new Collection($this->getDefinition()->getArguments()))
+        $prompted = collect($this->getDefinition()->getArguments())
             ->reject(fn (InputArgument $argument) => $argument->getName() === 'command')
             ->filter(fn (InputArgument $argument) => $argument->isRequired() && match (true) {
                 $argument->isArray() => empty($input->getArgument($argument->getName())),
@@ -102,7 +101,7 @@ trait PromptsForMissingInput
      */
     protected function didReceiveOptions(InputInterface $input)
     {
-        return (new Collection($this->getDefinition()->getOptions()))
+        return collect($this->getDefinition()->getOptions())
             ->reject(fn ($option) => $input->getOption($option->getName()) === $option->getDefault())
             ->isNotEmpty();
     }

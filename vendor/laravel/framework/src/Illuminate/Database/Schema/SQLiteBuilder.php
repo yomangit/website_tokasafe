@@ -90,12 +90,7 @@ class SQLiteBuilder extends Builder
      */
     public function dropAllTables()
     {
-        $database = $this->connection->getDatabaseName();
-
-        if ($database !== ':memory:' &&
-            ! str_contains($database, '?mode=memory') &&
-            ! str_contains($database, '&mode=memory')
-        ) {
+        if ($this->connection->getDatabaseName() !== ':memory:') {
             return $this->refreshDatabaseFile();
         }
 

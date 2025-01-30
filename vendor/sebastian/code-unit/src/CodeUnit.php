@@ -9,7 +9,6 @@
  */
 namespace SebastianBergmann\CodeUnit;
 
-use function assert;
 use function count;
 use function file;
 use function file_exists;
@@ -99,16 +98,13 @@ abstract readonly class CodeUnit
     {
         self::ensureFileExistsAndIsReadable($path);
 
-        $lines = file($path);
-
-        assert($lines !== false);
-
         return new FileUnit(
             $path,
             $path,
             range(
                 1,
-                count($lines),
+                // @phpstan-ignore argument.type
+                count(file($path)),
             ),
         );
     }

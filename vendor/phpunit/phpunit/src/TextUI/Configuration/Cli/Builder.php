@@ -115,7 +115,7 @@ final class Builder
         'fail-on-skipped',
         'fail-on-warning',
         'stop-on-defect',
-        'stop-on-deprecation==',
+        'stop-on-deprecation',
         'stop-on-error',
         'stop-on-failure',
         'stop-on-incomplete',
@@ -215,7 +215,6 @@ final class Builder
         $failOnWarning                     = null;
         $stopOnDefect                      = null;
         $stopOnDeprecation                 = null;
-        $specificDeprecationToStopOn       = null;
         $stopOnError                       = null;
         $stopOnFailure                     = null;
         $stopOnIncomplete                  = null;
@@ -704,10 +703,6 @@ final class Builder
                 case '--stop-on-deprecation':
                     $stopOnDeprecation = true;
 
-                    if ($option[1] !== null) {
-                        $specificDeprecationToStopOn = $option[1];
-                    }
-
                     break;
 
                 case '--stop-on-error':
@@ -1040,7 +1035,6 @@ final class Builder
             $failOnWarning,
             $stopOnDefect,
             $stopOnDeprecation,
-            $specificDeprecationToStopOn,
             $stopOnError,
             $stopOnFailure,
             $stopOnIncomplete,

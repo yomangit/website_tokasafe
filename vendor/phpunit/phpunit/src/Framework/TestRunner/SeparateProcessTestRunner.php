@@ -11,10 +11,10 @@ namespace PHPUnit\Framework;
 
 use function assert;
 use function defined;
+use function file_exists;
 use function file_get_contents;
 use function get_include_path;
 use function hrtime;
-use function is_file;
 use function restore_error_handler;
 use function serialize;
 use function set_error_handler;
@@ -37,6 +37,7 @@ use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunnerRegistry;
 use PHPUnit\Util\PHP\PhpProcessException;
 use ReflectionClass;
+use SebastianBergmann\CodeCoverage\StaticAnalysisCacheNotConfiguredException;
 use SebastianBergmann\Template\InvalidArgumentException;
 use SebastianBergmann\Template\Template;
 
@@ -54,6 +55,7 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
      * @throws InvalidArgumentException
      * @throws NoPreviousThrowableException
      * @throws ProcessIsolationException
+     * @throws StaticAnalysisCacheNotConfiguredException
      */
     public function run(TestCase $test, bool $runEntireClass, bool $preserveGlobalState): void
     {
@@ -86,7 +88,8 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
             $iniSettings   = GlobalState::getIniSettingsAsString();
         }
 
-        $coverage = CodeCoverage::instance()->isActive() ? 'true' : 'false';
+        $coverage         = CodeCoverage::instance()->isActive() ? 'true' : 'false';
+        $linesToBeIgnored = var_export(CodeCoverage::instance()->linesToBeIgnored(), true);
 
         if (defined('PHPUNIT_COMPOSER_INSTALL')) {
             $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
@@ -125,6 +128,7 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
             'filename'                       => $file,
             'className'                      => $class->getName(),
             'collectCodeCoverageInformation' => $coverage,
+            'linesToBeIgnored'               => $linesToBeIgnored,
             'data'                           => $data,
             'dataName'                       => $dataName,
             'dependencyInput'                => $dependencyInput,
@@ -168,7 +172,7 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
 
         $processResult = '';
 
-        if (is_file($processResultFile)) {
+        if (file_exists($processResultFile)) {
             $processResult = file_get_contents($processResultFile);
 
             assert($processResult !== false);

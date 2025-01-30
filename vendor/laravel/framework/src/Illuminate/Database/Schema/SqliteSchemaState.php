@@ -3,7 +3,6 @@
 namespace Illuminate\Database\Schema;
 
 use Illuminate\Database\Connection;
-use Illuminate\Support\Collection;
 
 class SqliteSchemaState extends SchemaState
 {
@@ -45,9 +44,10 @@ class SqliteSchemaState extends SchemaState
             //
         ]));
 
-        $migrations = (new Collection(preg_split("/\r\n|\n|\r/", $process->getOutput())))
-            ->filter(fn ($line) => preg_match('/^\s*(--|INSERT\s)/iu', $line) === 1 && strlen($line) > 0)
-            ->all();
+        $migrations = collect(preg_split("/\r\n|\n|\r/", $process->getOutput()))->filter(function ($line) {
+            return preg_match('/^\s*(--|INSERT\s)/iu', $line) === 1 &&
+                   strlen($line) > 0;
+        })->all();
 
         $this->files->append($path, implode(PHP_EOL, $migrations).PHP_EOL);
     }
@@ -60,12 +60,7 @@ class SqliteSchemaState extends SchemaState
      */
     public function load($path)
     {
-        $database = $this->connection->getDatabaseName();
-
-        if ($database === ':memory:' ||
-            str_contains($database, '?mode=memory') ||
-            str_contains($database, '&mode=memory')
-        ) {
+        if ($this->connection->getDatabaseName() === ':memory:') {
             $this->connection->getPdo()->exec($this->files->get($path));
 
             return;

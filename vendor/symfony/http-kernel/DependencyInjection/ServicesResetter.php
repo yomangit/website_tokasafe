@@ -21,7 +21,7 @@ use Symfony\Contracts\Service\ResetInterface;
  * @author Alexander M. Turek <me@derrabus.de>
  * @author Nicolas Grekas <p@tchwork.com>
  *
- * @final since Symfony 7.2
+ * @internal
  */
 class ServicesResetter implements ResetInterface
 {

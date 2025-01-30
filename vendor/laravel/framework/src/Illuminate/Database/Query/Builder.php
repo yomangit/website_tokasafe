@@ -79,7 +79,7 @@ class Builder implements BuilderContract
     /**
      * An aggregate function and column to be run.
      *
-     * @var array|null
+     * @var array
      */
     public $aggregate;
 
@@ -109,14 +109,14 @@ class Builder implements BuilderContract
     /**
      * The index hint for the query.
      *
-     * @var \Illuminate\Database\Query\IndexHint|null
+     * @var \Illuminate\Database\Query\IndexHint
      */
     public $indexHint;
 
     /**
      * The table joins for the query.
      *
-     * @var array|null
+     * @var array
      */
     public $joins;
 
@@ -130,14 +130,14 @@ class Builder implements BuilderContract
     /**
      * The groupings for the query.
      *
-     * @var array|null
+     * @var array
      */
     public $groups;
 
     /**
      * The having constraints for the query.
      *
-     * @var array|null
+     * @var array
      */
     public $havings;
 
@@ -158,7 +158,7 @@ class Builder implements BuilderContract
     /**
      * The maximum number of records to return per group.
      *
-     * @var array|null
+     * @var array
      */
     public $groupLimit;
 
@@ -172,7 +172,7 @@ class Builder implements BuilderContract
     /**
      * The query union statements.
      *
-     * @var array|null
+     * @var array
      */
     public $unions;
 
@@ -200,7 +200,7 @@ class Builder implements BuilderContract
     /**
      * Indicates whether row locking is being used.
      *
-     * @var string|bool|null
+     * @var string|bool
      */
     public $lock;
 
@@ -256,11 +256,10 @@ class Builder implements BuilderContract
      * @param  \Illuminate\Database\Query\Processors\Processor|null  $processor
      * @return void
      */
-    public function __construct(
-        ConnectionInterface $connection,
-        ?Grammar $grammar = null,
-        ?Processor $processor = null,
-    ) {
+    public function __construct(ConnectionInterface $connection,
+                                ?Grammar $grammar = null,
+                                ?Processor $processor = null)
+    {
         $this->connection = $connection;
         $this->grammar = $grammar ?: $connection->getQueryGrammar();
         $this->processor = $processor ?: $connection->getPostProcessor();
@@ -2277,7 +2276,7 @@ class Builder implements BuilderContract
      */
     public function orWhereFullText($columns, $value, array $options = [])
     {
-        return $this->whereFullText($columns, $value, $options, 'or');
+        return $this->whereFulltext($columns, $value, $options, 'or');
     }
 
     /**
@@ -2872,7 +2871,7 @@ class Builder implements BuilderContract
      */
     protected function removeExistingOrdersFor($column)
     {
-        return (new Collection($this->orders))
+        return Collection::make($this->orders)
                     ->reject(function ($order) use ($column) {
                         return isset($order['column'])
                                ? $order['column'] === $column : false;
@@ -3110,11 +3109,11 @@ class Builder implements BuilderContract
      * Execute the query as a "select" statement.
      *
      * @param  array|string  $columns
-     * @return \Illuminate\Support\Collection<int, \stdClass>
+     * @return \Illuminate\Support\Collection
      */
     public function get($columns = ['*'])
     {
-        $items = new Collection($this->onceWithColumns(Arr::wrap($columns), function () {
+        $items = collect($this->onceWithColumns(Arr::wrap($columns), function () {
             return $this->processor->processSelect($this, $this->runSelect());
         }));
 
@@ -3179,7 +3178,7 @@ class Builder implements BuilderContract
 
         $perPage = $perPage instanceof Closure ? $perPage($total) : $perPage;
 
-        $results = $total ? $this->forPage($page, $perPage)->get($columns) : new Collection;
+        $results = $total ? $this->forPage($page, $perPage)->get($columns) : collect();
 
         return $this->paginator($results, $total, $perPage, $page, [
             'path' => Paginator::resolveCurrentPath(),
@@ -3249,13 +3248,13 @@ class Builder implements BuilderContract
         };
 
         if ($shouldReverse) {
-            $this->orders = (new Collection($this->orders))->map($reverseDirection)->toArray();
-            $this->unionOrders = (new Collection($this->unionOrders))->map($reverseDirection)->toArray();
+            $this->orders = collect($this->orders)->map($reverseDirection)->toArray();
+            $this->unionOrders = collect($this->unionOrders)->map($reverseDirection)->toArray();
         }
 
         $orders = ! empty($this->unionOrders) ? $this->unionOrders : $this->orders;
 
-        return (new Collection($orders))
+        return collect($orders)
             ->filter(fn ($order) => Arr::has($order, 'direction'))
             ->values();
     }
@@ -3340,7 +3339,7 @@ class Builder implements BuilderContract
     /**
      * Get a lazy collection for the given query.
      *
-     * @return \Illuminate\Support\LazyCollection<int, \stdClass>
+     * @return \Illuminate\Support\LazyCollection
      */
     public function cursor()
     {
@@ -3353,7 +3352,7 @@ class Builder implements BuilderContract
                 $this->toSql(), $this->getBindings(), ! $this->useWritePdo
             );
         }))->map(function ($item) {
-            return $this->applyAfterQueryCallbacks(new Collection([$item]))->first();
+            return $this->applyAfterQueryCallbacks(collect([$item]))->first();
         })->reject(fn ($item) => is_null($item));
     }
 
@@ -3393,7 +3392,7 @@ class Builder implements BuilderContract
         );
 
         if (empty($queryResult)) {
-            return new Collection;
+            return collect();
         }
 
         // If the columns are qualified with a table or have an alias, we cannot use
@@ -3453,7 +3452,7 @@ class Builder implements BuilderContract
             }
         }
 
-        return new Collection($results);
+        return collect($results);
     }
 
     /**
@@ -3478,7 +3477,7 @@ class Builder implements BuilderContract
             }
         }
 
-        return new Collection($results);
+        return collect($results);
     }
 
     /**
@@ -3847,13 +3846,9 @@ class Builder implements BuilderContract
     {
         $this->applyBeforeQueryCallbacks();
 
-        $values = (new Collection($values))->map(function ($value) {
+        $values = collect($values)->map(function ($value) {
             if (! $value instanceof Builder) {
-                return ['value' => $value, 'bindings' => match (true) {
-                    $value instanceof Collection => $value->all(),
-                    $value instanceof UnitEnum => enum_value($value),
-                    default => $value,
-                }];
+                return ['value' => $value, 'bindings' => $value];
             }
 
             [$query, $bindings] = $this->parseSub($value);
@@ -3949,9 +3944,9 @@ class Builder implements BuilderContract
 
         $bindings = $this->cleanBindings(array_merge(
             Arr::flatten($values, 1),
-            (new Collection($update))
-                ->reject(fn ($value, $key) => is_int($key))
-                ->all()
+            collect($update)->reject(function ($value, $key) {
+                return is_int($key);
+            })->all()
         ));
 
         return $this->connection->affectingStatement(
@@ -4135,8 +4130,8 @@ class Builder implements BuilderContract
     protected function getUnionBuilders()
     {
         return isset($this->unions)
-            ? (new Collection($this->unions))->pluck('query')
-            : new Collection;
+            ? collect($this->unions)->pluck('query')
+            : collect();
     }
 
     /**
@@ -4242,7 +4237,7 @@ class Builder implements BuilderContract
      */
     public function cleanBindings(array $bindings)
     {
-        return (new Collection($bindings))
+        return collect($bindings)
                     ->reject(function ($binding) {
                         return $binding instanceof ExpressionContract;
                     })

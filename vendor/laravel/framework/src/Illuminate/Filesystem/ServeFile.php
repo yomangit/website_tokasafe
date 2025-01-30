@@ -11,11 +11,10 @@ class ServeFile
     /**
      * Create a new invokable controller to serve files.
      */
-    public function __construct(
-        protected string $disk,
+    public function __construct(protected string $disk,
         protected array $config,
-        protected bool $isProduction,
-    ) {
+        protected bool $isProduction)
+    {
         //
     }
 

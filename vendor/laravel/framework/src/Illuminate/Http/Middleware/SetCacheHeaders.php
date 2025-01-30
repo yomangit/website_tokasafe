@@ -4,7 +4,6 @@ namespace Illuminate\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -23,7 +22,7 @@ class SetCacheHeaders
             return static::class.':'.$options;
         }
 
-        return (new Collection($options))
+        return collect($options)
             ->map(function ($value, $key) {
                 if (is_bool($value)) {
                     return $value ? $key : null;
@@ -88,7 +87,7 @@ class SetCacheHeaders
      */
     protected function parseOptions($options)
     {
-        return (new Collection(explode(';', rtrim($options, ';'))))->mapWithKeys(function ($option) {
+        return collect(explode(';', rtrim($options, ';')))->mapWithKeys(function ($option) {
             $data = explode('=', $option, 2);
 
             return [$data[0] => $data[1] ?? true];

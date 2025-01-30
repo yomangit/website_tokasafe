@@ -52,6 +52,11 @@ final class CodeCoverage
     private ?TestCase $test                                             = null;
     private ?Timer $timer                                               = null;
 
+    /**
+     * @var array<string,list<int>>
+     */
+    private array $linesToBeIgnored = [];
+
     public static function instance(): self
     {
         if (self::$instance === null) {
@@ -166,7 +171,7 @@ final class CodeCoverage
      * @param array<string,list<int>>|false $linesToBeCovered
      * @param array<string,list<int>>       $linesToBeUsed
      */
-    public function stop(bool $append, array|false $linesToBeCovered = [], array $linesToBeUsed = []): void
+    public function stop(bool $append = true, array|false $linesToBeCovered = [], array $linesToBeUsed = []): void
     {
         if (!$this->collecting) {
             return;
@@ -183,7 +188,7 @@ final class CodeCoverage
         }
 
         /* @noinspection UnusedFunctionResultInspection */
-        $this->codeCoverage->stop($append, $status, $linesToBeCovered, $linesToBeUsed);
+        $this->codeCoverage->stop($append, $status, $linesToBeCovered, $linesToBeUsed, $this->linesToBeIgnored);
 
         $this->test       = null;
         $this->collecting = false;
@@ -333,6 +338,22 @@ final class CodeCoverage
                 $this->codeCoverageGenerationFailed($printer, $e);
             }
         }
+    }
+
+    /**
+     * @param array<string,list<int>> $linesToBeIgnored
+     */
+    public function ignoreLines(array $linesToBeIgnored): void
+    {
+        $this->linesToBeIgnored = $linesToBeIgnored;
+    }
+
+    /**
+     * @return array<string,list<int>>
+     */
+    public function linesToBeIgnored(): array
+    {
+        return $this->linesToBeIgnored;
     }
 
     private function activate(Filter $filter, bool $pathCoverage): void

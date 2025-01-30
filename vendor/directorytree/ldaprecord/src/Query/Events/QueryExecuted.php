@@ -13,6 +13,8 @@ class QueryExecuted
 
     /**
      * The number of milliseconds it took to execute the query.
+     *
+     * @var ?float
      */
     protected ?float $time;
 

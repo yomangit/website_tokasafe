@@ -4,7 +4,6 @@ namespace Illuminate\Mail\Transport;
 
 use Aws\Exception\AwsException;
 use Aws\Ses\SesClient;
-use Illuminate\Support\Collection;
 use Stringable;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\Header\MetadataHeader;
@@ -67,7 +66,7 @@ class SesTransport extends AbstractTransport implements Stringable
                 array_merge(
                     $options, [
                         'Source' => $message->getEnvelope()->getSender()->toString(),
-                        'Destinations' => (new Collection($message->getEnvelope()->getRecipients()))
+                        'Destinations' => collect($message->getEnvelope()->getRecipients())
                                 ->map
                                 ->toString()
                                 ->values()

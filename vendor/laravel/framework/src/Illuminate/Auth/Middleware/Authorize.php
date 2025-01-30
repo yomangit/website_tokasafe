@@ -5,7 +5,6 @@ namespace Illuminate\Auth\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 use function Illuminate\Support\enum_value;
 
@@ -73,9 +72,9 @@ class Authorize
             return [];
         }
 
-        return (new Collection($models))
-            ->map(fn ($model) => $model instanceof Model ? $model : $this->getModel($request, $model))
-            ->all();
+        return collect($models)->map(function ($model) use ($request) {
+            return $model instanceof Model ? $model : $this->getModel($request, $model);
+        })->all();
     }
 
     /**

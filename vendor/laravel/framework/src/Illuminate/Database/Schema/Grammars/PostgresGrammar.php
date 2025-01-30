@@ -5,7 +5,6 @@ namespace Illuminate\Database\Schema\Grammars;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
 use LogicException;
 
@@ -664,7 +663,7 @@ class PostgresGrammar extends Grammar
     public function escapeNames($names)
     {
         return array_map(static function ($name) {
-            return '"'.(new Collection(explode('.', $name)))
+            return '"'.collect(explode('.', $name))
                 ->map(fn ($segment) => trim($segment, '\'"'))
                 ->implode('"."').'"';
         }, $names);
@@ -1079,9 +1078,7 @@ class PostgresGrammar extends Grammar
      */
     protected function typeVector(Fluent $column)
     {
-        return isset($column->dimensions) && $column->dimensions !== ''
-            ? "vector({$column->dimensions})"
-            : 'vector';
+        return "vector($column->dimensions)";
     }
 
     /**

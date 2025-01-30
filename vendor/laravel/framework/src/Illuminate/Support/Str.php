@@ -119,7 +119,7 @@ class Str
      */
     public static function ascii($value, $language = 'en')
     {
-        return ASCII::to_ascii((string) $value, $language, replace_single_chars_only: false);
+        return ASCII::to_ascii((string) $value, $language);
     }
 
     /**
@@ -409,14 +409,14 @@ class Str
 
         $start = ltrim($matches[1]);
 
-        $start = Str::of(mb_substr($start, max(mb_strlen($start, 'UTF-8') - $radius, 0), $radius, 'UTF-8'))->ltrim()->unless(
+        $start = str(mb_substr($start, max(mb_strlen($start, 'UTF-8') - $radius, 0), $radius, 'UTF-8'))->ltrim()->unless(
             fn ($startWithRadius) => $startWithRadius->exactly($start),
             fn ($startWithRadius) => $startWithRadius->prepend($omission),
         );
 
         $end = rtrim($matches[3]);
 
-        $end = Str::of(mb_substr($end, 0, $radius, 'UTF-8'))->rtrim()->unless(
+        $end = str(mb_substr($end, 0, $radius, 'UTF-8'))->rtrim()->unless(
             fn ($endWithRadius) => $endWithRadius->exactly($end),
             fn ($endWithRadius) => $endWithRadius->append($omission),
         );
@@ -477,10 +477,9 @@ class Str
      *
      * @param  string|iterable<string>  $pattern
      * @param  string  $value
-     * @param  bool  $ignoreCase
      * @return bool
      */
-    public static function is($pattern, $value, $ignoreCase = false)
+    public static function is($pattern, $value)
     {
         $value = (string) $value;
 
@@ -498,10 +497,6 @@ class Str
                 return true;
             }
 
-            if ($ignoreCase && mb_strtolower($pattern) === mb_strtolower($value)) {
-                return true;
-            }
-
             $pattern = preg_quote($pattern, '#');
 
             // Asterisks are translated into zero-or-more regular expression wildcards
@@ -509,7 +504,7 @@ class Str
             // pattern such as "library/*", making any string check convenient.
             $pattern = str_replace('\*', '.*', $pattern);
 
-            if (preg_match('#^'.$pattern.'\z#'.($ignoreCase ? 'iu' : 'u'), $value) === 1) {
+            if (preg_match('#^'.$pattern.'\z#u', $value) === 1) {
                 return true;
             }
         }
@@ -846,10 +841,10 @@ class Str
         preg_match_all($pattern, $subject, $matches);
 
         if (empty($matches[0])) {
-            return new Collection;
+            return collect();
         }
 
-        return new Collection($matches[1] ?? $matches[0]);
+        return collect($matches[1] ?? $matches[0]);
     }
 
     /**
@@ -1133,7 +1128,7 @@ class Str
     public static function replaceArray($search, $replace, $subject)
     {
         if ($replace instanceof Traversable) {
-            $replace = (new Collection($replace))->all();
+            $replace = collect($replace)->all();
         }
 
         $segments = explode($search, $subject);
@@ -1175,15 +1170,15 @@ class Str
     public static function replace($search, $replace, $subject, $caseSensitive = true)
     {
         if ($search instanceof Traversable) {
-            $search = (new Collection($search))->all();
+            $search = collect($search)->all();
         }
 
         if ($replace instanceof Traversable) {
-            $replace = (new Collection($replace))->all();
+            $replace = collect($replace)->all();
         }
 
         if ($subject instanceof Traversable) {
-            $subject = (new Collection($subject))->all();
+            $subject = collect($subject)->all();
         }
 
         return $caseSensitive
@@ -1316,7 +1311,7 @@ class Str
     public static function remove($search, $subject, $caseSensitive = true)
     {
         if ($search instanceof Traversable) {
-            $search = (new Collection($search))->all();
+            $search = collect($search)->all();
         }
 
         return $caseSensitive

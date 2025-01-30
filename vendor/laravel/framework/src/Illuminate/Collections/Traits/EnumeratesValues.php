@@ -19,8 +19,6 @@ use UnexpectedValueException;
 use UnitEnum;
 use WeakMap;
 
-use function Illuminate\Support\enum_value;
-
 /**
  * @template TKey of array-key
  *
@@ -796,7 +794,7 @@ trait EnumeratesValues
      */
     public function pipeThrough($callbacks)
     {
-        return (new Collection($callbacks))->reduce(
+        return Collection::make($callbacks)->reduce(
             fn ($carry, $callback) => $callback($carry),
             $this,
         );
@@ -1094,15 +1092,10 @@ trait EnumeratesValues
         }
 
         return function ($item) use ($key, $operator, $value) {
-            $retrieved = enum_value(data_get($item, $key));
-            $value = enum_value($value);
+            $retrieved = data_get($item, $key);
 
             $strings = array_filter([$retrieved, $value], function ($value) {
-                return match (true) {
-                    is_string($value) => true,
-                    $value instanceof \Stringable => true,
-                    default => false,
-                };
+                return is_string($value) || (is_object($value) && method_exists($value, '__toString'));
             });
 
             if (count($strings) < 2 && count(array_filter([$retrieved, $value], 'is_object')) == 1) {

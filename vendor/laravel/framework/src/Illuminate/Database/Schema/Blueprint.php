@@ -9,7 +9,6 @@ use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Grammars\Grammar;
 use Illuminate\Database\Schema\Grammars\MySqlGrammar;
 use Illuminate\Database\Schema\Grammars\SQLiteGrammar;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Traits\Macroable;
 
@@ -181,7 +180,7 @@ class Blueprint
      */
     protected function commandsNamed(array $names)
     {
-        return (new Collection($this->commands))->filter(function ($command) use ($names) {
+        return collect($this->commands)->filter(function ($command) use ($names) {
             return in_array($command->name, $names);
         });
     }
@@ -327,7 +326,7 @@ class Blueprint
      */
     public function creating()
     {
-        return (new Collection($this->commands))->contains(function ($command) {
+        return collect($this->commands)->contains(function ($command) {
             return ! $command instanceof ColumnDefinition && $command->name === 'create';
         });
     }
@@ -680,7 +679,7 @@ class Blueprint
     }
 
     /**
-     * Specify a fulltext index for the table.
+     * Specify an fulltext for the table.
      *
      * @param  string|array  $columns
      * @param  string|null  $name
@@ -1039,23 +1038,17 @@ class Blueprint
 
         $column = $column ?: $model->getForeignKey();
 
-        if ($model->getKeyType() === 'int') {
-            return $this->foreignId($column)
-                ->table($model->getTable())
-                ->referencesModelColumn($model->getKeyName());
+        if ($model->getKeyType() === 'int' && $model->getIncrementing()) {
+            return $this->foreignId($column)->table($model->getTable());
         }
 
         $modelTraits = class_uses_recursive($model);
 
         if (in_array(HasUlids::class, $modelTraits, true)) {
-            return $this->foreignUlid($column, 26)
-                ->table($model->getTable())
-                ->referencesModelColumn($model->getKeyName());
+            return $this->foreignUlid($column, 26)->table($model->getTable());
         }
 
-        return $this->foreignUuid($column)
-            ->table($model->getTable())
-            ->referencesModelColumn($model->getKeyName());
+        return $this->foreignUuid($column)->table($model->getTable());
     }
 
     /**
@@ -1463,14 +1456,12 @@ class Blueprint
      * Create a new vector column on the table.
      *
      * @param  string  $column
-     * @param  int|null  $dimensions
+     * @param  int  $dimensions
      * @return \Illuminate\Database\Schema\ColumnDefinition
      */
-    public function vector($column, $dimensions = null)
+    public function vector($column, $dimensions)
     {
-        $options = $dimensions ? compact('dimensions') : [];
-
-        return $this->addColumn('vector', $column, $options);
+        return $this->addColumn('vector', $column, compact('dimensions'));
     }
 
     /**
@@ -1606,25 +1597,13 @@ class Blueprint
     }
 
     /**
-     * Add the `remember_token` column to the table.
+     * Adds the `remember_token` column to the table.
      *
      * @return \Illuminate\Database\Schema\ColumnDefinition
      */
     public function rememberToken()
     {
         return $this->string('remember_token', 100)->nullable();
-    }
-
-    /**
-     * Create a new custom column on the table.
-     *
-     * @param  string  $column
-     * @param  string  $definition
-     * @return \Illuminate\Database\Schema\ColumnDefinition
-     */
-    public function rawColumn($column, $definition)
-    {
-        return $this->addColumn('raw', $column, compact('definition'));
     }
 
     /**

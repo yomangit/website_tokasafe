@@ -136,9 +136,11 @@ class ControllerMakeCommand extends GeneratorCommand
             $replace["use {$rootNamespace}Http\Controllers\Controller;\n"] = '';
         }
 
-        return str_replace(
+        $class = str_replace(
             array_keys($replace), array_values($replace), parent::buildClass($name)
         );
+
+        return $class;
     }
 
     /**

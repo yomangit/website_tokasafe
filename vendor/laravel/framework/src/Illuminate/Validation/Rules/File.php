@@ -6,7 +6,6 @@ use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidatorAwareRule;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
@@ -86,7 +85,7 @@ class File implements Rule, DataAwareRule, ValidatorAwareRule
      * If no arguments are passed, the default file rule configuration will be returned.
      *
      * @param  static|callable|null  $callback
-     * @return static|void
+     * @return static|null
      */
     public static function defaults($callback = null)
     {
@@ -330,9 +329,9 @@ class File implements Rule, DataAwareRule, ValidatorAwareRule
      */
     protected function fail($messages)
     {
-        $messages = Collection::wrap($messages)
-            ->map(fn ($message) => $this->validator->getTranslator()->get($message))
-            ->all();
+        $messages = collect(Arr::wrap($messages))->map(function ($message) {
+            return $this->validator->getTranslator()->get($message);
+        })->all();
 
         $this->messages = array_merge($this->messages, $messages);
 

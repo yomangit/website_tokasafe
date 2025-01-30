@@ -40,8 +40,12 @@ class Router implements RouterInterface, RequestMatcherInterface
     protected UrlMatcherInterface|RequestMatcherInterface $matcher;
     protected UrlGeneratorInterface $generator;
     protected RequestContext $context;
+    protected LoaderInterface $loader;
     protected RouteCollection $collection;
+    protected mixed $resource;
     protected array $options = [];
+    protected ?LoggerInterface $logger;
+    protected ?string $defaultLocale;
 
     private ConfigCacheFactoryInterface $configCacheFactory;
 
@@ -52,16 +56,14 @@ class Router implements RouterInterface, RequestMatcherInterface
 
     private static ?array $cache = [];
 
-    public function __construct(
-        protected LoaderInterface $loader,
-        protected mixed $resource,
-        array $options = [],
-        ?RequestContext $context = null,
-        protected ?LoggerInterface $logger = null,
-        protected ?string $defaultLocale = null,
-    ) {
+    public function __construct(LoaderInterface $loader, mixed $resource, array $options = [], ?RequestContext $context = null, ?LoggerInterface $logger = null, ?string $defaultLocale = null)
+    {
+        $this->loader = $loader;
+        $this->resource = $resource;
+        $this->logger = $logger;
         $this->context = $context ?? new RequestContext();
         $this->setOptions($options);
+        $this->defaultLocale = $defaultLocale;
     }
 
     /**
@@ -105,7 +107,7 @@ class Router implements RouterInterface, RequestMatcherInterface
         }
 
         if ($invalid) {
-            throw new \InvalidArgumentException(\sprintf('The Router does not support the following options: "%s".', implode('", "', $invalid)));
+            throw new \InvalidArgumentException(sprintf('The Router does not support the following options: "%s".', implode('", "', $invalid)));
         }
     }
 
@@ -117,7 +119,7 @@ class Router implements RouterInterface, RequestMatcherInterface
     public function setOption(string $key, mixed $value): void
     {
         if (!\array_key_exists($key, $this->options)) {
-            throw new \InvalidArgumentException(\sprintf('The Router does not support the "%s" option.', $key));
+            throw new \InvalidArgumentException(sprintf('The Router does not support the "%s" option.', $key));
         }
 
         $this->options[$key] = $value;
@@ -131,7 +133,7 @@ class Router implements RouterInterface, RequestMatcherInterface
     public function getOption(string $key): mixed
     {
         if (!\array_key_exists($key, $this->options)) {
-            throw new \InvalidArgumentException(\sprintf('The Router does not support the "%s" option.', $key));
+            throw new \InvalidArgumentException(sprintf('The Router does not support the "%s" option.', $key));
         }
 
         return $this->options[$key];

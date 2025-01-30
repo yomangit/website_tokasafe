@@ -21,11 +21,6 @@
         "illuminate/validation": "^11.0",
         "symfony/console": "^7.0"
     },
-    "require-dev": {
-        "laravel/framework": "^11.0",
-        "orchestra/testbench-core": "^9.0",
-        "phpstan/phpstan": "^2.0"
-    },
     "autoload": {
         "psr-4": {
             "Laravel\\Breeze\\": "src/"
@@ -42,5 +37,9 @@
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "require-dev": {
+        "orchestra/testbench": "^9.0",
+        "phpstan/phpstan": "^1.10"
+    }
 }

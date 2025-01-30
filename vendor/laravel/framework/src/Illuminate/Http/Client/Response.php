@@ -5,7 +5,6 @@ namespace Illuminate\Http\Client;
 use ArrayAccess;
 use GuzzleHttp\Psr7\StreamWrapper;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Fluent;
 use Illuminate\Support\Traits\Macroable;
 use LogicException;
 use Stringable;
@@ -106,18 +105,7 @@ class Response implements ArrayAccess, Stringable
      */
     public function collect($key = null)
     {
-        return new Collection($this->json($key));
-    }
-
-    /**
-     * Get the JSON decoded body of the response as a fluent object.
-     *
-     * @param  string|null  $key
-     * @return \Illuminate\Support\Fluent
-     */
-    public function fluent($key = null)
-    {
-        return new Fluent((array) $this->json($key));
+        return Collection::make($this->json($key));
     }
 
     /**

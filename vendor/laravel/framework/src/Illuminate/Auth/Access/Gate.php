@@ -96,15 +96,14 @@ class Gate implements GateContract
      * @param  callable|null  $guessPolicyNamesUsingCallback
      * @return void
      */
-    public function __construct(
-        Container $container,
+    public function __construct(Container $container,
         callable $userResolver,
         array $abilities = [],
         array $policies = [],
         array $beforeCallbacks = [],
         array $afterCallbacks = [],
-        ?callable $guessPolicyNamesUsingCallback = null,
-    ) {
+        ?callable $guessPolicyNamesUsingCallback = null)
+    {
         $this->policies = $policies;
         $this->container = $container;
         $this->abilities = $abilities;
@@ -355,7 +354,7 @@ class Gate implements GateContract
      */
     public function check($abilities, $arguments = [])
     {
-        return (new Collection($abilities))->every(
+        return collect($abilities)->every(
             fn ($ability) => $this->inspect($ability, $arguments)->allowed()
         );
     }
@@ -369,7 +368,7 @@ class Gate implements GateContract
      */
     public function any($abilities, $arguments = [])
     {
-        return (new Collection($abilities))->contains(fn ($ability) => $this->check($ability, $arguments));
+        return collect($abilities)->contains(fn ($ability) => $this->check($ability, $arguments));
     }
 
     /**
@@ -836,14 +835,12 @@ class Gate implements GateContract
      */
     public function forUser($user)
     {
+        $callback = fn () => $user;
+
         return new static(
-            $this->container,
-            fn () => $user,
-            $this->abilities,
-            $this->policies,
-            $this->beforeCallbacks,
-            $this->afterCallbacks,
-            $this->guessPolicyNamesUsingCallback,
+            $this->container, $callback, $this->abilities,
+            $this->policies, $this->beforeCallbacks, $this->afterCallbacks,
+            $this->guessPolicyNamesUsingCallback
         );
     }
 

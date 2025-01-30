@@ -10,10 +10,8 @@ use Illuminate\Contracts\Http\Kernel as HttpKernel;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Bootstrap\RegisterProviders;
 use Illuminate\Foundation\Events\DiagnosingHealth;
-use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as AppEventServiceProvider;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as AppRouteServiceProvider;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
@@ -161,10 +159,6 @@ class ApplicationBuilder
     {
         if (is_null($using) && (is_string($web) || is_array($web) || is_string($api) || is_array($api) || is_string($pages) || is_string($health)) || is_callable($then)) {
             $using = $this->buildRoutingCallback($web, $api, $pages, $health, $apiPrefix, $then);
-
-            if (is_string($health)) {
-                PreventRequestsDuringMaintenance::except($health);
-            }
         }
 
         AppRouteServiceProvider::loadRoutesUsing($using);
@@ -217,23 +211,9 @@ class ApplicationBuilder
 
             if (is_string($health)) {
                 Route::get($health, function () {
-                    $exception = null;
+                    Event::dispatch(new DiagnosingHealth);
 
-                    try {
-                        Event::dispatch(new DiagnosingHealth);
-                    } catch (\Throwable $e) {
-                        if (app()->hasDebugModeEnabled()) {
-                            throw $e;
-                        }
-
-                        report($e);
-
-                        $exception = $e->getMessage();
-                    }
-
-                    return response(View::file(__DIR__.'/../resources/health-up.blade.php', [
-                        'exception' => $exception,
-                    ]), status: $exception ? 500 : 200);
+                    return View::file(__DIR__.'/../resources/health-up.blade.php');
                 });
             }
 
@@ -289,18 +269,6 @@ class ApplicationBuilder
             if ($priorities = $middleware->getMiddlewarePriority()) {
                 $kernel->setMiddlewarePriority($priorities);
             }
-
-            if ($priorityAppends = $middleware->getMiddlewarePriorityAppends()) {
-                foreach ($priorityAppends as $newMiddleware => $after) {
-                    $kernel->addToMiddlewarePriorityAfter($after, $newMiddleware);
-                }
-            }
-
-            if ($priorityPrepends = $middleware->getMiddlewarePriorityPrepends()) {
-                foreach ($priorityPrepends as $newMiddleware => $before) {
-                    $kernel->addToMiddlewarePriorityBefore($before, $newMiddleware);
-                }
-            }
         });
 
         return $this;
@@ -319,7 +287,7 @@ class ApplicationBuilder
         }
 
         $this->app->afterResolving(ConsoleKernel::class, function ($kernel) use ($commands) {
-            [$commands, $paths] = (new Collection($commands))->partition(fn ($command) => class_exists($command));
+            [$commands, $paths] = collect($commands)->partition(fn ($command) => class_exists($command));
             [$routes, $paths] = $paths->partition(fn ($path) => is_file($path));
 
             $this->app->booted(static function () use ($kernel, $commands, $paths, $routes) {
