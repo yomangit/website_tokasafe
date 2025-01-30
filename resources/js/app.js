@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator)
 }
 // flatpickr datepicker
 flatpickr("#tanggal", {
-    disableMobile: true,
+    disableMobile: false,
     dateFormat: "d-m-Y : H:i", //defaults to "F Y"
     enableTime: true,
 });
@@ -46,7 +46,7 @@ flatpickr("#end_date", {
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#month", {
-    disableMobile: "true",
+    disableMobile: true,
     plugins: [
         new monthSelectPlugin({
             shorthand: true, //defaults to false
