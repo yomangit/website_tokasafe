@@ -8,7 +8,7 @@
     @endsection
 
     <div
-        class="font-mono text-sm font-semibold text-transparent divider divider-info bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">
+        class="font-mono text-sm font-semibold text-transparent  divider divider-info bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">
         {{ $divider }}</div>
 
 
@@ -16,7 +16,7 @@
         <form wire:submit.prevent='store'>
             @csrf
             @method('PATCH')
-            <div wire:target="store" wire:loading.class="skeleton" class="left-0 p-2 border rounded-sm border-slate-300">
+            <div wire:target="store" wire:loading.class="skeleton" class="left-0 p-2 border rounded-sm  border-slate-300">
                 <x-btn-save wire:target="store" wire:loading.class="btn-disabled"
                     class="{{ $currentStep === 'Closed' || $currentStep === 'Cancelled' ? 'btn-disabled' : '' }}">
                     {{ __('Save') }}</x-btn-save>
@@ -111,8 +111,8 @@
                                         </ul>
                                     </div>
                                     <div class="grid flex-grow h-40 overflow-auto card bg-base-300 rounded-box">
-                                       <ul class="w-56 px-4 py-2 list-disc list-inside bg-base-200 rounded-box">
-
+                                       <ul class="w-56 px-4 py-2 list-disc list-inside  bg-base-200 rounded-box">
+                                            
                                         @forelse ($Division as $item)
                                           <li wire:click="select_division({{ $item->id }})" class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer"> {{ $item->DeptByBU->BusinesUnit->Company->name_company }}-{{ $item->DeptByBU->Department->department_name }}
                                                @if (!empty($item->company_id))
@@ -141,7 +141,7 @@
                             <div tabindex="0"
                                 class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
                                 <div class="relative">
-
+                                  
                                     <div class="h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                         wire:target='report_byName' wire:loading.class='hidden'>
                                         @forelse ($Report_By as $report_by)
@@ -177,7 +177,7 @@
                             <div tabindex="0"
                                 class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
                                 <div class="relative">
-
+                                  
                                     <div class="h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                         wire:target='report_toName' wire:loading.class='hidden'>
                                         @forelse ($Report_To as $report_to)
@@ -204,7 +204,7 @@
                         </div>
                         <x-label-error :messages="$errors->get('report_toName')" />
                     </div>
-                    <div wire:ignore class="w-full max-w-md xl:max-w-xl form-control">
+                    <div class="w-full max-w-md xl:max-w-xl form-control">
                         <x-label-req :value="__('date_incident')" />
                         <x-input-date id="tanggal" wire:model.live='date' readonly :error="$errors->get('date')"
                             class="{{ $currentStep === 'Closed' || $currentStep === 'Cancelled' ? 'btn-disabled bg-gray-300' : '' }}" />
@@ -474,172 +474,194 @@
             </div>
         </form>
         <livewire:event-report.incident-report.action.create >
-
-        <script type="module" nonce="{{ csp_nonce() }}">
-            // Short Description
-            ClassicEditor
-                .create(document.querySelector('#involved_person'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
-
-                })
-                .then(newEditor => {
-                    newEditor.editing.view.change((writer) => {
-                        writer.setStyle(
-                            "height",
-                            "155px",
-                            newEditor.editing.view.document.getRoot()
-                        );
-                    });
-                    newEditor.model.document.on('change:data', () => {
-                        @this.set('involved_person', newEditor.getData())
-                    });
-                    window.addEventListener('articleStore', event => {
-                        newEditor.setData('');
-                    })
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-            // involved person
+            
+        <script type="module">
             ClassicEditor
                 .create(document.querySelector('#description'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
-
+                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                    placeholder: 'Type the content here!'
                 })
-                .then(newEditor => {
-                    newEditor.editing.view.change((writer) => {
-                        writer.setStyle(
-                            "height",
-                            "155px",
-                            newEditor.editing.view.document.getRoot()
-                        );
+                .then(Deskripsion => {
+                    Deskripsion.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        Deskripsion.editing.view.document.getRoot()
+                    );
+                });
+                    setInterval(() => Livewire.dispatch('ubahDataIncident'), 1000);
+                    document.addEventListener('livewire:init', () => {
+                        Livewire.on('berhasilUpdateIncident', (event) => {
+                            const a = event[0];
+                            if (a === "Closed" || a === "Cancelled") {
+                                Deskripsion.enableReadOnlyMode('description');
+                            } else {
+                                Deskripsion.disableReadOnlyMode('description');
+                            }
+                        });
                     });
-                    newEditor.model.document.on('change:data', () => {
-                        @this.set('description', newEditor.getData())
+                    Deskripsion.model.document.on('change:data', () => {
+                        @this.set('description', Deskripsion.getData())
                     });
-                    window.addEventListener('articleStore', event => {
-                        newEditor.setData('');
-                    })
                 })
                 .catch(error => {
                     console.error(error);
                 });
-            // involved Equipment
             ClassicEditor
                 .create(document.querySelector('#involved_eqipment'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
-
+                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                    placeholder: 'Type the content here!'
                 })
-                .then(newEditor => {
-                    newEditor.editing.view.change((writer) => {
-                        writer.setStyle(
-                            "height",
-                            "155px",
-                            newEditor.editing.view.document.getRoot()
-                        );
+                .then(Involved_eqipment => {
+                    Involved_eqipment.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        Involved_eqipment.editing.view.document.getRoot()
+                    );
+                });
+                    document.addEventListener('livewire:init', () => {
+                        Livewire.on('berhasilUpdateIncident', (event) => {
+                            const a = event[0];
+                            if (a === "Closed" || a === "Cancelled") {
+                                Involved_eqipment.enableReadOnlyMode('involved_eqipment');
+                            } else {
+                                Involved_eqipment.disableReadOnlyMode('involved_eqipment');
+                            }
+                        });
                     });
-                    newEditor.model.document.on('change:data', () => {
-                        @this.set('involved_eqipment', newEditor.getData())
+                    Involved_eqipment.model.document.on('change:data', () => {
+                        @this.set('involved_eqipment', Involved_eqipment.getData())
                     });
-                    window.addEventListener('articleStore', event => {
-                        newEditor.setData('');
-                    })
                 })
                 .catch(error => {
                     console.error(error);
                 });
-            // preliminary cause
             ClassicEditor
                 .create(document.querySelector('#preliminary_cause'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
-
+                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                    placeholder: 'Type the content here!'
                 })
-                .then(newEditor => {
-                    newEditor.editing.view.change((writer) => {
-                        writer.setStyle(
-                            "height",
-                            "155px",
-                            newEditor.editing.view.document.getRoot()
-                        );
+                .then(Preliminary_cause => {
+                    Preliminary_cause.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        Preliminary_cause.editing.view.document.getRoot()
+                    );
+                });
+                    document.addEventListener('livewire:init', () => {
+                        Livewire.on('berhasilUpdateIncident', (event) => {
+                            const a = event[0];
+                            if (a === "Closed" || a === "Cancelled") {
+                                Preliminary_cause.enableReadOnlyMode('preliminary_cause');
+                            } else {
+                                Preliminary_cause.disableReadOnlyMode('preliminary_cause');
+                            }
+                        });
                     });
-                    newEditor.model.document.on('change:data', () => {
-                        @this.set('preliminary_cause', newEditor.getData())
+                    Preliminary_cause.model.document.on('change:data', () => {
+                        @this.set('preliminary_cause', Preliminary_cause.getData())
                     });
-                    window.addEventListener('articleStore', event => {
-                        newEditor.setData('');
-                    })
                 })
                 .catch(error => {
                     console.error(error);
                 });
-            // immediate action taken
+
             ClassicEditor
                 .create(document.querySelector('#immediate_action_taken'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
-
+                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                    placeholder: 'Type the content here!'
                 })
-                .then(newEditor => {
-                    newEditor.editing.view.change((writer) => {
-                        writer.setStyle(
-                            "height",
-                            "155px",
-                            newEditor.editing.view.document.getRoot()
-                        );
+                .then(Immediate_action_taken => {
+                    Immediate_action_taken.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        Immediate_action_taken.editing.view.document.getRoot()
+                    );
+                });
+                    document.addEventListener('livewire:init', () => {
+                        Livewire.on('berhasilUpdateIncident', (event) => {
+                            const a = event[0];
+                            if (a === "Closed" || a === "Cancelled") {
+                                Immediate_action_taken.enableReadOnlyMode('immediate_action_taken');
+                            } else {
+                                Immediate_action_taken.disableReadOnlyMode('immediate_action_taken');
+                            }
+                        });
                     });
-                    newEditor.model.document.on('change:data', () => {
-                        @this.set('immediate_action_taken', newEditor.getData())
+                    Immediate_action_taken.model.document.on('change:data', () => {
+                        @this.set('immediate_action_taken', Immediate_action_taken.getData())
                     });
-                    window.addEventListener('articleStore', event => {
-                        newEditor.setData('');
-                    })
                 })
                 .catch(error => {
                     console.error(error);
                 });
-            // key learning
             ClassicEditor
                 .create(document.querySelector('#key_learning'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
-
+                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                    placeholder: 'Type the content here!'
                 })
-                .then(newEditor => {
-                    newEditor.editing.view.change((writer) => {
-                        writer.setStyle(
-                            "height",
-                            "155px",
-                            newEditor.editing.view.document.getRoot()
-                        );
+                .then(Key_learnings => {
+                    Key_learnings.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        Key_learnings.editing.view.document.getRoot()
+                    );
+                });
+                    document.addEventListener('livewire:init', () => {
+                        Livewire.on('berhasilUpdateIncident', (event) => {
+                            const a = event[0];
+                            if (a === "Closed" || a === "Cancelled") {
+                                Key_learnings.enableReadOnlyMode('key_learning');
+                            } else {
+                                Key_learnings.disableReadOnlyMode('key_learning');
+                            }
+                        });
                     });
-                    newEditor.model.document.on('change:data', () => {
-                        @this.set('key_learning', newEditor.getData())
-                    });
+                    Key_learnings.model.document.on('change:data', () => {
+                        console.log(Key_learnings.getData());
+                        @this.set('key_learning', Key_learnings.getData())
+                    })
                     window.addEventListener('articleStore', event => {
-                        newEditor.setData('');
+                        Key_learnings.setData('');
                     })
                 })
                 .catch(error => {
                     console.error(error);
                 });
-                // comment
-                ClassicEditor
+            ClassicEditor
                 .create(document.querySelector('#comments'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
-
+                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                    placeholder: 'Type the content here!'
                 })
-                .then(newEditor => {
-                    newEditor.editing.view.change((writer) => {
-                        writer.setStyle(
-                            "height",
-                            "155px",
-                            newEditor.editing.view.document.getRoot()
-                        );
-                    });
-                    newEditor.model.document.on('change:data', () => {
-                        @this.set('comments', newEditor.getData())
+                .then(Comment => {
+                    Comment.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        Comment.editing.view.document.getRoot()
+                    );
+                });
+                    Comment.model.document.on('change:data', () => {
+                        @this.set('comments', Comment.getData())
                     });
                     window.addEventListener('articleStore', event => {
-                        newEditor.setData('');
+                        Comment.setData('');
                     })
+                    document.addEventListener('livewire:init', () => {
+                        Livewire.on('berhasilUpdateIncident', (event) => {
+                            const a = event[0];
+                            if (a === "Closed" || a === "Cancelled") {
+                                Comment.enableReadOnlyMode('comments');
+                            } else {
+                                Comment.disableReadOnlyMode('comments');
+                            }
+                        });
+                    });
+
                 })
                 .catch(error => {
                     console.error(error);
