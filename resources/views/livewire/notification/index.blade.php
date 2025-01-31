@@ -12,8 +12,8 @@
             </div>
         </label>
         <div tabindex="0" class=" z-[1] card card-compact dropdown-content w-56 lg:w-96 bg-base-100 shadow">
+            <x-inputsearch wire:model.live='searching' placeholder='specific search' />
             <div wire:poll class="card-body">
-                <x-inputsearch wire:model.live='searching' placeholder='specific search' />
                 <div role="tablist" class="tabs tabs-bordered">
                     <input type="radio" name="my_tabs_1" role="tab" class="tab " aria-label="All"  checked="checked"/>
                     <div role="tabpanel" class="p-10 tab-content">
@@ -47,9 +47,9 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td></td>
+                                        <td>all notifications are read</td>
                                     </tr>
-                                @endforeach
+                                @endforelse
 
 
                             </tbody>
