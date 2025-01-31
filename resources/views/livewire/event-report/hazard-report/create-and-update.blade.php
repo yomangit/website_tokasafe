@@ -50,36 +50,36 @@
                         <div class="flex flex-col w-full gap-1 lg:flex-row">
                             <div class="grid flex-grow h-40 card bg-base-300 rounded-box ">
                                 <ul class="list-none text-[9px] list-inside overflow-auto">
-                                    <li class="cursor-pointer hover:bg-base-200 px-2">Company</li>
+                                    <li class="px-2 cursor-pointer hover:bg-base-200">Company</li>
                                     @foreach ($ParentCompany as $item)
                                         <li wire:click="parentCompany({{ $item->id }})"
-                                            class="cursor-pointer hover:bg-base-200 px-4 ">
+                                            class="px-4 cursor-pointer hover:bg-base-200 ">
                                             {{ $item->name_category_company }}</li>
                                     @endforeach
-                                    <li class="cursor-pointer hover:bg-base-200 px-2">Business Unit</li>
+                                    <li class="px-2 cursor-pointer hover:bg-base-200">Business Unit</li>
                                     @foreach ($BusinessUnit as $item)
                                         <li wire:click="businessUnit({{ $item->name_company_id }})"
-                                            class="cursor-pointer hover:bg-base-200 px-4">
+                                            class="px-4 cursor-pointer hover:bg-base-200">
                                             {{ $item->Company->name_company }}</li>
                                     @endforeach
-                                    <li class="cursor-pointer hover:bg-base-200 px-2">Department</li>
+                                    <li class="px-2 cursor-pointer hover:bg-base-200">Department</li>
                                     @foreach ($Department as $item)
                                         <li wire:click="department({{ $item->id }})"
-                                            class="cursor-pointer hover:bg-base-200 px-4">
+                                            class="px-4 cursor-pointer hover:bg-base-200">
                                             {{ $item->BusinesUnit->Company->name_company }}-{{ $item->Department->department_name }}
                                         </li>
                                     @endforeach
-                                     <li class="cursor-pointer hover:bg-base-200 px-2">Division</li>
+                                     <li class="px-2 cursor-pointer hover:bg-base-200">Division</li>
                                     @foreach ($Divisi as $divisi)
                                                     <li wire:click="divisi({{ $divisi->company_id }})"
-                                                        class="cursor-pointer hover:bg-base-200 px-4">
+                                                        class="px-4 cursor-pointer hover:bg-base-200">
                                                         {{ $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company  }}
                                                     </li>
                                                 @endforeach
                                 </ul>
                             </div>
-                            <div class="grid flex-grow h-40 card bg-base-300 rounded-box overflow-auto">
-                                <ul class=" bg-base-200 rounded-box w-56  list-inside list-disc py-4 px-4">
+                            <div class="grid flex-grow h-40 overflow-auto card bg-base-300 rounded-box">
+                                <ul class="w-56 px-4 py-4 list-disc list-inside  bg-base-200 rounded-box">
                                             
                                     @forelse ($Division as $item)
                                       <li wire:click="select_division({{ $item->id }})" class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer"> {{ $item->DeptByBU->BusinesUnit->Company->name_company }}-{{ $item->DeptByBU->Department->department_name }}
@@ -91,7 +91,7 @@
                                             @endif
                                         </li>
                                         @empty
-                                        <li class='text-center font-semibold text-rose-500'>Division not found!! </li>
+                                        <li class='font-semibold text-center text-rose-500'>Division not found!! </li>
                                     @endforelse
                                 </ul>
                             </div>
@@ -109,24 +109,24 @@
                         class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
                         <div class="relative">
                            
-                            <div class="overflow-auto scroll-smooth focus:scroll-auto h-40  mb-2"
+                            <div class="h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                 wire:target='report_byName' wire:loading.class='hidden'>
                                 @forelse ($Report_By as $report_by)
                                     <div wire:click="reportedBy({{ $report_by->id }})"
-                                        class="border-b border-base-200 flex flex-col cursor-pointer ">
+                                        class="flex flex-col border-b cursor-pointer border-base-200 ">
                                         <strong
                                             class="text-[10px] text-slate-800">{{ $report_by->lookup_name }}</strong>
                                     </div>
                                 @empty
                                     <strong
-                                        class="text-xs bg-clip-text text-transparent bg-gradient-to-r from-rose-400 to-rose-800">Name
+                                        class="text-xs text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-rose-800">Name
                                         Not Found!!!</strong>
                                 @endforelse
                             </div>
-                            <div class="hidden text-center pt-5" wire:target='report_byName'
+                            <div class="hidden pt-5 text-center" wire:target='report_byName'
                                 wire:loading.class.remove='hidden'> <x-loading-spinner /></div>
                             <div class="pb-6">{{ $Report_By->links('pagination.minipaginate') }}</div>
-                            <div class="fixed bottom-0 left-0 right-0 px-2 mb-1  bg-base-300 opacity-95 ">
+                            <div class="fixed bottom-0 left-0 right-0 px-2 mb-1 bg-base-300 opacity-95 ">
                                 <x-input-no-req wire:model.live='report_by_nolist'
                                     placeholder="{{ __('name_notList') }}" />
                             </div>
@@ -144,24 +144,24 @@
                         class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
                         <div class="relative">
                            
-                            <div class="overflow-auto scroll-smooth focus:scroll-auto h-40  mb-2"
+                            <div class="h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                 wire:target='report_toName' wire:loading.class='hidden'>
                                 @forelse ($Report_To as $report_to)
                                     <div wire:click="reportedTo({{ $report_to->id }})"
-                                        class="border-b border-base-200 flex flex-col cursor-pointer ">
+                                        class="flex flex-col border-b cursor-pointer border-base-200 ">
                                         <strong
                                             class="text-[10px] text-slate-800">{{ $report_to->lookup_name }}</strong>
                                     </div>
                                 @empty
                                     <strong
-                                        class="text-xs bg-clip-text text-transparent bg-gradient-to-r from-rose-400 to-rose-800">Name
+                                        class="text-xs text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-rose-800">Name
                                         Not Found!!!</strong>
                                 @endforelse
                             </div>
-                            <div class="hidden text-center pt-5" wire:target='report_toName'
+                            <div class="hidden pt-5 text-center" wire:target='report_toName'
                                 wire:loading.class.remove='hidden'> <x-loading-spinner /></div>
                             <div class="pb-6">{{ $Report_To->links('pagination.minipaginate') }}</div>
-                            <div class="fixed bottom-0 left-0 right-0 px-2 mb-1  bg-base-300 opacity-95 ">
+                            <div class="fixed bottom-0 left-0 right-0 px-2 mb-1 bg-base-300 opacity-95 ">
                                 <x-input-no-req wire:model.live='report_to_nolist'
                                     placeholder="{{ __('name_notList') }}" />
                             </div>
@@ -389,7 +389,13 @@
 
             })
             .then(newEditor => {
-
+                newEditor.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        newEditor.editing.view.document.getRoot()
+                    );
+                });
                 newEditor.model.document.on('change:data', () => {
                     @this.set('immediate_corrective_action', newEditor.getData())
                 });
@@ -407,7 +413,13 @@
 
             })
             .then(newEditor => {
-
+                newEditor.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        newEditor.editing.view.document.getRoot()
+                    );
+                });
                 newEditor.model.document.on('change:data', () => {
                     @this.set('description', newEditor.getData())
                 });
@@ -425,7 +437,13 @@
 
             })
             .then(newEditor => {
-
+                newEditor.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        newEditor.editing.view.document.getRoot()
+                    );
+                });
                 newEditor.model.document.on('change:data', () => {
                     @this.set('suggested_corrective_action', newEditor.getData())
                 });
@@ -445,7 +463,13 @@
 
             })
             .then(newEditor => {
-
+                newEditor.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        newEditor.editing.view.document.getRoot()
+                    );
+                });
                 newEditor.model.document.on('change:data', () => {
                     @this.set('corrective_action_suggested', newEditor.getData())
                 });
