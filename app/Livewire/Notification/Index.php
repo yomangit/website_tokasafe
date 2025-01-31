@@ -8,9 +8,9 @@ class Index extends Component
 {
     public function render()
     {
-        $readNotif = auth()->user()->notifications->whereNotNull('read_at')->all();
+        $allNotification = auth()->user()->notifications->all();
         return view('livewire.notification.index',[
-            'Notif' =>$readNotif
+            'AllNotification' =>$allNotification
             ]);
     }
     public function readNotification($id,$url)
