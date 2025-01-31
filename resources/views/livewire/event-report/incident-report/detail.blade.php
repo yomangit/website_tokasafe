@@ -204,7 +204,7 @@
                         </div>
                         <x-label-error :messages="$errors->get('report_toName')" />
                     </div>
-                    <div class="w-full max-w-md xl:max-w-xl form-control">
+                    <div wire:ignore class="w-full max-w-md xl:max-w-xl form-control">
                         <x-label-req :value="__('date_incident')" />
                         <x-input-date id="tanggal" wire:model.live='date' readonly :error="$errors->get('date')"
                             class="{{ $currentStep === 'Closed' || $currentStep === 'Cancelled' ? 'btn-disabled bg-gray-300' : '' }}" />
