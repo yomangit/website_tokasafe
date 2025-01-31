@@ -36,7 +36,7 @@
                     <div role="tabpanel" class="p-10 tab-content">
                         <table class="table table-zebra table-xs">
                             <tbody>
-                                @forelse (auth()->user()->unreadNotifications as $notification)
+                                @forelse ($Unread as $notification)
                                     <tr>
                                         <td>
                                             <label

@@ -10,8 +10,10 @@ class Index extends Component
     public function render()
     {
         $allNotification = auth()->user()->notifications->all();
+        $unRead =auth()->user()->unreadNotifications;
         return view('livewire.notification.index',[
-            'AllNotification' =>$allNotification
+            'AllNotification' =>$allNotification,
+            'Unread'=>  $unRead
             ]);
     }
     public function readNotification($id,$url)
