@@ -22,9 +22,9 @@
                                 @foreach ($AllNotification as $notification)
                                     <tr>
                                         <td>
-                                            <label wire:click="goTo('{{ $notification->data['url'] }}')"
+                                            <label wire:click="goTo('{{ $notification->data[0] }}')"
                                                 class="text-xs cursor-pointer font-signika {{ $notification->read_at == null? 'text-sky-500':'' }} ">
-                                                {{ $notification->data['line'] }}</label>
+                                                {{ $notification->data[0] }}</label>
                                         </td>
                                     </tr>
                                 @endforeach
