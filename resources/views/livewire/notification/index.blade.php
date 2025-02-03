@@ -20,7 +20,7 @@
                         <table class="table table-zebra table-xs">
                             <tbody>
                                 @foreach ($AllNotification as $notification)
-                                @dd(json_encode($notification->data->line))
+                                @dd($notification->data->line)
                                     <tr>
                                         <td>
                                             <label wire:click="goTo('{{ $notification->data[0] }}')"
