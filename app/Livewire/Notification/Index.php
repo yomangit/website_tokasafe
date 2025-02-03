@@ -11,7 +11,6 @@ class Index extends Component
     public function render()
     {
         $allNotification  = Notifications::where('data->line','LIKE','%'.$this->searching.'%')->get();
-        $allNotification= json_decode($allNotification);
         $unRead =auth()->user()->unreadNotifications->where('data->line','LIKE','%' .$this->searching.'%');
         return view('livewire.notification.index',[
             'AllNotification' =>$allNotification,

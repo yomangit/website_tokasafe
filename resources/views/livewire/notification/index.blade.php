@@ -42,7 +42,7 @@
                                             <label
                                                 wire:click="readNotification('{{ $notification->id }}','{{ $notification->data['url'] }}')"
                                                 class="text-xs cursor-pointer font-signika text-sky-500">
-                                                {{ $notification->data['line'] }}</label>
+                                                {{ $notification->data[0] }}</label>
                                         </td>
                                     </tr>
                                     @empty
