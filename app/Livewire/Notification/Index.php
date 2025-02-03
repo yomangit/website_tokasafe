@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Notification;
 
+use App\Models\Notifications;
 use Livewire\Component;
 
 class Index extends Component
@@ -9,7 +10,7 @@ class Index extends Component
     public $searching="";
     public function render()
     {
-        $allNotification = auth()->user()->notifications->where('data->line','LIKE','%'.$this->searching.'%');
+        $allNotification  = Notifications::where('data->line','LIKE','%'.$this->searching.'%')->get();
         $unRead =auth()->user()->unreadNotifications->where('data->line','LIKE','%' .$this->searching.'%');
         return view('livewire.notification.index',[
             'AllNotification' =>$allNotification,
@@ -24,7 +25,7 @@ class Index extends Component
                                     ->unreadNotifications
                                     ->where('id','like', $notificationId)
                                     ->first();
-        
+
         if($userUnreadNotification) {
             $userUnreadNotification->markAsRead();
             return redirect($url);
