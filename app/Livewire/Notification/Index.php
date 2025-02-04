@@ -10,8 +10,8 @@ class Index extends Component
     public $searching="";
     public function render()
     {
-        $allNotification  = auth()->user()->notifications->where('data.line','BANEA, Yoman Denis has submitted a hazard report, please review');
-        $unRead =auth()->user()->unreadNotifications;
+        $allNotification  = auth()->user()->notifications->where('data.line','LIKE','%' .$this->searching.'%');
+        $unRead =auth()->user()->unreadNotifications->where('data.line','LIKE','%' .$this->searching.'%');
         return view('livewire.notification.index',[
             'AllNotification' =>$allNotification,
             'Unread'=>  $unRead
@@ -21,7 +21,10 @@ class Index extends Component
     {
         $notificationId = $id;
 
-        $userUnreadNotification = auth()->user()->unreadNotifications->find($id);
+        $userUnreadNotification = auth()->user()
+                                    ->unreadNotifications
+                                    ->where('id','like', $notificationId)
+                                    ->first();
 
         if($userUnreadNotification) {
             $userUnreadNotification->markAsRead();
