@@ -10,13 +10,11 @@ class Index extends Component
     public $searching="";
     public function render()
     {
-        $allNotification  = Notifications::where('notifiable_id',auth()->user()->id)->where('data->line','LIKE','%'.$this->searching.'%')->get();
-        $unRead =Notifications::whereNotNull('read_at')->where('notifiable_id',auth()->user()->id)->where('data->line','LIKE','%'.$this->searching.'%')->get();
-        $unReadCount =Notifications::whereNotNull('read_at')->where('notifiable_id',auth()->user()->id)->count();
+        $allNotification  = auth()->user()->notifications->where('data->line','LIKE','%' .$this->searching.'%');
+        $unRead =auth()->user()->unreadNotifications->where('data->line','LIKE','%' .$this->searching.'%');
         return view('livewire.notification.index',[
             'AllNotification' =>$allNotification,
-            'Unread'=>  $unRead,
-            'unReadCount'=> $unReadCount
+            'Unread'=>  $unRead
             ]);
     }
     public function readNotification($id,$url)
@@ -34,7 +32,6 @@ class Index extends Component
         }
     }
     public function goTo($url){
-        dd($url);
          return redirect($url);
     }
 }

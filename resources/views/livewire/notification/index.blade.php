@@ -1,5 +1,5 @@
 <div>
-    <div wire:poll class="dropdown dropdown-end">
+    <div class="dropdown dropdown-end">
         <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">
             <div class="indicator">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -8,24 +8,24 @@
                         d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                 </svg>
                 <span
-                    class="text-[9px] text-white badge badge-xs bg-rose-500 indicator-item">{{ $unReadCount <= 99 ? $unReadCount : '99+' }}</span>
+                    class="text-[9px] text-white badge badge-xs bg-rose-500 indicator-item">{{ auth()->user()->unreadNotifications->count() <= 99 ? auth()->user()->unreadNotifications->count() : '99+' }}</span>
             </div>
         </label>
         <div tabindex="0" class=" z-[1] card card-compact dropdown-content w-56 lg:w-96 bg-base-100 shadow">
             <div  class="card-body">
                 <div class="p-1"><x-inputsearch wire:model.live='searching' placeholder='search current notification' /></div>
-                <div  role="tablist" class="tabs tabs-bordered">
+                <div wire:poll role="tablist" class="tabs tabs-bordered">
                     <input type="radio" name="my_tabs_1" role="tab" class="tab " aria-label="All"  checked="checked"/>
                     <div role="tabpanel" class="p-10 tab-content">
                         <table class="table table-zebra table-xs">
                             <tbody>
                                 @foreach ($AllNotification as $notification)
-
+                                @dd($notification->data->line)
                                     <tr>
                                         <td>
-                                            <label wire:click="goTo('{{ json_decode($notification->data,true)['url']}}')"
+                                            <label wire:click="goTo('{{ $notification->data['url'] }}')"
                                                 class="text-xs cursor-pointer font-signika {{ $notification->read_at == null? 'text-sky-500':'' }} ">
-                                                {{ json_decode($notification->data,true)['line'] }}</label>
+                                                {{ $notification->data['line'] }}</label>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -41,9 +41,9 @@
                                     <tr>
                                         <td>
                                             <label
-                                                wire:click="readNotification('{{ $notification->id }}','{{ json_decode($notification->data,true)['url']}}')"
+                                                wire:click="readNotification('{{ $notification->id }}','{{ $notification->data['url'] }}')"
                                                 class="text-xs cursor-pointer font-signika text-sky-500">
-                                                {{ json_decode($notification->data,true)['line'] }}</label>
+                                                {{ $notification->data['line'] }}</label>
                                         </td>
                                     </tr>
                                     @empty
@@ -51,6 +51,8 @@
                                         <td>all notifications are read</td>
                                     </tr>
                                 @endforelse
+
+
                             </tbody>
                         </table>
                     </div>
