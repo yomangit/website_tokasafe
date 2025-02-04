@@ -39,7 +39,6 @@
         rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
         scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
-
 .transition-all {
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -53,7 +52,7 @@
 }
 .ck-editor__editable_inline:not(.ck-comment__input *) {
     height: 155 px;
-    padding: 50px;
+    padding: 50 px;
     overflow-y: auto;
 }
 
