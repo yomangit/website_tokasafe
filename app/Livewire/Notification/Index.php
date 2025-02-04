@@ -4,7 +4,7 @@
 use Livewire\Component;
 class Index extends Component
 {
-    public $searching="";
+
     public function render()
     {
         $allNotification  = auth()->user()->notifications;
