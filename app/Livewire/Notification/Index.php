@@ -15,7 +15,8 @@ class Index extends Component
         $unReadCount =Notifications::whereNotNull('read_at')->where('notifiable_id',auth()->user()->id)->count();
         return view('livewire.notification.index',[
             'AllNotification' =>$allNotification,
-            'Unread'=>  $unRead
+            'Unread'=>  $unRead,
+            'unReadCount'=> $unReadCount
             ]);
     }
     public function readNotification($id,$url)
