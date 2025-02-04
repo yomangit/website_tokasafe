@@ -12,9 +12,9 @@
             </div>
         </label>
         <div tabindex="0" class=" z-[1] card card-compact dropdown-content w-56 lg:w-96 bg-base-100 shadow">
-            <div  class="card-body">
+            <div wire:poll class="card-body">
                 <div class="p-1"><x-inputsearch wire:model.live='searching' placeholder='search current notification' /></div>
-                <div wire:poll role="tablist" class="tabs tabs-bordered">
+                <div  role="tablist" class="tabs tabs-bordered">
                     <input type="radio" name="my_tabs_1" role="tab" class="tab " aria-label="All"  checked="checked"/>
                     <div role="tabpanel" class="p-10 tab-content">
                         <table class="table table-zebra table-xs">
