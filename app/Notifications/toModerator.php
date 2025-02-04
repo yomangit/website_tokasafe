@@ -32,16 +32,16 @@ class toModerator extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage)
-        ->greeting($this->offerData['greeting'])
-        ->subject($this->offerData['subject'])
-        ->line($this->offerData['line'])
-        ->line($this->offerData['line2'])
-        ->action('View Event', url($this->offerData['actionUrl']))
-        ->line($this->offerData['line3']);
-    }
+    // public function toMail(object $notifiable): MailMessage
+    // {
+    //     return (new MailMessage)
+    //     ->greeting($this->offerData['greeting'])
+    //     ->subject($this->offerData['subject'])
+    //     ->line($this->offerData['line'])
+    //     ->line($this->offerData['line2'])
+    //     ->action('View Event', url($this->offerData['actionUrl']))
+    //     ->line($this->offerData['line3']);
+    // }
 
     /**
      * Get the array representation of the notification.
