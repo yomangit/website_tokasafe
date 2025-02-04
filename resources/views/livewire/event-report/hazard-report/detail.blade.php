@@ -1,6 +1,6 @@
 <div>
     <x-notification />
-        <script  src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
     @section('bradcrumbs')
         {{ Breadcrumbs::render('hazardReportDetail', $data_id) }}
     @endsection
@@ -53,7 +53,8 @@
                     <div class="w-full max-w-md xl:max-w-xl form-control">
                         <x-label-req :value="__('Responsibility Workgroup')" />
                         <div class="dropdown dropdown-end">
-                            <x-input wire:model.live='workgroup_name' wire:keydown.self="changeConditionDivision" :error="$errors->get('workgroup_name')" class="cursor-pointer" tabindex="0"
+                            <x-input wire:model.live='workgroup_name' wire:keydown.self="changeConditionDivision"
+                                :error="$errors->get('workgroup_name')" class="cursor-pointer" tabindex="0"
                                 class=" {{ $currentStep === 'Closed' || $currentStep === 'Cancelled' ? 'btn-disabled bg-gray-300' : 'cursor-pointer' }}"
                                 tabindex="0" role="button" />
                             <div tabindex="0"
@@ -82,28 +83,31 @@
                                             @endforeach
                                             <li class="px-2 cursor-pointer hover:bg-base-200">Division</li>
                                             @foreach ($Divisi as $divisi)
-                                                    <li wire:click="divisi({{ $divisi->company_id }})"
-                                                        class="px-4 cursor-pointer hover:bg-base-200">
-                                                        {{ $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company  }}
-                                                    </li>
-                                                @endforeach
+                                                <li wire:click="divisi({{ $divisi->company_id }})"
+                                                    class="px-4 cursor-pointer hover:bg-base-200">
+                                                    {{ $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company }}
+                                                </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                     <div class="grid flex-grow h-40 overflow-auto card bg-base-300 rounded-box">
-                                          <ul class="list-none text-[9px] list-inside overflow-auto px-2">
-                                         @forelse ($Division as $item)
-                                      <li wire:click="select_division({{ $item->id }})" class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer"> {{ $item->DeptByBU->BusinesUnit->Company->name_company }}-{{ $item->DeptByBU->Department->department_name }}
-                                           @if (!empty($item->company_id))
+                                        <ul class="list-none text-[9px] list-inside overflow-auto px-2">
+                                            @forelse ($Division as $item)
+                                                <li wire:click="select_division({{ $item->id }})"
+                                                    class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer">
+                                                    {{ $item->DeptByBU->BusinesUnit->Company->name_company }}-{{ $item->DeptByBU->Department->department_name }}
+                                                    @if (!empty($item->company_id))
                                                         -{{ $item->Company->name_company }}
                                                     @endif
                                                     @if (!empty($item->section_id))
-                                                    -{{ $item->Section->name }}
-                                            @endif
-                                        </li>
-                                        @empty
-                                        <li class='font-semibold text-center text-rose-500'>Division not found!! </li>
-                                    @endforelse
-                                    </ul>
+                                                        -{{ $item->Section->name }}
+                                                    @endif
+                                                </li>
+                                            @empty
+                                                <li class='font-semibold text-center text-rose-500'>Division not found!!
+                                                </li>
+                                            @endforelse
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -352,8 +356,7 @@
                         </div>
                     </div>
                     <div class="flex-none md:w-72 ">
-                        <div
-                            class="m-1 overflow-x-auto ">
+                        <div class="m-1 overflow-x-auto ">
                             <table class="table bg-base-300 table-xs">
                                 <caption class="caption-top">
                                     Table Initial Risk Assessment
@@ -432,9 +435,10 @@
                     <div class="grid card bg-base-300 rounded-box ">
 
                         <div class="mx-4 my-2">
-                                <x-btn-add data-tip="Add" class="{{ $currentStep === 'Closed' || $currentStep === 'Cancelled' ? 'btn-disabled ' : '' }}"
+                            <x-btn-add data-tip="Add"
+                                class="{{ $currentStep === 'Closed' || $currentStep === 'Cancelled' ? 'btn-disabled ' : '' }}"
                                 wire:click="$dispatch('openModal', { component: 'event-report.hazard-report.documentation.create', arguments: { doc: {{ $data_id }} }})" />
-                                <livewire:event-report.hazard-report.documentation.index :id="$data_id">
+                            <livewire:event-report.hazard-report.documentation.index :id="$data_id">
                         </div>
 
 
@@ -462,175 +466,168 @@
                 </div>
             </div>
         </form>
-        <livewire:event-report.hazard-report.action.create >
-        <script nonce="{{ csp_nonce() }}" type="module">
-             setInterval(function ererer() {
-var cde = document.getElementsByClassName('.ck-toolbar');
-var cdens = document.getElementsByClassName('.ck-editor__editable');
-   for (var i = 0; i < cde; i++) {
-  cde[i].style.width = '' + cdens.innerWidth + 'px';
- }
-  }, 0010);
-            ClassicEditor
-                .create(document.querySelector('#immediate_corrective_action'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
-                })
-                .then(newEditor1 => {
-                    newEditor1.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-                        newEditor1.editing.view.document.getRoot()
-                    );
-                });
-                    setInterval(() => Livewire.dispatch('ubahData'), 1000);
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdate', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                newEditor1.enableReadOnlyMode('immediate_corrective_action');
-                            } else {
-                                newEditor1.disableReadOnlyMode('immediate_corrective_action');
-                            }
+        <livewire:event-report.hazard-report.action.create>
+            <script nonce="{{ csp_nonce() }}" type="module">
+                ClassicEditor
+                    .create(document.querySelector('#immediate_corrective_action'), {
+                        toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                        placeholder: 'Type the content here!'
+                    })
+                    .then(newEditor1 => {
+                        newEditor1.editing.view.change((writer) => {
+                            writer.setStyle(
+                                "height",
+                                "155px",
+                                newEditor1.editing.view.document.getRoot()
+                            );
                         });
-                    });
-                    newEditor1.model.document.on('change:data', () => {
-                        @this.set('immediate_corrective_action', newEditor1.getData())
-                    });
-
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-            ClassicEditor
-                .create(document.querySelector('#description'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
-                })
-
-                .then(newEditor2 => {
-                    newEditor2.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-
-                        newEditor2.editing.view.document.getRoot()
-                    );
-                });
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdate', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                newEditor2.enableReadOnlyMode('description');
-                            } else {
-                                newEditor2.disableReadOnlyMode('description');
-                            }
-
+                        setInterval(() => Livewire.dispatch('ubahData'), 1000);
+                        document.addEventListener('livewire:init', () => {
+                            Livewire.on('berhasilUpdate', (event) => {
+                                const a = event[0];
+                                if (a === "Closed" || a === "Cancelled") {
+                                    newEditor1.enableReadOnlyMode('immediate_corrective_action');
+                                } else {
+                                    newEditor1.disableReadOnlyMode('immediate_corrective_action');
+                                }
+                            });
                         });
-                    });
-                    newEditor2.model.document.on('change:data', () => {
-                        @this.set('description', newEditor2.getData())
-                    });
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-            ClassicEditor
-                .create(document.querySelector('#suggested_corrective_action'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
-                })
-                .then(newEditor3 => {
-                    newEditor3.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-                        newEditor3.editing.view.document.getRoot()
-                    );
-                });
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdate', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                newEditor3.enableReadOnlyMode('suggested_corrective_action');
-                            } else {
-                                newEditor3.disableReadOnlyMode('suggested_corrective_action');
-                            }
-
+                        newEditor1.model.document.on('change:data', () => {
+                            @this.set('immediate_corrective_action', newEditor1.getData())
                         });
-                    });
-                    newEditor3.model.document.on('change:data', () => {
-                        @this.set('suggested_corrective_action', newEditor3.getData())
-                    });
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-            ClassicEditor
-                .create(document.querySelector('#corrective_action_suggested'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
 
-                })
-                .then(newEditor4 => {
-                    newEditor4.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-                        newEditor4.editing.view.document.getRoot()
-                    );
-                });
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdate', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                newEditor4.enableReadOnlyMode('corrective_action_suggested');
-                            } else {
-                                newEditor4.disableReadOnlyMode('corrective_action_suggested');
-                            }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+                ClassicEditor
+                    .create(document.querySelector('#description'), {
+                        toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                        placeholder: 'Type the content here!'
+                    })
 
+                    .then(newEditor2 => {
+                        newEditor2.editing.view.change((writer) => {
+                            writer.setStyle(
+                                "height",
+                                "155px",
+
+                                newEditor2.editing.view.document.getRoot()
+                            );
                         });
-                    });
-                    newEditor4.model.document.on('change:data', () => {
-                        @this.set('corrective_action_suggested', newEditor4.getData())
-                    });
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-            ClassicEditor
-                .create(document.querySelector('#comment'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
+                        document.addEventListener('livewire:init', () => {
+                            Livewire.on('berhasilUpdate', (event) => {
+                                const a = event[0];
+                                if (a === "Closed" || a === "Cancelled") {
+                                    newEditor2.enableReadOnlyMode('description');
+                                } else {
+                                    newEditor2.disableReadOnlyMode('description');
+                                }
 
-                })
-                .then(newEditor5 => {
-                    newEditor5.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-                        newEditor5.editing.view.document.getRoot()
-                    );
-                });
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdate', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                newEditor5.enableReadOnlyMode('comment');
-                            } else {
-                                newEditor5.disableReadOnlyMode('comment');
-                            }
-
+                            });
                         });
+                        newEditor2.model.document.on('change:data', () => {
+                            @this.set('description', newEditor2.getData())
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
                     });
-                    newEditor5.model.document.on('change:data', () => {
-                        @this.set('comment', newEditor5.getData())
+                ClassicEditor
+                    .create(document.querySelector('#suggested_corrective_action'), {
+                        toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                        placeholder: 'Type the content here!'
+                    })
+                    .then(newEditor3 => {
+                        newEditor3.editing.view.change((writer) => {
+                            writer.setStyle(
+                                "height",
+                                "155px",
+                                newEditor3.editing.view.document.getRoot()
+                            );
+                        });
+                        document.addEventListener('livewire:init', () => {
+                            Livewire.on('berhasilUpdate', (event) => {
+                                const a = event[0];
+                                if (a === "Closed" || a === "Cancelled") {
+                                    newEditor3.enableReadOnlyMode('suggested_corrective_action');
+                                } else {
+                                    newEditor3.disableReadOnlyMode('suggested_corrective_action');
+                                }
+
+                            });
+                        });
+                        newEditor3.model.document.on('change:data', () => {
+                            @this.set('suggested_corrective_action', newEditor3.getData())
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
                     });
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        </script>
+                ClassicEditor
+                    .create(document.querySelector('#corrective_action_suggested'), {
+                        toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                        placeholder: 'Type the content here!'
+
+                    })
+                    .then(newEditor4 => {
+                        newEditor4.editing.view.change((writer) => {
+                            writer.setStyle(
+                                "height",
+                                "155px",
+                                newEditor4.editing.view.document.getRoot()
+                            );
+                        });
+                        document.addEventListener('livewire:init', () => {
+                            Livewire.on('berhasilUpdate', (event) => {
+                                const a = event[0];
+                                if (a === "Closed" || a === "Cancelled") {
+                                    newEditor4.enableReadOnlyMode('corrective_action_suggested');
+                                } else {
+                                    newEditor4.disableReadOnlyMode('corrective_action_suggested');
+                                }
+
+                            });
+                        });
+                        newEditor4.model.document.on('change:data', () => {
+                            @this.set('corrective_action_suggested', newEditor4.getData())
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+                ClassicEditor
+                    .create(document.querySelector('#comment'), {
+                        toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                        placeholder: 'Type the content here!'
+
+                    })
+                    .then(newEditor5 => {
+                        newEditor5.editing.view.change((writer) => {
+                            writer.setStyle(
+                                "height",
+                                "155px",
+                                newEditor5.editing.view.document.getRoot()
+                            );
+                        });
+                        document.addEventListener('livewire:init', () => {
+                            Livewire.on('berhasilUpdate', (event) => {
+                                const a = event[0];
+                                if (a === "Closed" || a === "Cancelled") {
+                                    newEditor5.enableReadOnlyMode('comment');
+                                } else {
+                                    newEditor5.disableReadOnlyMode('comment');
+                                }
+
+                            });
+                        });
+                        newEditor5.model.document.on('change:data', () => {
+                            @this.set('comment', newEditor5.getData())
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            </script>
 
 </div>
