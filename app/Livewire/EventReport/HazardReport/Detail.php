@@ -411,7 +411,6 @@ class Detail extends Component
                 ];
                 Notification::send($report_to, new toModerator($offerData));
         }
-
         $this->dispatch('hzrd_updated', $this->data_id);
     }
     public function destroy()
