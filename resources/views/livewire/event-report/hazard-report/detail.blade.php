@@ -464,6 +464,13 @@
         </form>
         <livewire:event-report.hazard-report.action.create >
         <script nonce="{{ csp_nonce() }}" type="module">
+             setInterval(function ererer() {
+var cde = document.getElementsByClassName('.ck-toolbar');
+var cdens = document.getElementsByClassName('.ck-editor__editable');
+   for (var i = 0; i < cde; i++) {
+  cde[i].style.width = '' + cdens.innerWidth + 'px';
+ }
+  }, 0010);
             ClassicEditor
                 .create(document.querySelector('#immediate_corrective_action'), {
                     toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
@@ -507,7 +514,7 @@
                     writer.setStyle(
                         "height",
                         "155px",
-                        "padding", "60px",
+
                         newEditor2.editing.view.document.getRoot()
                     );
                 });
