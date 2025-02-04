@@ -509,7 +509,7 @@
                     writer.setStyle(
                         "height",
                         "155px",
-
+                        "padding-left", "60px",
                         newEditor2.editing.view.document.getRoot()
                     );
                 });
