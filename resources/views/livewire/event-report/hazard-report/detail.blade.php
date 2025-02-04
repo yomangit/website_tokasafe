@@ -1,6 +1,6 @@
 <div>
     <x-notification />
-  
+
         <script  src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 
     @section('bradcrumbs')
@@ -115,12 +115,12 @@
                     <div class="w-full max-w-md xl:max-w-xl form-control">
                         <x-label-req :value="__('report_by')" />
                         <div class="dropdown dropdown-end">
-                            <x-input wire:model.live='report_byName' :error="$errors->get('report_byName')" class="cursor-pointer" 
+                            <x-input wire:model.live='report_byName' :error="$errors->get('report_byName')" class="cursor-pointer"
                                 tabindex="0" role="button" />
                             <div tabindex="0"
                                 class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
                                 <div class="relative">
-                                  
+
                                     <div class="h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                         wire:target='report_byName' wire:loading.class='hidden'>
                                         @forelse ($Report_By as $report_by)
@@ -150,12 +150,12 @@
                     <div class="w-full max-w-md xl:max-w-xl form-control">
                         <x-label-req :value="__('report_to')" />
                         <div class="dropdown dropdown-end">
-                            <x-input wire:model.live='report_toName' :error="$errors->get('report_toName')" class="cursor-pointer" 
+                            <x-input wire:model.live='report_toName' :error="$errors->get('report_toName')" class="cursor-pointer"
                                 tabindex="0" role="button" />
                             <div tabindex="0"
                                 class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
                                 <div class="relative">
-                                    
+
                                     <div class="h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                         wire:target='report_toName' wire:loading.class='hidden'>
                                         @forelse ($Report_To as $report_to)
@@ -255,7 +255,7 @@
                 <div>
                     <div wire:ignore class="w-full form-control">
                         <x-label-req :value="__('Hazard Details')" />
-                        <textarea id="description">{{ $description_temp }}</textarea>
+                        <textarea class="ck-editor__editable" id="description">{{ $description_temp }}</textarea>
                     </div>
                     <x-label-error :messages="$errors->get('description')" />
                 </div>
@@ -300,7 +300,7 @@
                     class="flex flex-col-reverse items-center mt-2 border-2 rounded-sm md:flex-row md:divide-x-2 divide-late-400/25 border-slate-400/25">
                     <div class="flex-auto p-2 divide-y-2 divide-slate-400/25">
                         <div class="flex flex-col sm:items-center sm:flex-row">
-                           
+
                             <div class="w-full px-2">
                                 <p class="font-mono text-sm font-semibold text-justify">
                                     {{ $risk_probability_doc }}

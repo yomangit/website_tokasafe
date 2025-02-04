@@ -56,9 +56,7 @@
     padding: 50px;
     overflow-y: auto;
 }
-:host ::ng-deep .ck-editor__editable_inline {
-    padding: 50px;
-}
+
 .ck-editor__editable[role="textbox"] {
     /* Editing area */
     /* min-height: 200px; */
@@ -73,13 +71,6 @@
     #pol {
         display: none;
     }
-
-    .ck-editor__editable[role="textbox"] {
-        /* Editing area */
-        /* min-height: 200px; */
-        padding: 50px;
-    }
-
     .alphabet {
         display: block;
         visibility: hidden;
