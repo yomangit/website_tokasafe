@@ -34,6 +34,7 @@ class Index extends Component
         }
     }
     public function goTo($url){
+        dd($url);
          return redirect($url);
     }
 }
