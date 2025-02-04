@@ -56,7 +56,7 @@ class Detail extends Component
     public function mount($id)
     {
         $projectExists = HazardReport::whereId($id)->exists();
-        
+
         if ($projectExists) {
                 $this->data_id = $id;
                 $projectAkses = HazardReport::whereId($id)
@@ -92,13 +92,13 @@ class Detail extends Component
                     $this->immediate_corrective_action_temp = $HazardReport->immediate_corrective_action;
                     $this->suggested_corrective_action_temp = $HazardReport->suggested_corrective_action;
                     $this->corrective_action_suggested_temp = $HazardReport->corrective_action_suggested;
-                   
+
                     $this->company_involved = $HazardReport->company_involved;
                     $this->event_location_id = $HazardReport->event_location_id;
                     $this->comment_temp = $HazardReport->comment;
-                    
+
                 }
-                else 
+                else
                 {
                     abort(401, 'Unauthorized Access Denied');
                 }
@@ -173,24 +173,24 @@ class Detail extends Component
         if (choseEventType::where('route_name','LIKE','%' .'/eventReport/hazardReport'. '%')->exists()) {
             $eventType = choseEventType::where('route_name','LIKE','%' .'/eventReport/hazardReport'. '%')->pluck('event_type_id');
             $Event_type = TypeEventReport::whereIn('id', $eventType)->get();
-           
+
            }else{
             $Event_type =[];
            }
         $this->dataUpdate();
         $this->workflow_administration_id = (!empty(WorkflowApplicable::where('type_event_report_id', $this->event_type_id)->first()->workflow_administration_id)) ? WorkflowApplicable::where('type_event_report_id', $this->event_type_id)->first()->workflow_administration_id : null;
-       
+
         if ($this->division_id) {
-           
+
             $divisi = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company','Section'])->whereId($this->division_id)->first();
            if (!empty($divisi->company_id) && !empty($divisi->section_id)) {
-                
+
                 $this->workgroup_name =  $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company . '-' . $divisi->Section->name;
             }
             elseif($divisi->company_id){
                 $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company;
             }
-           
+
             elseif ($divisi->section_id) {
                 $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name. '-' . $divisi->Section->name;
             }
@@ -204,7 +204,7 @@ class Detail extends Component
              $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->searchDeptCom(trim($this->workgroup_name))->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
        }
 
-       
+
         $this->TableRiskFunction();
         $this->EventSubType = (isset($this->event_type_id)) ?  $this->EventSubType = Eventsubtype::where('event_type_id', $this->event_type_id)->get() : [];
         return view('livewire.event-report.hazard-report.detail', [
@@ -283,7 +283,7 @@ class Detail extends Component
             $this->fileUpload = pathinfo($fileName, PATHINFO_EXTENSION);
             $this->documentation = $fileName;
         }
-       
+
     }
 
     public function riskId($risk_likelihood_id, $risk_consequence_id, $risk_assessment_id)
@@ -381,6 +381,36 @@ class Detail extends Component
             ]
         );
         $this->dispatch('hzrd_updated', $this->data_id);
+
+        // Notification
+        $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->pluck('user_id')->toArray();
+        $User = User::whereIn('id', $getModerator)->get();
+        $url = $this->data_id;
+        foreach ($User as $key => $value) {
+            $users = User::whereId($value->id)->get();
+            $offerData = [
+                'greeting' => $value->lookup_name,
+                'subject' => $this->task_being_done,
+                'line' =>  $this->report_byName . ' ' . 'has submitted a hazard report, please review',
+                'line2' => 'Please review this report',
+                'line3' => 'Thank you',
+                'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+            ];
+            Notification::send($users, new toModerator($offerData));
+        }
+        $Users = User::where('id', $this->report_to)->whereNotNull('email')->get();
+        foreach ($Users as $key => $value) {
+                $report_to = User::whereId($value->id)->get();
+                $offerData = [
+                    'greeting' => 'Dear' . '' . $this->report_toName,
+                    'subject' => $this->task_being_done,
+                    'line' =>  $this->report_byName . '' . 'has sent a hazard report to you, please review it',
+                    'line2' => 'Please check by click the button below',
+                    'line3' => 'Thank you',
+                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                ];
+                Notification::send($report_to, new toModerator($offerData));
+        }
     }
     public function destroy()
     {

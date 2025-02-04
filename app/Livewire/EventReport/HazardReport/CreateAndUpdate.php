@@ -328,7 +328,7 @@ class CreateAndUpdate extends Component
             ]
         );
         $this->redirectRoute('hazardReportDetail', ['id' => $HazardReport->id]);
-
+        // Notification
         $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->pluck('user_id')->toArray();
         $User = User::whereIn('id', $getModerator)->get();
         $url = $HazardReport->id;
@@ -341,13 +341,11 @@ class CreateAndUpdate extends Component
                 'line2' => 'Please review this report',
                 'line3' => 'Thank you',
                 'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
-
             ];
             Notification::send($users, new toModerator($offerData));
         }
         $Users = User::where('id', $this->report_to)->whereNotNull('email')->get();
         foreach ($Users as $key => $value) {
-            if (!empty($value->email)) {
                 $report_to = User::whereId($value->id)->get();
                 $offerData = [
                     'greeting' => 'Dear' . '' . $this->report_toName,
@@ -358,7 +356,6 @@ class CreateAndUpdate extends Component
                     'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
                 ];
                 Notification::send($report_to, new toModerator($offerData));
-            }
         }
     }
 }

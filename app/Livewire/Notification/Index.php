@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Notification;
 
-use App\Models\Notifications;
 use Livewire\Component;
 class Index extends Component
 {
@@ -19,12 +18,7 @@ class Index extends Component
     public function readNotification($id,$url)
     {
         $notificationId = $id;
-
-        $userUnreadNotification = auth()->user()
-                                    ->unreadNotifications
-                                    ->where('id','like', $notificationId)
-                                    ->first();
-
+        $userUnreadNotification = auth()->user()->unreadNotifications->where('id','like', $notificationId)->first();
         if($userUnreadNotification) {
             $userUnreadNotification->markAsRead();
             return redirect($url);

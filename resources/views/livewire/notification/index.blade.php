@@ -20,7 +20,6 @@
                         <table class="table table-zebra table-xs">
                             <tbody>
                                 @foreach ($AllNotification as $notification)
-
                                     <tr>
                                         <td>
                                             <label wire:click="goTo('{{ $notification->data['url'] }}')"
