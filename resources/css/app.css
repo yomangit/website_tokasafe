@@ -51,13 +51,15 @@
     transition-duration: 150ms;
 }
 .ck-editor__editable_inline:not(.ck-comment__input *) {
-    height: 200px;
+    height: 155px;
     overflow-y: auto;
 }
 
 .ck-editor__editable[role="textbox"] {
-    /* Editing area */
-    /* min-height: 200px; */
+    height: 155px;
+    padding-left: 60px;
+    resize: both;
+    overflow-y: auto;
 }
 @media (min-width: 768px) {
     .main.active {
