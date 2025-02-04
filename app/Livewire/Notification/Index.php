@@ -1,6 +1,5 @@
 <?php
 
-namespace App\Livewire\Notification;
 
 use Livewire\Component;
 class Index extends Component
