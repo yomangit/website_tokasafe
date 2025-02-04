@@ -391,7 +391,7 @@ class Detail extends Component
             $offerData = [
                 'greeting' => $value->lookup_name,
                 'subject' => $this->task_being_done,
-                'line' =>  $this->report_byName . ' ' . 'has submitted a hazard report, please review',
+                'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
                 'line2' => 'Please review this report',
                 'line3' => 'Thank you',
                 'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
@@ -404,7 +404,7 @@ class Detail extends Component
                 $offerData = [
                     'greeting' => 'Dear' . '' . $this->report_toName,
                     'subject' => $this->task_being_done,
-                    'line' =>  $this->report_byName . '' . 'has sent a hazard report to you, please review it',
+                    'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
                     'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
