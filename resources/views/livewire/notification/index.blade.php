@@ -15,7 +15,7 @@
             <div  class="card-body">
                 <div class="p-1"><x-inputsearch wire:model.live='searching' placeholder='search current notification' /></div>
                 <div wire:poll role="tablist" class="tabs tabs-bordered">
-                    <input type="radio" name="my_tabs_1" role="tab" class="tab " aria-label="All"  checked="checked"/>
+                    <input type="radio" name="my_tabs_1" role="tab" class="tab " id="search" aria-label="All"  checked="checked"/>
                     <div role="tabpanel" class="p-10 tab-content">
                         <table class="table table-zebra table-xs">
                             <tbody>
@@ -23,7 +23,7 @@
 
                                     <tr>
                                         <td>
-                                            <label wire:click="goTo('{{ $notification->data['url'] }}')"
+                                            <label id="labels" wire:click="goTo('{{ $notification->data['url'] }}')"
                                                 class="text-xs cursor-pointer font-signika {{ $notification->read_at == null? 'text-sky-500':'' }} ">
                                                 {{ $notification->data['line'] }}</label>
                                         </td>
@@ -65,4 +65,25 @@
             </div>
         </div>
     </div>
+    <script>
+        //get input
+let input = document.getElementById("search");
+//get list of value
+let list = document.querySelectorAll("#labels");
+
+//function search on the list.
+function search (){
+  for(let i = 0; i < list.length; i += 1){
+   //check if the element contains the value of the input
+   if(list[i].innerText.toLowerCase().includes(input.value.toLowerCase())){
+     list[i].style.display = "block";
+   }else{
+     list[i].style.display = "none";
+   }
+  }
+}
+
+//to the change run search.
+input.addEventListener('input', search);
+    </script>
 </div>

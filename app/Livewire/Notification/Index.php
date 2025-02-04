@@ -21,10 +21,7 @@ class Index extends Component
     {
         $notificationId = $id;
 
-        $userUnreadNotification = auth()->user()
-                                    ->unreadNotifications
-                                    ->where('id','like', $notificationId)
-                                    ->first();
+        $userUnreadNotification = auth()->user()->unreadNotifications->find($id);
 
         if($userUnreadNotification) {
             $userUnreadNotification->markAsRead();
