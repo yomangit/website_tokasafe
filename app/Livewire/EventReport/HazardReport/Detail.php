@@ -411,21 +411,7 @@ class Detail extends Component
                 ];
                 Notification::send($report_to, new toModerator($offerData));
         }
-        if(!empty($this->comment_temp)){
-            $Users = User::where('id', $this->report_by)->whereNotNull('email')->get();
-            foreach ($Users as $key => $value) {
-                $report_by = User::whereId($value->id)->get();
-                $offerData = [
-                    'greeting' => 'Dear' . '' . $this->report_byName,
-                    'subject' => $this->task_being_done,
-                    'line' => 'the moderator comments on the hazard report to you have entered , please review',
-                    'line2' => 'Please check by click the button below',
-                    'line3' => 'Thank you',
-                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
-                ];
-                Notification::send($report_by, new toModerator($offerData));
-            }
-        }
+    
         $this->dispatch('hzrd_updated', $this->data_id);
     }
     public function destroy()
