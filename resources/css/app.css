@@ -52,7 +52,7 @@
 }
 .ck-editor__editable_inline:not(.ck-comment__input *) {
     height: 155 px;
-    padding: 50px;
+    padding: 50 px;
     overflow-y: auto;
 }
 
