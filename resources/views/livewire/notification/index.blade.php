@@ -70,6 +70,7 @@
 let input = document.getElementById("search");
 //get list of value
 let list = document.querySelectorAll("#labels");
+console.log(input);
 
 //function search on the list.
 function search (){
