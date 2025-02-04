@@ -55,6 +55,9 @@
     height: 155 px;
     overflow-y: auto;
 }
+:host ::ng-deep .ck-editor__editable_inline {
+    padding: 50px;
+}
 .ck-editor__editable[role="textbox"] {
     /* Editing area */
     /* min-height: 200px; */
