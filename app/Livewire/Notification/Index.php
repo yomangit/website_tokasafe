@@ -10,7 +10,7 @@ class Index extends Component
     public $searching="";
     public function render()
     {
-        $allNotification  = auth()->user()->notifications->where('data.line','LIKE','%' .$this->searching.'%');
+        $allNotification  = auth()->user()->notifications->where('data.line','LIKE','%' .'yoman'.'%');
         $unRead =auth()->user()->unreadNotifications->where('data.line','LIKE','%' .$this->searching.'%');
         return view('livewire.notification.index',[
             'AllNotification' =>$allNotification,
