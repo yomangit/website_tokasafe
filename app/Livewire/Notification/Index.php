@@ -4,14 +4,13 @@ namespace App\Livewire\Notification;
 
 use App\Models\Notifications;
 use Livewire\Component;
-
 class Index extends Component
 {
     public $searching="";
     public function render()
     {
-        $allNotification  = auth()->user()->notifications->where('data','LIKE','%' .'yoman'.'%');
-        $unRead =auth()->user()->unreadNotifications->where('data','LIKE','%' .$this->searching.'%');
+        $allNotification  = Notifications::where('data->line','%'.$this->searching.'%')->get();
+        $unRead = auth()->user()->unreadNotifications->where('data->line','LIKE','%' .$this->searching.'%');
         return view('livewire.notification.index',[
             'AllNotification' =>$allNotification,
             'Unread'=>  $unRead
