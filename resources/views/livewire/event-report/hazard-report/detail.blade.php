@@ -503,7 +503,14 @@
                 })
 
                 .then(newEditor2 => {
-
+                    newEditor2.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        "padding-left", "60px";
+                        newEditor2.editing.view.document.getRoot()
+                    );
+                });
                     document.addEventListener('livewire:init', () => {
                         Livewire.on('berhasilUpdate', (event) => {
                             const a = event[0];
