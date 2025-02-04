@@ -51,15 +51,15 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
 }
-    .ck-editor__editable_inline:not(.ck-comment__input *) {
+.ck-editor__editable_inline:not(.ck-comment__input *) {
     height: 155 px;
     overflow-y: auto;
 }
-    .ck-editor__editable[role="textbox"] {
-        /* Editing area */
-        /* min-height: 200px; */
-        padding: 35px ;
-    }
+.ck-editor__editable[role="textbox"] {
+    /* Editing area */
+    /* min-height: 200px; */
+    padding: 50px;
+}
 @media (min-width: 768px) {
     .main.active {
         margin-left: 0px;
@@ -73,7 +73,7 @@
     .ck-editor__editable[role="textbox"] {
         /* Editing area */
         /* min-height: 200px; */
-        padding: 35px ;
+        padding: 50px;
     }
 
     .alphabet {
