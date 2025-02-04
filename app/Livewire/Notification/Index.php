@@ -24,7 +24,12 @@ class Index extends Component
             return redirect($url);
         }
     }
-    public function goTo($url){
+    public function goTo($id,$url){
+        $userUnreadNotification = auth()->user()->notifications->where('id','like', $id)->whereNull('read_at')->first();
+        if($userUnreadNotification) {
+            $userUnreadNotification->markAsRead();
+            return redirect($url);
+        }
          return redirect($url);
     }
 }
