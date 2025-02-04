@@ -380,8 +380,6 @@ class Detail extends Component
                 'backgroundColor' => "linear-gradient(to right, #06b6d4, #22c55e)",
             ]
         );
-
-
         // Notification
         $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->pluck('user_id')->toArray();
         $User = User::whereIn('id', $getModerator)->get();
