@@ -41,9 +41,9 @@
                                     <tr>
                                         <td>
                                             <label
-                                                wire:click="readNotification('{{ $notification->id }}','{{ json_decode($notification->data,true)['urlE'] }}')"
+                                                wire:click="readNotification('{{ $notification->id }}','{{ $notification->data['url'] }}')"
                                                 class="text-xs cursor-pointer font-signika text-sky-500">
-                                                {{ json_decode($notification->data,true)['line'] }}</label>
+                                                {{ $notification->data['line'] }}</label>
                                         </td>
                                     </tr>
                                     @empty
