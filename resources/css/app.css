@@ -59,6 +59,7 @@
 .ck-editor__editable[role="textbox"] {
     /* Editing area */
     /* min-height: 200px; */
+    padding: 50px;
 }
 @media (min-width: 768px) {
     .main.active {
