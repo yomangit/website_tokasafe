@@ -1,9 +1,6 @@
 <div>
     <x-notification />
-
         <script  src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
-
-
     @section('bradcrumbs')
         {{ Breadcrumbs::render('hazardReportDetail', $data_id) }}
     @endsection
@@ -506,13 +503,7 @@
                 })
 
                 .then(newEditor2 => {
-                    newEditor2.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-                        newEditor2.editing.view.document.getRoot()
-                    );
-                });
+
                     document.addEventListener('livewire:init', () => {
                         Livewire.on('berhasilUpdate', (event) => {
                             const a = event[0];
