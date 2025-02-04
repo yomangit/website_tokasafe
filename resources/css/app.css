@@ -52,6 +52,7 @@
 }
 .ck-editor__editable_inline:not(.ck-comment__input *) {
     height: 155 px;
+
     overflow-y: auto;
 }
 
