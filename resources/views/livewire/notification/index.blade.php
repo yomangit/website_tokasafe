@@ -1,5 +1,5 @@
 <div>
-    <div class="dropdown dropdown-end">
+    <div wire:poll class="dropdown dropdown-end">
         <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">
             <div class="indicator">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -41,9 +41,9 @@
                                     <tr>
                                         <td>
                                             <label
-                                                wire:click="readNotification('{{ $notification->id }}','{{ $notification->data['url'] }}')"
+                                                wire:click="readNotification('{{ $notification->id }}','{{ json_decode($notification->data,true)['url']}}')"
                                                 class="text-xs cursor-pointer font-signika text-sky-500">
-                                                {{ $notification->data['line'] }}</label>
+                                                {{ json_decode($notification->data,true)['line'] }}</label>
                                         </td>
                                     </tr>
                                     @empty
