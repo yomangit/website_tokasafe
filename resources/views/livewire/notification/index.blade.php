@@ -31,8 +31,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <input type="radio" name="my_tabs_1" role="tab" class="tab text-sky-500" aria-label="Unread"
-                        />
+                    <input type="radio" name="my_tabs_1" role="tab" class="tab text-sky-500" aria-label="Unread"/>
                     <div role="tabpanel" class="p-10 tab-content">
                         <table class="table table-zebra table-xs">
                             <tbody>
@@ -50,17 +49,10 @@
                                         <td>all notifications are read</td>
                                     </tr>
                                 @endforelse
-
-
                             </tbody>
                         </table>
                     </div>
-
-
                 </div>
-
-
-
             </div>
         </div>
     </div>
