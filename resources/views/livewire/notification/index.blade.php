@@ -11,9 +11,9 @@
                     class="text-[9px] text-white badge badge-xs bg-rose-500 indicator-item">{{ auth()->user()->unreadNotifications->count() <= 99 ? auth()->user()->unreadNotifications->count() : '99+' }}</span>
             </div>
         </label>
-        <div tabindex="0" class=" z-[1] card card-compact dropdown-content w-56 lg:w-96 bg-base-100 shadow">
+        <div tabindex="0" class=" z-[1] card card-compact dropdown-content w-56 lg:w-96 h-56 lg:h-96 xl:h-[48rem] bg-base-100 shadow">
             <div wire:poll class="card-body">
-                <div class="p-1"><x-inputsearch wire:model.live='searching' placeholder='search current notification' /></div>
+
                 <div  role="tablist" class="tabs tabs-bordered">
                     <input type="radio" name="my_tabs_1" role="tab" class="tab " aria-label="All"  checked="checked"/>
                     <div role="tabpanel" class="p-10 tab-content">
