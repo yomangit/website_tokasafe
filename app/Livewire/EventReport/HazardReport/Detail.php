@@ -380,7 +380,7 @@ class Detail extends Component
                 'backgroundColor' => "linear-gradient(to right, #06b6d4, #22c55e)",
             ]
         );
-        $this->dispatch('hzrd_updated', $this->data_id);
+
 
         // Notification
         $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->pluck('user_id')->toArray();
@@ -411,6 +411,7 @@ class Detail extends Component
                 ];
                 Notification::send($report_to, new toModerator($offerData));
         }
+        $this->dispatch('hzrd_updated', $this->data_id);
     }
     public function destroy()
     {
