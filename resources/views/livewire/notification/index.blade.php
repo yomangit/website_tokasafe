@@ -20,12 +20,12 @@
                         <table class="table table-zebra table-xs">
                             <tbody>
                                 @foreach ($AllNotification as $notification)
-                                @dd(json_decode($notification->data,true)['line'])
+
                                     <tr>
                                         <td>
-                                            <label wire:click="goTo('{{ $notification->data[0] }}')"
+                                            <label wire:click="goTo('{{ json_decode($notification->data,true)['url']}}')"
                                                 class="text-xs cursor-pointer font-signika {{ $notification->read_at == null? 'text-sky-500':'' }} ">
-                                                {{ $notification->data[0] }}</label>
+                                                {{ json_decode($notification->data,true)['line'] }}</label>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -41,9 +41,9 @@
                                     <tr>
                                         <td>
                                             <label
-                                                wire:click="readNotification('{{ $notification->id }}','{{ $notification->data['url'] }}')"
+                                                wire:click="readNotification('{{ $notification->id }}','{{ json_decode($notification->data,true)['urlE'] }}')"
                                                 class="text-xs cursor-pointer font-signika text-sky-500">
-                                                {{ $notification->data[0] }}</label>
+                                                {{ json_decode($notification->data,true)['line'] }}</label>
                                         </td>
                                     </tr>
                                     @empty
