@@ -513,7 +513,7 @@
                         });
                 </script>
             @endpush
-            <script nonce="{{ csp_nonce() }}" type="module">
+            {{-- <script nonce="{{ csp_nonce() }}" type="module">
                 ClassicEditor
                     .create(document.querySelector('#immediate_corrective_action'), {
                         toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
@@ -674,6 +674,6 @@
                     .catch(error => {
                         console.error(error);
                     });
-            </script>
+            </script> --}}
 
 </div>
