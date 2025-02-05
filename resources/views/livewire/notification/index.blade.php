@@ -19,7 +19,7 @@
                     <input type="radio" name="my_tabs_1" role="tab" class="tab " aria-label="All"
                         checked="checked" />
                     <div role="tabpanel" class="p-10 tab-content">
-                        <div class="overflow-y-auto h-56 lg:h-96 xl:h-[48rem]">
+                        <div class="overflow-y-auto ">
                             <table class="table table-zebra table-xs">
                                 <tbody>
                                     @foreach ($AllNotification as $notification)
