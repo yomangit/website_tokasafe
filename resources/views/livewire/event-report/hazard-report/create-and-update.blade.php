@@ -350,33 +350,6 @@
             </div>
 
         </div>
-
-        <table class="table table-xs">
-            @foreach ($RiskAssessment as $item)
-                <tr>
-                    <th class="w-40 text-xs border-2 border-slate-400">Potential Risk Rating</th>
-                    <td class="pl-2 text-xs border-2 border-slate-400">
-                        {{ $item->RiskAssessment->risk_assessments_name }}</td>
-                </tr>
-                <tr>
-                    <th class="w-40 text-xs border-2 border-slate-400">Notify</th>
-                    <td class="pl-2 text-xs border-2 border-slate-400">
-                        {{ $item->RiskAssessment->reporting_obligation }}</td>
-                </tr>
-                <tr>
-                    <th class="w-40 text-xs border-2 border-slate-400">Deadline</th>
-                    <td class="pl-2 text-xs border-2 border-slate-400">{{ $item->RiskAssessment->notes }}</td>
-                </tr>
-                <tr>
-                    <th class="w-40 text-xs border-2 border-slate-400">Coordinator</th>
-                    <td class="pl-2 text-xs border-2 border-slate-400">{{ $item->RiskAssessment->coordinator }}</td>
-                </tr>
-            @endforeach
-        </table>
-
-        <div class="modal-action ">
-            <x-btn-save-active>{{ __('Submit') }} </x-btn-save-active>
-        </div>
         <script nonce="{{ csp_nonce() }}">
             ClassicEditor
                 .create(document.querySelector('#immediate_corrective_action'), {
@@ -476,6 +449,33 @@
                     console.error(error);
                 });
         </script>
+        <table class="table table-xs">
+            @foreach ($RiskAssessment as $item)
+                <tr>
+                    <th class="w-40 text-xs border-2 border-slate-400">Potential Risk Rating</th>
+                    <td class="pl-2 text-xs border-2 border-slate-400">
+                        {{ $item->RiskAssessment->risk_assessments_name }}</td>
+                </tr>
+                <tr>
+                    <th class="w-40 text-xs border-2 border-slate-400">Notify</th>
+                    <td class="pl-2 text-xs border-2 border-slate-400">
+                        {{ $item->RiskAssessment->reporting_obligation }}</td>
+                </tr>
+                <tr>
+                    <th class="w-40 text-xs border-2 border-slate-400">Deadline</th>
+                    <td class="pl-2 text-xs border-2 border-slate-400">{{ $item->RiskAssessment->notes }}</td>
+                </tr>
+                <tr>
+                    <th class="w-40 text-xs border-2 border-slate-400">Coordinator</th>
+                    <td class="pl-2 text-xs border-2 border-slate-400">{{ $item->RiskAssessment->coordinator }}</td>
+                </tr>
+            @endforeach
+        </table>
+
+        <div class="modal-action ">
+            <x-btn-save-active>{{ __('Submit') }} </x-btn-save-active>
+        </div>
+
     </form>
 
 </div>
