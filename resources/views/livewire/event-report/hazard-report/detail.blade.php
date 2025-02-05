@@ -483,13 +483,14 @@
         </form>
         <livewire:event-report.hazard-report.action.create>
             @push('scripts')
-                <script type="importmap">
+                <script src="../../assets/vendor/ckeditor5.js"></script>
+                {{-- <script type="importmap">
                 {
                     "imports": {
                         "ckeditor5": "../../assets/vendor/ckeditor5.js",
                         "ckeditor5/": "../../assets/vendor/"
                     }
-                }
+                } --}}
             </script>
                 <script type="module">
                     import {
@@ -680,4 +681,4 @@
                     });
             </script> --}}
 
-</div>
+    </div>
