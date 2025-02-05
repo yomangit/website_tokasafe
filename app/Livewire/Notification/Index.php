@@ -33,7 +33,7 @@ class Index extends Component
          return redirect($url);
     }
     public function delete($id){
-        $userDeleteNotification = auth()->user()->notifications->where('id','like', $id)->first();
+        $userDeleteNotification = auth()->user()->notifications->whereId($id)->first();
         if($userDeleteNotification) {
             $userDeleteNotification->delete();
         }
