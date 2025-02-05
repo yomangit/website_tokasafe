@@ -24,6 +24,7 @@
                             <tbody>
                                 @foreach ($AllNotification as $notification)
                                     <tr>
+                                        <td><x-input-checkbox /></td>
                                         <td>
                                             <label
                                                 wire:click="goTo('{{ $notification->id }}','{{ $notification->data['url'] }}')"
