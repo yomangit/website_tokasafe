@@ -483,7 +483,7 @@
         </form>
         <livewire:event-report.hazard-report.action.create>
             @push('scripts')
-                <script src="../../assets/vendor/ckeditor5.js"></script>
+                <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js"></script>
                 {{-- <script type="importmap">
                 {
                     "imports": {
