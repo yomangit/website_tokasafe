@@ -19,20 +19,22 @@
                     <input type="radio" name="my_tabs_1" role="tab" class="tab " aria-label="All"
                         checked="checked" />
                     <div role="tabpanel" class="p-10 tab-content">
-                        <table class="table table-zebra table-xs">
-                            <tbody>
-                                @foreach ($AllNotification as $notification)
-                                    <tr>
-                                        <td>
-                                            <label
-                                                wire:click="goTo('{{ $notification->id }}','{{ $notification->data['url'] }}')"
-                                                class="text-xs cursor-pointer font-signika {{ $notification->read_at == null ? 'text-sky-500' : '' }} ">
-                                                {{ $notification->data['line'] }}</label>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <div class="overflow-y-auto h-56 lg:h-96 xl:h-[48rem]">
+                            <table class="table table-zebra table-xs">
+                                <tbody>
+                                    @foreach ($AllNotification as $notification)
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    wire:click="goTo('{{ $notification->id }}','{{ $notification->data['url'] }}')"
+                                                    class="text-xs cursor-pointer font-signika {{ $notification->read_at == null ? 'text-sky-500' : '' }} ">
+                                                    {{ $notification->data['line'] }}</label>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <input type="radio" name="my_tabs_1" role="tab" class="tab text-sky-500"
                         aria-label="Unread" />
