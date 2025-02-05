@@ -8,7 +8,7 @@
         <input type="radio" name="my_tabs_2" role="tab" class="tab " aria-label="Tab 2" />
         <div role="tabpanel" class="p-6 tab-content bg-base-100 border-base-300 rounded-box">
             <div id="toolbar-container"></div>
-            <div id="ckeditor5">
+            <div id="editor">
                 <p>This is the initial editor content.</p>
             </div>
         </div>
