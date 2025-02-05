@@ -511,8 +511,33 @@
                             'formatPainter'
                         ]
                     })
-                    .then( /* ... */ )
-                    .catch( /* ... */ );
+                    .then(newEditor1 => {
+                        newEditor1.editing.view.change((writer) => {
+                            writer.setStyle(
+                                "height",
+                                "155px",
+                                newEditor1.editing.view.document.getRoot()
+                            );
+                        });
+                        setInterval(() => Livewire.dispatch('ubahData'), 1000);
+                        document.addEventListener('livewire:init', () => {
+                            Livewire.on('berhasilUpdate', (event) => {
+                                const a = event[0];
+                                if (a === "Closed" || a === "Cancelled") {
+                                    newEditor1.enableReadOnlyMode('immediate_corrective_action');
+                                } else {
+                                    newEditor1.disableReadOnlyMode('immediate_corrective_action');
+                                }
+                            });
+                        });
+                        newEditor1.model.document.on('change:data', () => {
+                            @this.set('immediate_corrective_action', newEditor1.getData())
+                        });
+
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
             </script>
 
             <script nonce="{{ csp_nonce() }}" type="module">
