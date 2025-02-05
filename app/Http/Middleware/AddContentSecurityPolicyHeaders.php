@@ -1,11 +1,11 @@
 <?php
- 
+
 namespace App\Http\Middleware;
- 
+
 use Closure;
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Vite;
- 
+
 class AddContentSecurityPolicyHeaders
 {
     /**
@@ -18,9 +18,10 @@ class AddContentSecurityPolicyHeaders
     public function handle($request, Closure $next)
     {
         Vite::useCspNonce();
- 
+
         return $next($request)->withHeaders([
             'Content-Security-Policy' => "script-src 'nonce-".Vite::cspNonce()."'",
+            'Content-Security-Policy' => "style-src 'nonce-".Vite::cspNonce()."'",
             'Content-Security-Policy' => "base-uri 'self'",
             'Content-Security-Policy' => "connect-src'self'",
             'Content-Security-Policy' => "default-src 'self'",
@@ -28,7 +29,7 @@ class AddContentSecurityPolicyHeaders
             'Content-Security-Policy' => "img-src 'self'",
             'Content-Security-Policy' => "media-src 'self'",
             'Content-Security-Policy' => "object-src 'self'",
-           
+
         ]);
     }
 }
