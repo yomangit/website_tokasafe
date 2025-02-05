@@ -31,7 +31,9 @@
                                                 {{ $notification->data['line'] }}</label>
                                         </td>
                                         <td>
-                                            dte
+                                            <x-icon-btn-delete wire:click="delete({{ $notification->id }})"
+                                                wire:confirm.prompt="Are you sure you want to delete this notification ?\n\nType DELETE to confirm|DELETE"
+                                                data-tip="Delete"></x-icon-btn-delete>
                                         </td>
                                     </tr>
                                 @endforeach
