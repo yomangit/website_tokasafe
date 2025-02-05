@@ -1,5 +1,4 @@
 <div>
-    <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js"></script>
     <div role="tablist" class="tabs tabs-lifted">
         <input type="radio" name="my_tabs_2" role="tab" checked="checked" class="tab" aria-label="Event" />
         <div role="tabpanel" class="p-6 tab-content bg-base-100 border-base-300 rounded-box">
@@ -32,9 +31,10 @@
                 border-radius: 0px !important;
             }
         </style>
-        <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js"></script>
-        <script>
-            DecoupledEditor
+        <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js">
+            < /> <
+            script >
+                DecoupledEditor
                 .create(document.querySelector('#ckeditor5'), {
                     toolbar: ['bold', 'italic', 'underline', 'bulletedList', 'numberedList', 'link', 'blockQuote']
                 })
