@@ -17,22 +17,13 @@
         </div>
     </div>
     @push('styles')
-        <style>
-            #ckeditor5 {
-                min-height: 100px;
-                border: 1px solid #c4c4c4 !important;
-                border-radius: 0px !important;
-                border-top: 0px !important;
-            }
-
-            .ck.ck-toolbar.ck-rounded-corners {
-                border-radius: 0px !important;
-            }
-        </style>
         <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
         <script>
             ClassicEditor
-                .create(document.querySelector('#editor'))
+                .create(document.querySelector('#editor'), {
+                    plugins: [Essentials, Paragraph, Bold, Italic, Underline],
+                    toolbar: ['bold', 'italic', 'underline']
+                })
                 .catch(error => {
                     console.error(error);
                 });
