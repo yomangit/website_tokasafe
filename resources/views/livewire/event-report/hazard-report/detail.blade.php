@@ -1,7 +1,22 @@
 <div>
     <x-notification />
-    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script> --}}
-    <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js"></script>
+    @push('styles')
+        <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" />
+        <script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js"></script>
+        <!-- Add if you use premium features. -->
+        <link rel="stylesheet"
+            href="https://cdn.ckeditor.com/ckeditor5-premium-features/44.1.0/ckeditor5-premium-features.css" />
+        <script src="https://cdn.ckeditor.com/ckeditor5-premium-features/44.1.0/ckeditor5-premium-features.umd.js"></script>
+        <!--  -->
+        <style>
+            .main-container {
+                width: 795px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
+    @endpush
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
     @section('bradcrumbs')
         {{ Breadcrumbs::render('hazardReportDetail', $data_id) }}
     @endsection
@@ -464,19 +479,42 @@
                         </div>
                         <x-label-error :messages="$errors->get('comment')" />
                     </div>
-                    <div>
-                        <div wire:ignore class="w-full form-control">
-                            <x-label-no-req :value="__('moderator comment')" />
-
-                            <textarea id="ckeditor5"><p>This is the initial editor content.</p></textarea>
-
+                    <div class="main-container">
+                        <div id="editor">
+                            <p>Hello from CKEditor 5!</p>
                         </div>
-                        <x-label-error :messages="$errors->get('comment')" />
                     </div>
                 </div>
             </div>
         </form>
         <livewire:event-report.hazard-report.action.create>
+            <script>
+                const {
+                    ClassicEditor,
+                    Essentials,
+                    Bold,
+                    Italic,
+                    Font,
+                    Paragraph
+                } = CKEDITOR;
+                const {
+                    FormatPainter
+                } = CKEDITOR_PREMIUM_FEATURES;
+
+                ClassicEditor
+                    .create(document.querySelector('#editor'), {
+                        licenseKey: '<YOUR_LICENSE_KEY>',
+                        plugins: [Essentials, Bold, Italic, Font, Paragraph, FormatPainter],
+                        toolbar: [
+                            'undo', 'redo', '|', 'bold', 'italic', '|',
+                            'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
+                            'formatPainter'
+                        ]
+                    })
+                    .then( /* ... */ )
+                    .catch( /* ... */ );
+            </script>
+
             <script nonce="{{ csp_nonce() }}" type="module">
                 ClassicEditor
                     .create(document.querySelector('#immediate_corrective_action'), {
@@ -638,21 +676,6 @@
                     .catch(error => {
                         console.error(error);
                     });
-
-                <
-                script >
-                    DecoupledEditor
-                    .create(document.querySelector('#ckeditor5'), {
-                        toolbar: ['bold', 'italic', 'underline', 'bulletedList', 'numberedList', 'link', 'blockQuote']
-                    })
-                    .then(editor => {
-                        const toolbarContainer = document.querySelector('#toolbar-container');
-                        toolbarContainer.appendChild(editor.ui.view.toolbar.element);
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
-            </script>
             </script>
 
 </div>
