@@ -19,6 +19,20 @@
             Tab content 3
         </div>
     </div>
+    @push('styles')
+        <style>
+            #ckeditor5 {
+                min-height: 100px;
+                border: 1px solid #c4c4c4 !important;
+                border-radius: 0px !important;
+                border-top: 0px !important;
+            }
+
+            .ck.ck-toolbar.ck-rounded-corners {
+                border-radius: 0px !important;
+            }
+        </style>
+    @endpush
     <script>
         DecoupledEditor
             .create(document.querySelector('#ckeditor5'), {
