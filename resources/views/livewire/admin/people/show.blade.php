@@ -31,10 +31,9 @@
                 border-radius: 0px !important;
             }
         </style>
-        <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js">
-            < /> <
-            script >
-                DecoupledEditor
+        <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js"></script>
+        <script>
+            DecoupledEditor
                 .create(document.querySelector('#ckeditor5'), {
                     toolbar: ['bold', 'italic', 'underline', 'bulletedList', 'numberedList', 'link', 'blockQuote']
                 })
