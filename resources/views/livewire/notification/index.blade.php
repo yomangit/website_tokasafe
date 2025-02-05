@@ -12,7 +12,7 @@
             </div>
         </label>
         <div tabindex="0"
-            class=" z-[1] card card-compact dropdown-content w-56 lg:w-96 h-56 lg:h-2/5 xl:h-[48rem] bg-base-100 shadow">
+            class=" z-[1] card card-compact dropdown-content w-56 lg:w-96 h-56 lg:h-3/6 xl:h-[48rem] bg-base-100 shadow">
             <div wire:poll class=" card-body">
 
                 <div role="tablist" class="tabs tabs-bordered ">
