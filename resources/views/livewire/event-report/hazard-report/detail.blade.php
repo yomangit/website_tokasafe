@@ -482,7 +482,8 @@
             </div>
         </form>
         <livewire:event-report.hazard-report.action.create>
-            <script type="importmap">
+            @push('scripts')
+                <script type="importmap">
                 {
                     "imports": {
                         "ckeditor5": "../../assets/vendor/ckeditor5.js",
@@ -490,31 +491,32 @@
                     }
                 }
             </script>
-            <script type="module">
-                import {
-                    ClassicEditor,
-                    Essentials,
-                    Paragraph,
-                    Bold,
-                    Italic,
-                    Font
-                } from 'ckeditor5';
+                <script type="module">
+                    import {
+                        ClassicEditor,
+                        Essentials,
+                        Paragraph,
+                        Bold,
+                        Italic,
+                        Font
+                    } from 'ckeditor5';
 
-                ClassicEditor
-                    .create(document.querySelector('#editor'), {
-                        plugins: [Essentials, Paragraph, Bold, Italic, Font],
-                        toolbar: [
-                            'undo', 'redo', '|', 'bold', 'italic', '|',
-                            'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
-                        ]
-                    })
-                    .then(editor => {
-                        window.editor = editor;
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
-            </script>
+                    ClassicEditor
+                        .create(document.querySelector('#editor'), {
+                            plugins: [Essentials, Paragraph, Bold, Italic, Font],
+                            toolbar: [
+                                'undo', 'redo', '|', 'bold', 'italic', '|',
+                                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+                            ]
+                        })
+                        .then(editor => {
+                            window.editor = editor;
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                </script>
+            @endpush
             {{-- <script nonce="{{ csp_nonce() }}" type="module">
                 ClassicEditor
                     .create(document.querySelector('#immediate_corrective_action'), {
