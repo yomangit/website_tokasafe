@@ -1,6 +1,12 @@
 <div>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
-
+    <style>
+        .ck-editor__editable[role="textbox"] {
+            /* Editing area */
+            /* min-height: 200px; */
+            padding: 35px;
+        }
+    </style>
     <div role="tablist" class="tabs tabs-lifted">
         <input type="radio" name="my_tabs_2" role="tab" checked="checked" class="tab" aria-label="Event" />
         <div role="tabpanel" class="p-6 tab-content bg-base-100 border-base-300 rounded-box">
