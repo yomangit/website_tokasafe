@@ -467,9 +467,8 @@
                     <div>
                         <div wire:ignore class="w-full form-control">
                             <x-label-no-req :value="__('moderator comment')" />
-                            <div id="ckeditor5">
-                                <p>This is the initial editor content.</p>
-                            </div>
+
+                            <textarea id="ckeditor5"><p>This is the initial editor content.</p></textarea>
 
                         </div>
                         <x-label-error :messages="$errors->get('comment')" />
