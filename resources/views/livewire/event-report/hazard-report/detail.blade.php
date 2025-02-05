@@ -1,22 +1,6 @@
 <div>
     <x-notification />
-    @push('styles')
-        <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" />
-        <script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js"></script>
-        <!-- Add if you use premium features. -->
-        <link rel="stylesheet"
-            href="https://cdn.ckeditor.com/ckeditor5-premium-features/44.1.0/ckeditor5-premium-features.css" />
-        <script src="https://cdn.ckeditor.com/ckeditor5-premium-features/44.1.0/ckeditor5-premium-features.umd.js"></script>
-        <!--  -->
-        <style>
-            .main-container {
-
-                margin-left: auto;
-                margin-right: auto;
-            }
-        </style>
-    @endpush
-    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script> --}}
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
     @section('bradcrumbs')
         {{ Breadcrumbs::render('hazardReportDetail', $data_id) }}
     @endsection
@@ -479,41 +463,10 @@
                         </div>
                         <x-label-error :messages="$errors->get('comment')" />
                     </div>
-                    <div class="main-container">
-                        <div id="editor">
-                            <p>Hello from CKEditor 5!</p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </form>
         <livewire:event-report.hazard-report.action.create>
-            <script>
-                const {
-                    ClassicEditor,
-                    Essentials,
-                    Bold,
-                    Italic,
-                    Font,
-                    Paragraph
-                } = CKEDITOR;
-                const {
-                    FormatPainter
-                }
-
-                ClassicEditor
-                    .create(document.querySelector('#editor'), {
-
-                        plugins: [Essentials, Bold, Italic, Font, Paragraph, FormatPainter],
-                        toolbar: [
-                            'undo', 'redo', '|', 'bold', 'italic', '|',
-                            'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
-                        ]
-                    })
-                    .then( /* ... */ )
-                    .catch( /* ... */ );
-            </script>
-
             <script nonce="{{ csp_nonce() }}" type="module">
                 ClassicEditor
                     .create(document.querySelector('#immediate_corrective_action'), {
