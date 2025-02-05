@@ -4,7 +4,7 @@
         .ck-editor__editable[role="textbox"] {
             /* Editing area */
             /* min-height: 200px; */
-            padding: 35px;
+            padding: 200px;
         }
     </style>
     <div role="tablist" class="tabs tabs-lifted">
