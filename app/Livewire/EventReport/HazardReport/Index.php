@@ -5,14 +5,17 @@ namespace App\Livewire\EventReport\HazardReport;
 use Livewire\Component;
 use App\Models\StatusEvent;
 use App\Models\ActionHazard;
+use App\Models\Eventsubtype;
 use App\Models\HazardReport;
 use Livewire\Attributes\Url;
-use App\Models\TypeEventReport;
-use App\Models\Eventsubtype;
-use App\Models\EventUserSecurity;
 use App\Models\route_request;
-use Illuminate\Support\Facades\Request;
 use App\Models\choseEventType;
+use App\Models\TypeEventReport;
+use App\Models\EventParticipants;
+use App\Models\EventUserSecurity;
+use App\Models\HazardDocumentation;
+use Illuminate\Support\Facades\Request;
+
 class Index extends Component
 {
     #[Url]
@@ -25,7 +28,7 @@ class Index extends Component
 
         if (route_request::where('route_name','LIKE',Request::getPathInfo())->exists()) {
             $this->workflow_template_id = route_request::where('route_name','LIKE',Request::getPathInfo())->first()->workflow_template_id;
-           
+
            }else{
             $this->workflow_template_id ="";
            }
@@ -60,12 +63,12 @@ class Index extends Component
                 'eventType'
             ])->findSubmitter(trim($this->nilai))->searchStatus(trim($this->search_status))->searchEventType(trim($this->search_eventType))->searchEventSubType(trim($this->search_eventSubType))->search(trim($this->searching))->paginate(30);
         }
-      
+
          if (choseEventType::where('route_name','LIKE','%'. '/eventReport/hazardReport'.'%')->exists()) {
             $eventType = choseEventType::where('route_name','LIKE','%'. '/eventReport/hazardReport'.'%')->pluck('event_type_id');
-            
+
             $Event_type = TypeEventReport::whereIn('id', $eventType)->get();
-           
+
            }else{
             $Event_type =[];
            }
@@ -76,6 +79,29 @@ class Index extends Component
             'Status' => StatusEvent::get(),
             'EventType' =>  $Event_type,
         ])->extends('base.index', ['header' => 'Hazard Report', 'title' => 'Hazard Report'])->section('content');
+    }
+    public function delete()
+    {
+        $HazardReport = HazardReport::whereId($this->data_id);
+        $files = HazardDocumentation::searchHzdID(trim($this->data_id));
+        if (isset($files->first()->name_doc)) {
+            unlink(storage_path('app/public/documents/hazard/' .   $files->first()->name_doc));
+        }
+        $reference = $HazardReport->first()->reference;
+        $HazardReport->delete();
+        EventParticipants::where('reference',$reference)->delete();
+        return redirect()->route('hazardReport');
+        $this->dispatch(
+            'alert',
+            [
+                'text' => "The Event report was deleted!!",
+                'duration' => 3000,
+                'destination' => '/contact',
+                'newWindow' => true,
+                'close' => true,
+                'backgroundColor' => "linear-gradient(to right, #ff3333, #ff6666)",
+            ]
+        );
     }
 
 }
