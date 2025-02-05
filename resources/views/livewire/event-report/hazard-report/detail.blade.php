@@ -485,41 +485,33 @@
         <livewire:event-report.hazard-report.action.create>
             @push('scripts')
                 <script nonce="{{ csp_nonce() }}" src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js"></script>
-                {{-- <script type="importmap">
-                {
-                    "imports": {
-                        "ckeditor5": "../../assets/vendor/ckeditor5.js",
-                        "ckeditor5/": "../../assets/vendor/"
-                    }
-                } --}}
-            </script>
                 <script nonce="{{ csp_nonce() }}" type="module">
                     const {
-				ClassicEditor,
-				Essentials,
-				Paragraph,
-				Bold,
-				Italic,
-				Font
-			} = CKEDITOR;
-			// Create a free account and get <YOUR_LICENSE_KEY>
-			// https://portal.ckeditor.com/checkout?plan=free
-			ClassicEditor
-				.create( document.querySelector( '#editor' ), {
-					licenseKey: '<YOUR_LICENSE_KEY>',
-					plugins: [ Essentials, Paragraph, Bold, Italic, Font ],
-					toolbar: [
-						'undo', 'redo', '|', 'bold', 'italic', '|',
-						'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
-					]
-				} )
-				.then( editor => {
-					window.editor = editor;
-				} )
-				.catch( error => {
-					console.error( error );
-				} );
-		</script>
+                        ClassicEditor,
+                        Essentials,
+                        Paragraph,
+                        Bold,
+                        Italic,
+                        Font
+                    } = CKEDITOR;
+                    // Create a free account and get <YOUR_LICENSE_KEY>
+                    // https://portal.ckeditor.com/checkout?plan=free
+                    ClassicEditor
+                        .create(document.querySelector('#editor'), {
+                            licenseKey: '<YOUR_LICENSE_KEY>',
+                            plugins: [Essentials, Paragraph, Bold, Italic, Font],
+                            toolbar: [
+                                'undo', 'redo', '|', 'bold', 'italic', '|',
+                                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+                            ]
+                        })
+                        .then(editor => {
+                            window.editor = editor;
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                </script>
             @endpush
             {{-- <script nonce="{{ csp_nonce() }}" type="module">
                 ClassicEditor
@@ -684,4 +676,4 @@
                     });
             </script> --}}
 
-    </div>
+</div>
