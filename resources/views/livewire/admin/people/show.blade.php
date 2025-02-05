@@ -13,7 +13,7 @@
 
         <input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="Tab 3" />
         <div role="tabpanel" class="p-6 tab-content bg-base-100 border-base-300 rounded-box">
-            Tab content 3
+            Tab content
         </div>
     </div>
     @push('styles')
