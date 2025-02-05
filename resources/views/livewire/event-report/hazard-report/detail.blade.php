@@ -475,7 +475,7 @@
                         <x-label-error :messages="$errors->get('comment')" />
                     </div>
                     <div class="main-container">
-                        <div wire:ignore id="editor">
+                        <div id="editor1">
                             <p>Hello from CKEditor 5!</p>
                         </div>
                     </div>
@@ -497,7 +497,7 @@
                     // Create a free account and get <YOUR_LICENSE_KEY>
                     // https://portal.ckeditor.com/checkout?plan=free
                     ClassicEditor
-                        .create(document.querySelector('#editor'), {
+                        .create(document.querySelector('#editor1'), {
                             licenseKey: '<YOUR_LICENSE_KEY>',
                             plugins: [Essentials, Paragraph, Bold, Italic, Font],
                             toolbar: [
