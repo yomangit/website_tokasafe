@@ -19,7 +19,7 @@
                     <input type="radio" name="my_tabs_1" role="tab" class="tab " aria-label="All"
                         checked="checked" />
                     <div role="tabpanel"
-                        class="lg:h-[24rem] xl:h-[42rem] max-h-full px-2 overflow-y-auto md:max-h-screen tab-content">
+                        class="lg:h-[28rem] xl:h-[42rem] max-h-full px-2 overflow-y-auto md:max-h-screen tab-content">
                         <table class="table table-zebra table-xs">
                             <tbody>
                                 @foreach ($AllNotification as $notification)
@@ -38,7 +38,7 @@
                     <input type="radio" name="my_tabs_1" role="tab" class="tab text-sky-500"
                         aria-label="Unread" />
                     <div role="tabpanel"
-                        class="lg:h-[24rem] xl:h-[42rem] max-h-full px-2 overflow-y-auto md:max-h-screen tab-content">
+                        class="lg:h-[28rem] xl:h-[42rem] max-h-full px-2 overflow-y-auto md:max-h-screen tab-content">
                         <table class="table table-zebra table-xs">
                             <tbody>
                                 @forelse ($Unread as $notification)
