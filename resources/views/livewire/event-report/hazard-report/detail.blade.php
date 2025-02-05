@@ -483,7 +483,7 @@
             </div>
         </form>
         <livewire:event-report.hazard-report.action.create>
-            @push('scripts')
+            @push('styles')
                 <script nonce="{{ csp_nonce() }}" src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js"></script>
                 <script nonce="{{ csp_nonce() }}" type="module">
                     const {
