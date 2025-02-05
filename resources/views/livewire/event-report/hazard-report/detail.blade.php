@@ -507,8 +507,7 @@
                         plugins: [Essentials, Bold, Italic, Font, Paragraph, FormatPainter],
                         toolbar: [
                             'undo', 'redo', '|', 'bold', 'italic', '|',
-                            'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
-                            'formatPainter'
+                            'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
                         ]
                     })
                     .then( /* ... */ )
