@@ -1,5 +1,5 @@
 <div>
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5-premium-features/44.1.0/ckeditor5-premium-features.umd.js"></script>
 
     <div role="tablist" class="tabs tabs-lifted">
         <input type="radio" name="my_tabs_2" role="tab" checked="checked" class="tab" aria-label="Event" />
