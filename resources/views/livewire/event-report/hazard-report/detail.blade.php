@@ -499,7 +499,7 @@
                 } = CKEDITOR;
                 const {
                     FormatPainter
-                } = CKEDITOR_PREMIUM_FEATURES;
+                }
 
                 ClassicEditor
                     .create(document.querySelector('#editor'), {
