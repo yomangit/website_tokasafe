@@ -13,13 +13,13 @@
         </label>
         <div tabindex="0"
             class=" z-[1] card card-compact dropdown-content w-56 lg:w-96 h-56 lg:h-96 xl:h-[48rem] bg-base-100 shadow">
-            <div wire:poll class="h-56 overflow-y-auto card-body ">
+            <div wire:poll class=" card-body">
 
                 <div role="tablist" class="tabs tabs-bordered ">
                     <input type="radio" name="my_tabs_1" role="tab" class="tab " aria-label="All"
                         checked="checked" />
                     <div role="tabpanel" class="p-10 tab-content">
-                        <div class="overflow-y-auto ">
+                        <div class="h-56 overflow-y-auto">
                             <table class="table table-zebra table-xs">
                                 <tbody>
                                     @foreach ($AllNotification as $notification)
@@ -39,24 +39,26 @@
                     <input type="radio" name="my_tabs_1" role="tab" class="tab text-sky-500"
                         aria-label="Unread" />
                     <div role="tabpanel" class="p-10 tab-content">
-                        <table class="table table-zebra table-xs">
-                            <tbody>
-                                @forelse ($Unread as $notification)
-                                    <tr>
-                                        <td>
-                                            <label
-                                                wire:click="readNotification('{{ $notification->id }}','{{ $notification->data['url'] }}')"
-                                                class="text-xs cursor-pointer font-signika text-sky-500">
-                                                {{ $notification->data['line'] }}</label>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td>all notifications are read</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                        <div class="h-56 overflow-y-auto">
+                            <table class="table table-zebra table-xs">
+                                <tbody>
+                                    @forelse ($Unread as $notification)
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    wire:click="readNotification('{{ $notification->id }}','{{ $notification->data['url'] }}')"
+                                                    class="text-xs cursor-pointer font-signika text-sky-500">
+                                                    {{ $notification->data['line'] }}</label>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td>all notifications are read</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
