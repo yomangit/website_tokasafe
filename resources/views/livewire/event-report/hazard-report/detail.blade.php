@@ -498,15 +498,14 @@
                     // https://portal.ckeditor.com/checkout?plan=free
                     ClassicEditor
                         .create(document.querySelector('#editor1'), {
-                            licenseKey: '<YOUR_LICENSE_KEY>',
                             plugins: [Essentials, Paragraph, Bold, Italic, Font],
                             toolbar: [
                                 'undo', 'redo', '|', 'bold', 'italic', '|',
                                 'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
                             ]
                         })
-                        .then(editor => {
-                            window.editor = editor;
+                        .then(editor1 => {
+                            window.editor1 = editor;
                         })
                         .catch(error => {
                             console.error(error);
