@@ -463,6 +463,16 @@
                         </div>
                         <x-label-error :messages="$errors->get('comment')" />
                     </div>
+                    <div>
+                        <div wire:ignore class="w-full form-control">
+                            <x-label-no-req :value="__('moderator comment')" />
+                            <div id="ckeditor5">
+                                <p>This is the initial editor content.</p>
+                            </div>
+
+                        </div>
+                        <x-label-error :messages="$errors->get('comment')" />
+                    </div>
                 </div>
             </div>
         </form>
@@ -628,6 +638,21 @@
                     .catch(error => {
                         console.error(error);
                     });
+
+                <
+                script >
+                    DecoupledEditor
+                    .create(document.querySelector('#ckeditor5'), {
+                        toolbar: ['bold', 'italic', 'underline', 'bulletedList', 'numberedList', 'link', 'blockQuote']
+                    })
+                    .then(editor => {
+                        const toolbarContainer = document.querySelector('#toolbar-container');
+                        toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            </script>
             </script>
 
 </div>
