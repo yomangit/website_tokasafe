@@ -502,7 +502,7 @@
                 } = CKEDITOR_PREMIUM_FEATURES;
 
                 ClassicEditor
-                    .create(document.querySelector('#editor'), {
+                    .create(document.querySelector('#immediate_corrective_action'), {
                         licenseKey: '<YOUR_LICENSE_KEY>',
                         plugins: [Essentials, Bold, Italic, Font, Paragraph, FormatPainter],
                         toolbar: [
@@ -512,13 +512,7 @@
                         ]
                     })
                     .then(newEditor1 => {
-                        newEditor1.editing.view.change((writer) => {
-                            writer.setStyle(
-                                "height",
-                                "155px",
-                                newEditor1.editing.view.document.getRoot()
-                            );
-                        });
+
                         setInterval(() => Livewire.dispatch('ubahData'), 1000);
                         document.addEventListener('livewire:init', () => {
                             Livewire.on('berhasilUpdate', (event) => {
