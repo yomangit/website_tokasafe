@@ -3,6 +3,13 @@
 
 
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <style>
+        .ck-editor__editable[role="textbox"] {
+            /* Editing area */
+            /* min-height: 200px; */
+            padding-left: 40px;
+        }
+    </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     @section('bradcrumbs')
@@ -14,37 +21,37 @@
     <form wire:submit.prevent='store' >
         <div wire:target='store' wire:loading.class="skeleton">
             {{-- OBSERVER --}}
-            <div role="tablist" class="tabs tabs-lifted mb-4">
+            <div role="tablist" class="mb-4 tabs tabs-lifted">
                 <input type="radio" name="my_tabs_1" role="tab"
-                    class="tab font-signika font-semibold text-rose-500 " aria-label="1.&ensp;Observer"
+                    class="font-semibold tab font-signika text-rose-500 " aria-label="1.&ensp;Observer"
                     checked="checked" />
-                <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6 ">
+                <div role="tabpanel" class="p-6 tab-content bg-base-100 border-base-300 rounded-box ">
                     <div class="grid gap-1 sm:grid-cols-2 lg:grid-cols-4">
 
                         <div class="w-full max-w-xs sm:max-w-sm xl:max-w-xl form-control">
                             <x-label-req :value="__('Name')" />
                             <div class="dropdown dropdown-end">
-                                <x-input-search-with-error placeholder="search name" wire:model.live='name_observer' 
+                                <x-input-search-with-error placeholder="search name" wire:model.live='name_observer'
                                     :error="$errors->get('name_observer')" class="cursor-pointer read-only:bg-gray-200 " tabindex="0"
                                     role="button" />
                                 <div tabindex="0"
                                     class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
                                     <div class="relative">
-                                        <div class="overflow-auto scroll-smooth focus:scroll-auto h-32 pt-2 mb-2"
+                                        <div class="h-32 pt-2 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                             wire:target='name_observer' wire:loading.class='hidden'>
                                             @forelse ($Observer as $spv_area)
                                                 <div wire:click="name_observerClick({{ $spv_area->id }})"
-                                                    class="border-b border-base-200 flex flex-col cursor-pointer active:bg-gray-400">
+                                                    class="flex flex-col border-b cursor-pointer border-base-200 active:bg-gray-400">
                                                     <strong
                                                         class="text-[10px] text-slate-800">{{ $spv_area->lookup_name }}</strong>
                                                 </div>
                                             @empty
                                                 <strong
-                                                    class="text-xs bg-clip-text text-transparent bg-gradient-to-r from-rose-400 to-rose-800">Name
+                                                    class="text-xs text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-rose-800">Name
                                                     Not Found!!!</strong>
                                             @endforelse
                                         </div>
-                                        <div class="hidden text-center pt-5" wire:target='name_observer'
+                                        <div class="hidden pt-5 text-center" wire:target='name_observer'
                                             wire:loading.class.remove='hidden'> <x-loading-spinner /></div>
 
                                     </div>
@@ -72,38 +79,38 @@
                                     <div class="flex flex-col w-full gap-1 lg:flex-row">
                                         <div class="grid flex-grow h-40 card bg-base-300 rounded-box ">
                                             <ul class="list-none text-[9px] list-inside overflow-auto">
-                                                <li class="cursor-pointer hover:bg-base-200 px-2">Company</li>
+                                                <li class="px-2 cursor-pointer hover:bg-base-200">Company</li>
                                                 @foreach ($ParentCompany as $item)
                                                     <li wire:click="parentCompany({{ $item->id }})"
-                                                        class="cursor-pointer hover:bg-base-200 px-4 ">
+                                                        class="px-4 cursor-pointer hover:bg-base-200 ">
                                                         {{ $item->name_category_company }}</li>
                                                 @endforeach
-                                                <li class="cursor-pointer hover:bg-base-200 px-2">Business Unit</li>
+                                                <li class="px-2 cursor-pointer hover:bg-base-200">Business Unit</li>
                                                 @foreach ($BusinessUnit as $bu)
                                                     <li wire:click="businessUnit({{ $bu->name_company_id }})"
-                                                        class="cursor-pointer hover:bg-base-200 px-4">
+                                                        class="px-4 cursor-pointer hover:bg-base-200">
                                                         {{ $bu->Company->name_company }}</li>
                                                 @endforeach
-                                                <li class="cursor-pointer hover:bg-base-200 px-2">Department</li>
+                                                <li class="px-2 cursor-pointer hover:bg-base-200">Department</li>
                                                 @foreach ($Department as $item)
                                                     <li wire:click="department({{ $item->id }})"
-                                                        class="cursor-pointer hover:bg-base-200 px-4">
+                                                        class="px-4 cursor-pointer hover:bg-base-200">
                                                         {{ $item->BusinesUnit->Company->name_company }}-{{ $item->Department->department_name }}
                                                     </li>
                                                 @endforeach
-                                                
-                                                <li class="cursor-pointer hover:bg-base-200 px-2">Division</li>
+
+                                                <li class="px-2 cursor-pointer hover:bg-base-200">Division</li>
                                                 @foreach ($Divisi as $divisi)
                                                     <li wire:click="divisi({{ $divisi->company_id }})"
-                                                        class="cursor-pointer hover:bg-base-200 px-4">
+                                                        class="px-4 cursor-pointer hover:bg-base-200">
                                                         {{ $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company  }}
                                                     </li>
                                                 @endforeach
                                             </ul>
                                         </div>
-                                        <div class="grid flex-grow h-40 card bg-base-300 rounded-box overflow-auto">
-                                            <ul class=" bg-base-200 rounded-box w-56  list-inside list-disc py-2 px-4">
-                                            
+                                        <div class="grid flex-grow h-40 overflow-auto card bg-base-300 rounded-box">
+                                            <ul class="w-56 px-4 py-2 list-disc list-inside  bg-base-200 rounded-box">
+
                                               @forelse ($Division as $item)
                                               <li wire:click="select_division({{ $item->id }})" class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer"> {{ $item->DeptByBU->BusinesUnit->Company->name_company }}-{{ $item->DeptByBU->Department->department_name }}
                                                @if (!empty($item->company_id))
@@ -114,7 +121,7 @@
                                                 @endif
                                                 </li>
                                                 @empty
-                                                <li class='text-center font-semibold text-rose-500'>Division not found!! </li>
+                                                <li class='font-semibold text-center text-rose-500'>Division not found!! </li>
                                                  @endforelse
                                             </ul>
                                         </div>
@@ -124,9 +131,9 @@
                             <x-label-error :messages="$errors->get('workgroup_name')" />
                         </div>
                     </div>
-                    <div class="card   bg-base-100 mt-2 ">
-                        <div class="card-body border p-2 border-gray-300 rounded-box">
-                            <label class="card-title font-signika text-lg">Observer Team</label>
+                    <div class="mt-2 card bg-base-100 ">
+                        <div class="p-2 border border-gray-300 card-body rounded-box">
+                            <label class="text-lg card-title font-signika">Observer Team</label>
                             <x-btn-add data-tip="Add people" wire:click="$dispatch('openModalPtoTeam')" />
                             <livewire:event-report.pto-report.observer-team.index :reference="$reference">
                         </div>
@@ -134,12 +141,12 @@
                 </div>
             </div>
             {{-- TASK BEING OBSERVED --}}
-            <div role="tablist" class="tabs tabs-lifted mb-4">
+            <div role="tablist" class="mb-4 tabs tabs-lifted">
 
                 <input type="radio" name="my_tabs_2" role="tab"
-                    class="tab font-signika font-semibold text-rose-500 " aria-label="2.&ensp;Task Being Observed"
+                    class="font-semibold tab font-signika text-rose-500 " aria-label="2.&ensp;Task Being Observed"
                     checked="checked" />
-                <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+                <div role="tabpanel" class="p-6 tab-content bg-base-100 border-base-300 rounded-box">
                     <div class="grid gap-1 sm:grid-cols-2 lg:grid-cols-3">
                         <div class="w-full max-w-xs sm:max-w-sm xl:max-w-xl form-control">
                             <x-label-req :value="__('Task Name')" />
@@ -156,21 +163,21 @@
                                 <div tabindex="0"
                                     class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
                                     <div class="relative">
-                                        <div class="overflow-auto scroll-smooth focus:scroll-auto h-32 pt-2 mb-2"
+                                        <div class="h-32 pt-2 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                             wire:target='supervisor_area' wire:loading.class='hidden'>
                                             @forelse ($Supervisor_Area as $spv_area)
                                                 <div wire:click="spvClick({{ $spv_area->id }})"
-                                                    class="border-b border-base-200 flex flex-col cursor-pointer ">
+                                                    class="flex flex-col border-b cursor-pointer border-base-200 ">
                                                     <strong
                                                         class="text-[10px] text-slate-800">{{ $spv_area->lookup_name }}</strong>
                                                 </div>
                                             @empty
                                                 <strong
-                                                    class="text-xs bg-clip-text text-transparent bg-gradient-to-r from-rose-400 to-rose-800">Name
+                                                    class="text-xs text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-rose-800">Name
                                                     Not Found!!!</strong>
                                             @endforelse
                                         </div>
-                                        <div class="hidden text-center pt-5" wire:target='supervisor_area'
+                                        <div class="hidden pt-5 text-center" wire:target='supervisor_area'
                                             wire:loading.class.remove='hidden'> <x-loading-spinner /></div>
 
                                     </div>
@@ -266,7 +273,7 @@
                 </div>
             </div>
             {{-- TYPE OF ACTIVITIES --}}
-            <div role="tablist" class="tabs tabs-lifted mb-4">
+            <div role="tablist" class="mb-4 tabs tabs-lifted">
                 <input type="radio" name="my_tabs_3" role="tab"
                     class="tab font-signika font-semibold text-rose-500  tab-active @error('type_of_activities')[--tab-border-color:#f43f5e]@enderror"
                     aria-label="3.&ensp;Types Of Activities" checked="checked" />
@@ -274,7 +281,7 @@
                     class="tab-content bg-base-100 border-base-300  @error('type_of_activities') border-rose-500  @enderror  rounded-box p-6 ">
 
                     <fieldset class=" p-[2px] gap-1">
-                        <div class="grid  sm:grid-cols-2 lg:grid-cols-4">
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4">
                             <div class="flex items-center gap-1 pb-2">
                                 <input wire:model.live="type_of_activities" name="radio-13" id="1"
                                     class="radio-xs peer/1 checked:bg-emerald-500 radio" type="radio"
@@ -366,7 +373,7 @@
                                 name="13"value="Other activities" />
                             <label for="draft"
                                 class="text-xs font-semibold peer-checked/draft:text-indigo-500">{{ __('Other activities') }}</label>
-                            <div class="hidden peer-checked/draft:block w-full max-w-lg form-control">
+                            <div class="hidden w-full max-w-lg peer-checked/draft:block form-control">
                                 <x-input wire:model.live='type_of_activities_other' :error="$errors->get('type_of_activities_other')" />
                                 <x-label-error :messages="$errors->get('type_of_activities_other')" />
                             </div>
@@ -377,16 +384,16 @@
                 </div>
             </div>
             {{-- OBSERVERVATION CHECKLIST --}}
-            <div role="tablist" class="tabs tabs-lifted mb-4">
+            <div role="tablist" class="mb-4 tabs tabs-lifted">
                 <input type="radio" name="my_tabs_4" role="tab"
-                    class="tab font-signika font-semibold text-rose-500 " aria-label="4.&ensp;Observation Checklist"
+                    class="font-semibold tab font-signika text-rose-500 " aria-label="4.&ensp;Observation Checklist"
                     checked="checked" />
-                <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-2 ">
+                <div role="tabpanel" class="p-2 tab-content bg-base-100 border-base-300 rounded-box ">
                     {{-- Abilities of the Team Performing Task --}}
                     <span
-                        class="divider divider-error text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-orange-500">Abilities
+                        class="text-transparent divider divider-error bg-clip-text bg-gradient-to-r from-rose-500 to-orange-500">Abilities
                         of the Team Performing Task</span>
-                    <div class="lg:grid lg:gap-1 lg:max-w-none lg:grid-cols-2 divide-x-2 shadow-md">
+                    <div class="divide-x-2 shadow-md lg:grid lg:gap-1 lg:max-w-none lg:grid-cols-2">
                         <div class="overflow-x-auto">
                             <table class="table table-xs ">
                                 <thead>
@@ -403,7 +410,7 @@
                                     <tr
                                         class="text-center @error('step_of_the_task_in_correct_order') border-rose-500 border-2  @enderror">
                                         <th>1</th>
-                                        <td class="text-left  ">Step of the task in correct order</td>
+                                        <td class="text-left ">Step of the task in correct order</td>
                                         <td><input wire:model.live='step_of_the_task_in_correct_order' type="radio"
                                                 value="yes" name="radio-1"
                                                 class="radio radio-xs checked:bg-blue-500" /></td>
@@ -515,7 +522,7 @@
                             </table>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="table table-xs text-center">
+                            <table class="table text-center table-xs">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -634,10 +641,10 @@
 
                     {{--  JSEA or Work Instruction(WI) --}}
                     <span
-                        class="divider divider-error text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-orange-500">Adequacy
+                        class="text-transparent divider divider-error bg-clip-text bg-gradient-to-r from-rose-500 to-orange-500">Adequacy
                         of Work Guidance</span>
-                    <div class="bg-slate-200 text-center font-signika "> JSEA or Work Instruction(SWI)</div>
-                    <div class="lg:grid lg:gap-1 lg:max-w-none lg:grid-cols-2 divide-x-2 shadow-md">
+                    <div class="text-center bg-slate-200 font-signika "> JSEA or Work Instruction(SWI)</div>
+                    <div class="divide-x-2 shadow-md lg:grid lg:gap-1 lg:max-w-none lg:grid-cols-2">
                         <div class="overflow-x-auto">
                             <table class="table table-xs ">
                                 <thead>
@@ -696,7 +703,7 @@
                             </table>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="table table-xs text-center">
+                            <table class="table text-center table-xs">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -754,8 +761,8 @@
                         </div>
                     </div>
                     {{-- SOP or COP --}}
-                    <div class="bg-slate-200 text-center font-signika "> Prosedur or COP</div>
-                    <div class="lg:grid lg:gap-1 lg:max-w-none lg:grid-cols-2 divide-x-2 shadow-md">
+                    <div class="text-center bg-slate-200 font-signika "> Prosedur or COP</div>
+                    <div class="divide-x-2 shadow-md lg:grid lg:gap-1 lg:max-w-none lg:grid-cols-2">
                         <div class="overflow-x-auto">
                             <table class="table table-xs ">
                                 <thead>
@@ -800,7 +807,7 @@
                             </table>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="table table-xs text-center">
+                            <table class="table text-center table-xs">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -856,22 +863,22 @@
             </div>
 
             {{-- DOCUMENTATION --}}
-            <div role="tablist" class="tabs tabs-lifted mb-4">
+            <div role="tablist" class="mb-4 tabs tabs-lifted">
                 <input type="radio" name="my_tabs_5" role="tab"
-                    class="tab font-signika font-semibold text-rose-500 "
+                    class="font-semibold tab font-signika text-rose-500 "
                     aria-label="5.&ensp;Documentation" checked="checked" />
-                <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6 ">
+                <div role="tabpanel" class="p-6 tab-content bg-base-100 border-base-300 rounded-box ">
                     <x-btn-add data-tip="Add data" wire:click="$dispatch('documentation_pto')" />
 
                     <livewire:event-report.pto-report.documentation.index :reference="$reference">
                 </div>
             </div>
             {{-- DETAIL OF CORRECTIVE ACTIONS --}}
-            <div role="tablist" class="tabs tabs-lifted mb-4">
+            <div role="tablist" class="mb-4 tabs tabs-lifted">
                 <input type="radio" name="my_tabs_6" role="tab"
-                    class="tab font-signika font-semibold text-rose-500 "
+                    class="font-semibold tab font-signika text-rose-500 "
                     aria-label="5.&ensp;Detail Of Corrective Actions" checked="checked" />
-                <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6 ">
+                <div role="tabpanel" class="p-6 tab-content bg-base-100 border-base-300 rounded-box ">
                     <x-btn-add data-tip="Add data" wire:click="$dispatch('openModalActionPTO')" />
 
                     <livewire:event-report.pto-report.action.index :reference="$reference">
@@ -879,11 +886,11 @@
             </div>
             {{-- TABLE RISK ASSESSMENT --}}
             <div
-                class="flex items-center flex-col-reverse md:flex-row md:divide-x-2 divide-late-400/25 rounded-sm border-2 mt-2 border-slate-400/25">
+                class="flex flex-col-reverse items-center mt-2 border-2 rounded-sm md:flex-row md:divide-x-2 divide-late-400/25 border-slate-400/25">
 
-                <div class="flex-auto p-2  divide-y-2 divide-slate-400/25">
+                <div class="flex-auto p-2 divide-y-2 divide-slate-400/25">
                     <div class="flex items-center">
-                        <div class="flex-none w-52 px-2">
+                        <div class="flex-none px-2 w-52">
                             <div class="w-full max-w-md xl:max-w-xl form-control">
                                 <x-label-req :value="__('Potential Consequence')" />
 
@@ -898,13 +905,13 @@
                                 <x-label-error :messages="$errors->get('risk_consequence_id')" />
                             </div>
                         </div>
-                        <div class="px-2 w-full">
+                        <div class="w-full px-2">
                             <p class="text-justify ">
                                 {{ $risk_consequence_doc }}
                         </div>
                     </div>
                     <div class="flex items-center">
-                        <div class="flex-none w-52 px-2">
+                        <div class="flex-none px-2 w-52">
                             <div class="w-full max-w-md xl:max-w-xl form-control">
                                 <x-label-req :value="__('Potential Likelihood')" />
                                 <x-select wire:model.live='risk_likelihood_id' :error="$errors->get('risk_likelihood_id')">
@@ -926,14 +933,14 @@
                 </div>
 
                 <div class="flex-none md:w-72 ">
-                    <div class="overflow-x-auto  m-1">
+                    <div class="m-1 overflow-x-auto">
                         <table class="table bg-base-300 table-xs">
                             <caption class="caption-top">
                                 Table Initial Risk Assessment
                             </caption>
                             <thead>
                                 <tr class="">
-                                    <th colspan="2" class="border-2 border-black text-center p-0">Legand</th>
+                                    <th colspan="2" class="p-0 text-center border-2 border-black">Legand</th>
                                     @foreach ($RiskAssessments as $risk_assessment)
                                         <td
                                             class="rotate_text text-start text-xs border-2 border-black   {{ $risk_assessment->colour }}">
@@ -943,9 +950,9 @@
                                     @endforeach
                                 </tr>
                                 <tr class="">
-                                    <th class="border-2 border-black text-center">Likelihood</th>
+                                    <th class="text-center border-2 border-black">Likelihood</th>
                                     @foreach ($RiskConsequence as $risk_consequence)
-                                        <th class="rotate_text text-start border-2 border-black">
+                                        <th class="border-2 border-black rotate_text text-start">
                                             {{ $risk_consequence->risk_consequence_name }}</th>
                                     @endforeach
                                 </tr>
@@ -957,7 +964,7 @@
                                             {{ $risk_likelihood->risk_likelihoods_name }}
                                         </th>
                                         @foreach ($risk_likelihood->RiskConsequence()->get() as $risk_consequence)
-                                            <th class=" p-0 text-xs font-semibold text-center border-2 border-black ">
+                                            <th class="p-0 text-xs font-semibold text-center border-2 border-black ">
                                                 <label
                                                     wire:click="riskId({{ $risk_likelihood->id }}, {{ $risk_consequence->id }},{{ $TableRisk->where('risk_likelihood_id', $risk_likelihood->id)->where('risk_consequence_id', $risk_consequence->id)->first()->risk_assessment_id }})"
                                                     class="btn p-0 mt-1 btn-block btn-xs @if (
@@ -979,21 +986,21 @@
                 @foreach ($RiskAssessment as $item)
                     <tr>
                         <th class="w-40 text-xs border-2 border-slate-400">Potential Risk Rating</th>
-                        <td class="text-xs pl-2 border-slate-400 border-2">
+                        <td class="pl-2 text-xs border-2 border-slate-400">
                             {{ $item->RiskAssessment->risk_assessments_name }}</td>
                     </tr>
                     <tr>
                         <th class="w-40 text-xs border-2 border-slate-400">Notify</th>
-                        <td class="text-xs pl-2 border-slate-400 border-2">
+                        <td class="pl-2 text-xs border-2 border-slate-400">
                             {{ $item->RiskAssessment->reporting_obligation }}</td>
                     </tr>
                     <tr>
                         <th class="w-40 text-xs border-2 border-slate-400">Deadline</th>
-                        <td class="text-xs pl-2 border-slate-400 border-2">{{ $item->RiskAssessment->notes }}</td>
+                        <td class="pl-2 text-xs border-2 border-slate-400">{{ $item->RiskAssessment->notes }}</td>
                     </tr>
                     <tr>
                         <th class="w-40 text-xs border-2 border-slate-400">Coordinator</th>
-                        <td class="text-xs pl-2 border-slate-400 border-2">
+                        <td class="pl-2 text-xs border-2 border-slate-400">
                             {{ $item->RiskAssessment->coordinator }}
                         </td>
                     </tr>

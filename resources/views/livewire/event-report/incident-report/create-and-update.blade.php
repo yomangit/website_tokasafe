@@ -2,6 +2,13 @@
     <x-notification />
     @push('styles')
         <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+        <style>
+            .ck-editor__editable[role="textbox"] {
+                /* Editing area */
+                /* min-height: 200px; */
+                padding-left: 40px;
+            }
+        </style>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     @endpush
     @section('bradcrumbs')

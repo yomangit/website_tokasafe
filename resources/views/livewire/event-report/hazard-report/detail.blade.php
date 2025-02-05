@@ -1,6 +1,13 @@
 <div>
     <x-notification />
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <style>
+        .ck-editor__editable[role="textbox"] {
+            /* Editing area */
+            /* min-height: 200px; */
+            padding-left: 40px;
+        }
+    </style>
     @section('bradcrumbs')
         {{ Breadcrumbs::render('hazardReportDetail', $data_id) }}
     @endsection

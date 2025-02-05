@@ -2,6 +2,13 @@
     <x-notification />
     @push('styles')
         <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+        <style>
+            .ck-editor__editable[role="textbox"] {
+                /* Editing area */
+                /* min-height: 200px; */
+                padding-left: 40px;
+            }
+        </style>
     @endpush
     @section('bradcrumbs')
         {{ Breadcrumbs::render('incidentReportDetail', $data_id) }}
@@ -74,7 +81,8 @@
                     <div class="w-full max-w-md xl:max-w-xl form-control">
                         <x-label-req :value="__('Responsibility Workgroup')" />
                         <div class="dropdown dropdown-end">
-                           <x-input wire:model.live='workgroup_name' wire:keydown.self="changeConditionDivision" :error="$errors->get('workgroup_name')" class="cursor-pointer" tabindex="0"
+                            <x-input wire:model.live='workgroup_name' wire:keydown.self="changeConditionDivision"
+                                :error="$errors->get('workgroup_name')" class="cursor-pointer" tabindex="0"
                                 class=" {{ $currentStep === 'Closed' || $currentStep === 'Cancelled' ? 'btn-disabled bg-gray-300' : 'cursor-pointer' }}"
                                 tabindex="0" role="button" />
                             <div tabindex="0"
@@ -103,29 +111,32 @@
                                             @endforeach
                                             <li class="px-2 cursor-pointer hover:bg-base-200">Division</li>
                                             @foreach ($Divisi as $divisi)
-                                                    <li wire:click="divisi({{ $divisi->company_id }})"
-                                                        class="px-4 cursor-pointer hover:bg-base-200">
-                                                        {{ $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company  }}
-                                                    </li>
-                                                @endforeach
+                                                <li wire:click="divisi({{ $divisi->company_id }})"
+                                                    class="px-4 cursor-pointer hover:bg-base-200">
+                                                    {{ $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company }}
+                                                </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                     <div class="grid flex-grow h-40 overflow-auto card bg-base-300 rounded-box">
-                                       <ul class="w-56 px-4 py-2 list-disc list-inside  bg-base-200 rounded-box">
-                                            
-                                        @forelse ($Division as $item)
-                                          <li wire:click="select_division({{ $item->id }})" class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer"> {{ $item->DeptByBU->BusinesUnit->Company->name_company }}-{{ $item->DeptByBU->Department->department_name }}
-                                               @if (!empty($item->company_id))
-                                                            -{{ $item->Company->name_company }}
-                                                        @endif
-                                                        @if (!empty($item->section_id))
+                                        <ul class="w-56 px-4 py-2 list-disc list-inside  bg-base-200 rounded-box">
+
+                                            @forelse ($Division as $item)
+                                                <li wire:click="select_division({{ $item->id }})"
+                                                    class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer">
+                                                    {{ $item->DeptByBU->BusinesUnit->Company->name_company }}-{{ $item->DeptByBU->Department->department_name }}
+                                                    @if (!empty($item->company_id))
+                                                        -{{ $item->Company->name_company }}
+                                                    @endif
+                                                    @if (!empty($item->section_id))
                                                         -{{ $item->Section->name }}
-                                                @endif
-                                            </li>
+                                                    @endif
+                                                </li>
                                             @empty
-                                            <li class='font-semibold text-center text-rose-500'>Division not found!! </li>
-                                        @endforelse
-                                </ul>
+                                                <li class='font-semibold text-center text-rose-500'>Division not found!!
+                                                </li>
+                                            @endforelse
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -137,11 +148,11 @@
                         <div class="dropdown dropdown-end">
                             <x-input wire:model.live='report_byName' :error="$errors->get('report_byName')"
                                 class=" {{ $currentStep === 'Closed' || $currentStep === 'Cancelled' ? 'btn-disabled bg-gray-300' : 'cursor-pointer' }}"
-                                 tabindex="0" role="button" />
+                                tabindex="0" role="button" />
                             <div tabindex="0"
                                 class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
                                 <div class="relative">
-                                  
+
                                     <div class="h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                         wire:target='report_byName' wire:loading.class='hidden'>
                                         @forelse ($Report_By as $report_by)
@@ -173,11 +184,11 @@
                         <div class="dropdown dropdown-end">
                             <x-input wire:model.live='report_toName' :error="$errors->get('report_toName')"
                                 class=" {{ $currentStep === 'Closed' || $currentStep === 'Cancelled' ? 'btn-disabled bg-gray-300' : 'cursor-pointer' }}"
-                                 tabindex="0" role="button" />
+                                tabindex="0" role="button" />
                             <div tabindex="0"
                                 class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
                                 <div class="relative">
-                                  
+
                                     <div class="h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                         wire:target='report_toName' wire:loading.class='hidden'>
                                         @forelse ($Report_To as $report_to)
@@ -364,8 +375,7 @@
                         </div>
                     </div>
                     <div class="flex-none md:w-72 ">
-                        <div
-                            class="m-1 overflow-x-auto ">
+                        <div class="m-1 overflow-x-auto ">
                             <table class="table bg-base-300 table-xs">
                                 <caption class="caption-top">
                                     Table Initial Risk Assessment
@@ -453,7 +463,9 @@
                     <div class="divider divider-accent">Additional Action</div>
                     <div class="grid card bg-base-300 rounded-box ">
                         <div class="m-4">
-                            <x-btn-add data-tip="Add"  wire:click="$dispatch('modalActionIncident',{ dataIncident: {{ $data_id }} })"  class="{{ $current_step === 'Closed' || $current_step === 'Cancelled' ? 'btn-disabled' : '' }}" />
+                            <x-btn-add data-tip="Add"
+                                wire:click="$dispatch('modalActionIncident',{ dataIncident: {{ $data_id }} })"
+                                class="{{ $current_step === 'Closed' || $current_step === 'Cancelled' ? 'btn-disabled' : '' }}" />
                             <livewire:event-report.incident-report.action.index :id="$data_id">
                         </div>
                     </div>
@@ -473,199 +485,199 @@
                 </div>
             </div>
         </form>
-        <livewire:event-report.incident-report.action.create >
-            
-        <script type="module">
-            ClassicEditor
-                .create(document.querySelector('#description'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
-                })
-                .then(Deskripsion => {
-                    Deskripsion.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-                        Deskripsion.editing.view.document.getRoot()
-                    );
-                });
-                    setInterval(() => Livewire.dispatch('ubahDataIncident'), 1000);
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdateIncident', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                Deskripsion.enableReadOnlyMode('description');
-                            } else {
-                                Deskripsion.disableReadOnlyMode('description');
-                            }
-                        });
-                    });
-                    Deskripsion.model.document.on('change:data', () => {
-                        @this.set('description', Deskripsion.getData())
-                    });
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-            ClassicEditor
-                .create(document.querySelector('#involved_eqipment'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
-                })
-                .then(Involved_eqipment => {
-                    Involved_eqipment.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-                        Involved_eqipment.editing.view.document.getRoot()
-                    );
-                });
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdateIncident', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                Involved_eqipment.enableReadOnlyMode('involved_eqipment');
-                            } else {
-                                Involved_eqipment.disableReadOnlyMode('involved_eqipment');
-                            }
-                        });
-                    });
-                    Involved_eqipment.model.document.on('change:data', () => {
-                        @this.set('involved_eqipment', Involved_eqipment.getData())
-                    });
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-            ClassicEditor
-                .create(document.querySelector('#preliminary_cause'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
-                })
-                .then(Preliminary_cause => {
-                    Preliminary_cause.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-                        Preliminary_cause.editing.view.document.getRoot()
-                    );
-                });
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdateIncident', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                Preliminary_cause.enableReadOnlyMode('preliminary_cause');
-                            } else {
-                                Preliminary_cause.disableReadOnlyMode('preliminary_cause');
-                            }
-                        });
-                    });
-                    Preliminary_cause.model.document.on('change:data', () => {
-                        @this.set('preliminary_cause', Preliminary_cause.getData())
-                    });
-                })
-                .catch(error => {
-                    console.error(error);
-                });
+        <livewire:event-report.incident-report.action.create>
 
-            ClassicEditor
-                .create(document.querySelector('#immediate_action_taken'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
-                })
-                .then(Immediate_action_taken => {
-                    Immediate_action_taken.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-                        Immediate_action_taken.editing.view.document.getRoot()
-                    );
-                });
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdateIncident', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                Immediate_action_taken.enableReadOnlyMode('immediate_action_taken');
-                            } else {
-                                Immediate_action_taken.disableReadOnlyMode('immediate_action_taken');
-                            }
-                        });
-                    });
-                    Immediate_action_taken.model.document.on('change:data', () => {
-                        @this.set('immediate_action_taken', Immediate_action_taken.getData())
-                    });
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-            ClassicEditor
-                .create(document.querySelector('#key_learning'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
-                })
-                .then(Key_learnings => {
-                    Key_learnings.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-                        Key_learnings.editing.view.document.getRoot()
-                    );
-                });
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdateIncident', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                Key_learnings.enableReadOnlyMode('key_learning');
-                            } else {
-                                Key_learnings.disableReadOnlyMode('key_learning');
-                            }
-                        });
-                    });
-                    Key_learnings.model.document.on('change:data', () => {
-                        console.log(Key_learnings.getData());
-                        @this.set('key_learning', Key_learnings.getData())
+            <script type="module">
+                ClassicEditor
+                    .create(document.querySelector('#description'), {
+                        toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                        placeholder: 'Type the content here!'
                     })
-                    window.addEventListener('articleStore', event => {
-                        Key_learnings.setData('');
-                    })
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-            ClassicEditor
-                .create(document.querySelector('#comments'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
-                })
-                .then(Comment => {
-                    Comment.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-                        Comment.editing.view.document.getRoot()
-                    );
-                });
-                    Comment.model.document.on('change:data', () => {
-                        @this.set('comments', Comment.getData())
-                    });
-                    window.addEventListener('articleStore', event => {
-                        Comment.setData('');
-                    })
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.on('berhasilUpdateIncident', (event) => {
-                            const a = event[0];
-                            if (a === "Closed" || a === "Cancelled") {
-                                Comment.enableReadOnlyMode('comments');
-                            } else {
-                                Comment.disableReadOnlyMode('comments');
-                            }
+                    .then(Deskripsion => {
+                        Deskripsion.editing.view.change((writer) => {
+                            writer.setStyle(
+                                "height",
+                                "155px",
+                                Deskripsion.editing.view.document.getRoot()
+                            );
                         });
+                        setInterval(() => Livewire.dispatch('ubahDataIncident'), 1000);
+                        document.addEventListener('livewire:init', () => {
+                            Livewire.on('berhasilUpdateIncident', (event) => {
+                                const a = event[0];
+                                if (a === "Closed" || a === "Cancelled") {
+                                    Deskripsion.enableReadOnlyMode('description');
+                                } else {
+                                    Deskripsion.disableReadOnlyMode('description');
+                                }
+                            });
+                        });
+                        Deskripsion.model.document.on('change:data', () => {
+                            @this.set('description', Deskripsion.getData())
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+                ClassicEditor
+                    .create(document.querySelector('#involved_eqipment'), {
+                        toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                        placeholder: 'Type the content here!'
+                    })
+                    .then(Involved_eqipment => {
+                        Involved_eqipment.editing.view.change((writer) => {
+                            writer.setStyle(
+                                "height",
+                                "155px",
+                                Involved_eqipment.editing.view.document.getRoot()
+                            );
+                        });
+                        document.addEventListener('livewire:init', () => {
+                            Livewire.on('berhasilUpdateIncident', (event) => {
+                                const a = event[0];
+                                if (a === "Closed" || a === "Cancelled") {
+                                    Involved_eqipment.enableReadOnlyMode('involved_eqipment');
+                                } else {
+                                    Involved_eqipment.disableReadOnlyMode('involved_eqipment');
+                                }
+                            });
+                        });
+                        Involved_eqipment.model.document.on('change:data', () => {
+                            @this.set('involved_eqipment', Involved_eqipment.getData())
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+                ClassicEditor
+                    .create(document.querySelector('#preliminary_cause'), {
+                        toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                        placeholder: 'Type the content here!'
+                    })
+                    .then(Preliminary_cause => {
+                        Preliminary_cause.editing.view.change((writer) => {
+                            writer.setStyle(
+                                "height",
+                                "155px",
+                                Preliminary_cause.editing.view.document.getRoot()
+                            );
+                        });
+                        document.addEventListener('livewire:init', () => {
+                            Livewire.on('berhasilUpdateIncident', (event) => {
+                                const a = event[0];
+                                if (a === "Closed" || a === "Cancelled") {
+                                    Preliminary_cause.enableReadOnlyMode('preliminary_cause');
+                                } else {
+                                    Preliminary_cause.disableReadOnlyMode('preliminary_cause');
+                                }
+                            });
+                        });
+                        Preliminary_cause.model.document.on('change:data', () => {
+                            @this.set('preliminary_cause', Preliminary_cause.getData())
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
                     });
 
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        </script>
+                ClassicEditor
+                    .create(document.querySelector('#immediate_action_taken'), {
+                        toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                        placeholder: 'Type the content here!'
+                    })
+                    .then(Immediate_action_taken => {
+                        Immediate_action_taken.editing.view.change((writer) => {
+                            writer.setStyle(
+                                "height",
+                                "155px",
+                                Immediate_action_taken.editing.view.document.getRoot()
+                            );
+                        });
+                        document.addEventListener('livewire:init', () => {
+                            Livewire.on('berhasilUpdateIncident', (event) => {
+                                const a = event[0];
+                                if (a === "Closed" || a === "Cancelled") {
+                                    Immediate_action_taken.enableReadOnlyMode('immediate_action_taken');
+                                } else {
+                                    Immediate_action_taken.disableReadOnlyMode('immediate_action_taken');
+                                }
+                            });
+                        });
+                        Immediate_action_taken.model.document.on('change:data', () => {
+                            @this.set('immediate_action_taken', Immediate_action_taken.getData())
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+                ClassicEditor
+                    .create(document.querySelector('#key_learning'), {
+                        toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                        placeholder: 'Type the content here!'
+                    })
+                    .then(Key_learnings => {
+                        Key_learnings.editing.view.change((writer) => {
+                            writer.setStyle(
+                                "height",
+                                "155px",
+                                Key_learnings.editing.view.document.getRoot()
+                            );
+                        });
+                        document.addEventListener('livewire:init', () => {
+                            Livewire.on('berhasilUpdateIncident', (event) => {
+                                const a = event[0];
+                                if (a === "Closed" || a === "Cancelled") {
+                                    Key_learnings.enableReadOnlyMode('key_learning');
+                                } else {
+                                    Key_learnings.disableReadOnlyMode('key_learning');
+                                }
+                            });
+                        });
+                        Key_learnings.model.document.on('change:data', () => {
+                            console.log(Key_learnings.getData());
+                            @this.set('key_learning', Key_learnings.getData())
+                        })
+                        window.addEventListener('articleStore', event => {
+                            Key_learnings.setData('');
+                        })
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+                ClassicEditor
+                    .create(document.querySelector('#comments'), {
+                        toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                        placeholder: 'Type the content here!'
+                    })
+                    .then(Comment => {
+                        Comment.editing.view.change((writer) => {
+                            writer.setStyle(
+                                "height",
+                                "155px",
+                                Comment.editing.view.document.getRoot()
+                            );
+                        });
+                        Comment.model.document.on('change:data', () => {
+                            @this.set('comments', Comment.getData())
+                        });
+                        window.addEventListener('articleStore', event => {
+                            Comment.setData('');
+                        })
+                        document.addEventListener('livewire:init', () => {
+                            Livewire.on('berhasilUpdateIncident', (event) => {
+                                const a = event[0];
+                                if (a === "Closed" || a === "Cancelled") {
+                                    Comment.enableReadOnlyMode('comments');
+                                } else {
+                                    Comment.disableReadOnlyMode('comments');
+                                }
+                            });
+                        });
+
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            </script>
 
 </div>
