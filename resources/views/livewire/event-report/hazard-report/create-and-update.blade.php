@@ -236,6 +236,31 @@
                 <div wire:ignore class="w-full form-control">
                     <x-label-req :value="__('immediate corrective action')" />
                     <x-text-area id="immediate_corrective_action" :error="$errors->get('immediate_corrective_action')" />
+                    <script>
+                        ClassicEditor
+                            .create(document.querySelector('#immediate_corrective_action'), {
+                                toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
+
+                            })
+                            .then(newEditor => {
+                                newEditor.editing.view.change((writer) => {
+                                    writer.setStyle(
+                                        "height",
+                                        "155px",
+                                        newEditor.editing.view.document.getRoot()
+                                    );
+                                });
+                                newEditor.model.document.on('change:data', () => {
+                                    @this.set('immediate_corrective_action', newEditor.getData())
+                                });
+                                window.addEventListener('articleStore', event => {
+                                    newEditor.setData('');
+                                })
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            });
+                    </script>
                 </div>
                 <x-label-error :messages="$errors->get('immediate_corrective_action')" />
             </div>
@@ -379,29 +404,6 @@
         </div>
     </form>
     <script nonce="{{ csp_nonce() }}">
-        ClassicEditor
-            .create(document.querySelector('#immediate_corrective_action'), {
-                toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
-
-            })
-            .then(newEditor => {
-                newEditor.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-                        newEditor.editing.view.document.getRoot()
-                    );
-                });
-                newEditor.model.document.on('change:data', () => {
-                    @this.set('immediate_corrective_action', newEditor.getData())
-                });
-                window.addEventListener('articleStore', event => {
-                    newEditor.setData('');
-                })
-            })
-            .catch(error => {
-                console.error(error);
-            });
         // involved person
         ClassicEditor
             .create(document.querySelector('#description'), {
