@@ -18,26 +18,25 @@
     </div>
     @push('styles')
         <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
-        <script>
-            ClassicEditor
-                .create(document.querySelector('#editor'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
-                    placeholder: 'Type the content here!'
-                })
-                .then(newEditor3 => {
-                    newEditor3.editing.view.change((writer) => {
-                        writer.setStyle(
-                            "height",
-                            "155px",
-                            newEditor3.editing.view.document.getRoot()
-                        );
-                    });
-
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        </script>
     @endpush
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                placeholder: 'Type the content here!'
+            })
+            .then(newEditor3 => {
+                newEditor3.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        newEditor3.editing.view.document.getRoot()
+                    );
+                });
 
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 </div>
