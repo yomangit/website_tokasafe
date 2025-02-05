@@ -28,8 +28,11 @@
                 border-top: 0px !important;
             }
 
-            .ck.ck-toolbar.ck-rounded-corners {
-                border-radius: 0px !important;
+            .ck-editor__editable[role="textbox"] {
+                height: 155px;
+                padding-left: 60px;
+                resize: both;
+                overflow-y: auto;
             }
         </style>
     @endpush
