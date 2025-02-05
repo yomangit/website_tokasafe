@@ -31,16 +31,10 @@
                 border-radius: 0px !important;
             }
         </style>
-        <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js"></script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
         <script>
-            DecoupledEditor
-                .create(document.querySelector('#ckeditor5'), {
-                    toolbar: ['bold', 'italic', 'underline', 'bulletedList', 'numberedList', 'link', 'blockQuote']
-                })
-                .then(editor => {
-                    const toolbarContainer = document.querySelector('#toolbar-container');
-                    toolbarContainer.appendChild(editor.ui.view.toolbar.element);
-                })
+            ClassicEditor
+                .create(document.querySelector('#editor'))
                 .catch(error => {
                     console.error(error);
                 });
