@@ -20,8 +20,19 @@
         </div>
     </div>
     @push('styles')
-        <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js"></script>
+        <style>
+            #ckeditor5 {
+                min-height: 100px;
+                border: 1px solid #c4c4c4 !important;
+                border-radius: 0px !important;
+                border-top: 0px !important;
+            }
 
+            .ck.ck-toolbar.ck-rounded-corners {
+                border-radius: 0px !important;
+            }
+        </style>
+        <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js"></script>
         <script>
             DecoupledEditor
                 .create(document.querySelector('#ckeditor5'), {
