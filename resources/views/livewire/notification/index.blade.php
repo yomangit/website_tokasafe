@@ -30,6 +30,9 @@
                                                 class="text-xs cursor-pointer font-signika {{ $notification->read_at == null ? 'text-sky-500' : '' }} ">
                                                 {{ $notification->data['line'] }}</label>
                                         </td>
+                                        <td>
+                                            <X-icon-btn-delete />
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
