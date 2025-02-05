@@ -28,23 +28,23 @@ class Index extends Component
 
        if (IncidentReport::exists()) {
         $tanggal = IncidentReport::orderBy('date','DESC')->first()->date;
-                
+
         $date_last = DateTime::createFromFormat('Y-m-d : H:i', $tanggal)->format('d-m-Y');
         $tgl =Carbon::createFromDate($date_last)->subMonths()->subDays(5)->format('Y-m-d');
         $years = Carbon::createFromDate($date_last)->subMonths()->subDays(5)->format('Y');
         $subYear_format = Carbon::createFromDate($date_last)->subYear()->format('Y-m-d');
         $subYear = date('Y-m-d : H:i', strtotime($subYear_format));
-        
+
         $date1 = Carbon::createFromDate($tgl)->format('d-m-Y');
         $date2 = Carbon::createFromDate($date1)->subMonths(25)->format('d-m-Y');
         $date3 = Carbon::createFromDate($date1)->subMonths(12)->format('d-m-Y');
         $startDate = date('Y-m-d : H:i', strtotime($date2));
-       
+
 
         $period = IncidentReport::wherebetween('date', [$startDate, $tanggal])->get();
         $this->condition = EventKeyword::wherebetween('event_date', [$startDate, $tanggal])->where('keyword','LIKE','Condition')->count();
         $this->action = EventKeyword::wherebetween('event_date', [$startDate, $tanggal])->where('keyword','LIKE','Action')->count();
-        $current_date = Carbon::now()->subMonths()->subDays(5)->toDateString();
+        $current_date = Carbon::now()->subMonths()->subDays(4)->toDateString();
         $manhours_date = DateTime::createFromFormat('Y-m-d', $current_date)->format('Y-m');
         $this->month = DateTime::createFromFormat('Y-m-d', $current_date)->format('F-Y');
         $this->count_incident = IncidentReport::searchMonth(trim(DateTime::createFromFormat('Y-m-d', $current_date)->format('Y-m')))->count();
@@ -79,7 +79,7 @@ class Index extends Component
 
         foreach ($departement_lti as $key) {
             if (DeptGroup::where('department_id', $key)->exists()) {
-             
+
                 $group['group_lti'][] = DeptGroup::where('department_id', $key)->first()->group_id;
             }
         }
@@ -93,7 +93,7 @@ class Index extends Component
             if (DeptGroup::where('department_id', $key)->exists()) {
                 # code...
                 $group['group_mti'][] = DeptGroup::where('department_id', $key)->first()->group_id;
-            } 
+            }
         }
         // RDI
         $dept_id_rdi = IncidentReport::with(['Division.Company', 'Division.DeptByBU.Department'])->search(trim("RDI"))->searchMonth(trim($years))->get()->pluck('Division.DeptByBU.Department.id');
@@ -107,7 +107,7 @@ class Index extends Component
                 $group['group_rdi'][] = DeptGroup::where('department_id', $key)->first()->group_id;
             }
         }
-        // Group in Incident 
+        // Group in Incident
         $dept_id_incident = IncidentReport::with(['Division.Company', 'Division.DeptByBU.Department'])->where('potential_lti','LIKE','Yes')->searchMonth(trim(DateTime::createFromFormat('Y-m-d : H:i', $tanggal)->format('Y')))->get()->pluck('Division.DeptByBU.Department.id');
         $comp_id_incident = IncidentReport::with(['Division.Company', 'Division.DeptByBU.Department'])->where('potential_lti','LIKE','Yes')->searchMonth(trim(DateTime::createFromFormat('Y-m-d : H:i', $tanggal)->format('Y')))->get()->pluck('Division.Company.id');
         $contractor_incident = SubConDept::whereIn('company_id', $comp_id_incident)->get()->pluck('department_id');
@@ -184,9 +184,9 @@ class Index extends Component
             }
             if ($departement_mti) {
                 if (in_array($groups->id, $group_mti)) {
-                   
+
                     $k_s['mti'][] = array_count_values($group_mti)[$groups->id];
-                   
+
                 } else {
                     $k_s['mti'][] = 0;
                 }
@@ -231,12 +231,12 @@ class Index extends Component
             $data['LTIFR'][]  = number_format(($lti / $manhours) * 1000000, 2);
             $data['LTIFR_Target'][]  = 0.15;
         }
-       
-        
+
+
         $this->Incident = json_encode($data);
         $startDate2 = date('Y-m-d : H:i', strtotime($date3));
         $period12Month = IncidentReport::wherebetween('date', [$startDate2, $tanggal])->get();
-       
+
         $indicator = [];
         $status = [];
         foreach ($range12Month as $dt) {
