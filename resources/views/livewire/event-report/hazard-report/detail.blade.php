@@ -10,7 +10,7 @@
         <!--  -->
         <style>
             .main-container {
-                width: 795px;
+
                 margin-left: auto;
                 margin-right: auto;
             }
@@ -479,7 +479,7 @@
                         </div>
                         <x-label-error :messages="$errors->get('comment')" />
                     </div>
-                    <div wire:ignore class="main-container">
+                    <div class="main-container">
                         <div id="editor">
                             <p>Hello from CKEditor 5!</p>
                         </div>
@@ -502,7 +502,7 @@
                 } = CKEDITOR_PREMIUM_FEATURES;
 
                 ClassicEditor
-                    .create(document.querySelector('#immediate_corrective_action'), {
+                    .create(document.querySelector('#editor'), {
                         licenseKey: '<YOUR_LICENSE_KEY>',
                         plugins: [Essentials, Bold, Italic, Font, Paragraph, FormatPainter],
                         toolbar: [
@@ -511,24 +511,7 @@
                             'formatPainter'
                         ]
                     })
-                    .then(newEditor1 => {
-
-                        setInterval(() => Livewire.dispatch('ubahData'), 1000);
-                        document.addEventListener('livewire:init', () => {
-                            Livewire.on('berhasilUpdate', (event) => {
-                                const a = event[0];
-                                if (a === "Closed" || a === "Cancelled") {
-                                    newEditor1.enableReadOnlyMode('immediate_corrective_action');
-                                } else {
-                                    newEditor1.disableReadOnlyMode('immediate_corrective_action');
-                                }
-                            });
-                        });
-                        newEditor1.model.document.on('change:data', () => {
-                            @this.set('immediate_corrective_action', newEditor1.getData())
-                        });
-
-                    })
+                    .then( /* ... */ )
                     .catch( /* ... */ );
             </script>
 
