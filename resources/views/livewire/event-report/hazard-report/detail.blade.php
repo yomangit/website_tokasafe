@@ -1,5 +1,15 @@
 <div>
     <x-notification />
+    @push('styles')
+        <link rel="stylesheet" href="../../assets/vendor/ckeditor5.css">
+        <style>
+            .main-container {
+                width: 795px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
+    @endpush
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
     @section('bradcrumbs')
         {{ Breadcrumbs::render('hazardReportDetail', $data_id) }}
@@ -463,10 +473,49 @@
                         </div>
                         <x-label-error :messages="$errors->get('comment')" />
                     </div>
+                    <div class="main-container">
+                        <div id="editor">
+                            <p>Hello from CKEditor 5!</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
         <livewire:event-report.hazard-report.action.create>
+            <script type="importmap">
+                {
+                    "imports": {
+                        "ckeditor5": "../../assets/vendor/ckeditor5.js",
+                        "ckeditor5/": "../../assets/vendor/"
+                    }
+                }
+            </script>
+            <script type="module">
+                import {
+                    ClassicEditor,
+                    Essentials,
+                    Paragraph,
+                    Bold,
+                    Italic,
+                    Font
+                } from 'ckeditor5';
+
+                ClassicEditor
+                    .create(document.querySelector('#editor'), {
+                        licenseKey: '<YOUR_LICENSE_KEY>', // Or 'GPL'.
+                        plugins: [Essentials, Paragraph, Bold, Italic, Font],
+                        toolbar: [
+                            'undo', 'redo', '|', 'bold', 'italic', '|',
+                            'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+                        ]
+                    })
+                    .then(editor => {
+                        window.editor = editor;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            </script>
             <script nonce="{{ csp_nonce() }}" type="module">
                 ClassicEditor
                     .create(document.querySelector('#immediate_corrective_action'), {
