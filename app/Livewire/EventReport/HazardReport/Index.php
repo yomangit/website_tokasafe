@@ -80,10 +80,10 @@ class Index extends Component
             'EventType' =>  $Event_type,
         ])->extends('base.index', ['header' => 'Hazard Report', 'title' => 'Hazard Report'])->section('content');
     }
-    public function delete()
+    public function delete($id)
     {
-        $HazardReport = HazardReport::whereId($this->data_id);
-        $files = HazardDocumentation::searchHzdID(trim($this->data_id));
+        $HazardReport = HazardReport::whereId($id);
+        $files = HazardDocumentation::searchHzdID(trim($id));
         if (isset($files->first()->name_doc)) {
             unlink(storage_path('app/public/documents/hazard/' .   $files->first()->name_doc));
         }
