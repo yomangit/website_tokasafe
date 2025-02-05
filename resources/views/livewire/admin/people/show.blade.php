@@ -17,7 +17,7 @@
         </div>
     </div>
     @push('styles')
-        <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
         <script>
             ClassicEditor
                 .create(document.querySelector('#editor'), {
