@@ -1,12 +1,10 @@
 <div>
     <x-notification />
-
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
     @section('bradcrumbs')
         {{ Breadcrumbs::render('hazardReportform') }}
     @endsection
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     @if ($show)
         <x-btn-admin-template wire:click="$dispatch('openModal', { component: 'admin.chose-event-type.create'})">Chose
             Event Category</x-btn-admin-template>
@@ -16,7 +14,6 @@
         {{ $divider }}</div>
     <form wire:target="store" wire:loading.class="skeleton" wire:submit.prevent='store'>
         @csrf
-        @method('PATCH')
         <div class="grid gap-1 sm:grid-cols-2 lg:grid-cols-3">
             <div wire:ignore class="w-full max-w-md xl:max-w-xl form-control">
                 <x-label-req :value="__('event_type')" />
@@ -43,8 +40,8 @@
             <div class="w-full max-w-md xl:max-w-xl form-control">
                 <x-label-req :value="__('Responsibility Workgroup')" />
                 <div class="dropdown dropdown-end">
-                  <x-input wire:model.live='workgroup_name' wire:keydown.self="changeConditionDivision" :error="$errors->get('workgroup_name')" class="cursor-pointer" tabindex="0"
-                        role="button" />
+                    <x-input wire:model.live='workgroup_name' wire:keydown.self="changeConditionDivision"
+                        :error="$errors->get('workgroup_name')" class="cursor-pointer" tabindex="0" role="button" />
                     <div tabindex="0"
                         class="z-10 w-full shadow dropdown-content card card-compact bg-primary text-primary-content">
                         <div class="flex flex-col w-full gap-1 lg:flex-row">
@@ -69,28 +66,30 @@
                                             {{ $item->BusinesUnit->Company->name_company }}-{{ $item->Department->department_name }}
                                         </li>
                                     @endforeach
-                                     <li class="px-2 cursor-pointer hover:bg-base-200">Division</li>
+                                    <li class="px-2 cursor-pointer hover:bg-base-200">Division</li>
                                     @foreach ($Divisi as $divisi)
-                                                    <li wire:click="divisi({{ $divisi->company_id }})"
-                                                        class="px-4 cursor-pointer hover:bg-base-200">
-                                                        {{ $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company  }}
-                                                    </li>
-                                                @endforeach
+                                        <li wire:click="divisi({{ $divisi->company_id }})"
+                                            class="px-4 cursor-pointer hover:bg-base-200">
+                                            {{ $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company }}
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                             <div class="grid flex-grow h-40 overflow-auto card bg-base-300 rounded-box">
-                                <ul class="w-56 px-4 py-4 list-disc list-inside  bg-base-200 rounded-box">
-                                            
+                                <ul class="w-56 px-4 py-4 list-disc list-inside bg-base-200 rounded-box">
+
                                     @forelse ($Division as $item)
-                                      <li wire:click="select_division({{ $item->id }})" class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer"> {{ $item->DeptByBU->BusinesUnit->Company->name_company }}-{{ $item->DeptByBU->Department->department_name }}
-                                           @if (!empty($item->company_id))
-                                                        -{{ $item->Company->name_company }}
-                                                    @endif
-                                                    @if (!empty($item->section_id))
-                                                    -{{ $item->Section->name }}
+                                        <li wire:click="select_division({{ $item->id }})"
+                                            class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer">
+                                            {{ $item->DeptByBU->BusinesUnit->Company->name_company }}-{{ $item->DeptByBU->Department->department_name }}
+                                            @if (!empty($item->company_id))
+                                                -{{ $item->Company->name_company }}
+                                            @endif
+                                            @if (!empty($item->section_id))
+                                                -{{ $item->Section->name }}
                                             @endif
                                         </li>
-                                        @empty
+                                    @empty
                                         <li class='font-semibold text-center text-rose-500'>Division not found!! </li>
                                     @endforelse
                                 </ul>
@@ -103,12 +102,12 @@
             <div class="w-full max-w-md xl:max-w-xl form-control">
                 <x-label-req :value="__('report_by')" />
                 <div class="dropdown dropdown-end">
-                    <x-input wire:model.live='report_byName' :error="$errors->get('report_byName')" class="cursor-pointer" 
-                        tabindex="0" role="button" />
+                    <x-input wire:model.live='report_byName' :error="$errors->get('report_byName')" class="cursor-pointer" tabindex="0"
+                        role="button" />
                     <div tabindex="0"
                         class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
                         <div class="relative">
-                           
+
                             <div class="h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                 wire:target='report_byName' wire:loading.class='hidden'>
                                 @forelse ($Report_By as $report_by)
@@ -138,12 +137,12 @@
             <div class="w-full max-w-md xl:max-w-xl form-control">
                 <x-label-req :value="__('report_to')" />
                 <div class="dropdown dropdown-end">
-                    <x-input wire:model.live='report_toName' :error="$errors->get('report_toName')" class="cursor-pointer" 
-                        tabindex="0" role="button" />
+                    <x-input wire:model.live='report_toName' :error="$errors->get('report_toName')" class="cursor-pointer" tabindex="0"
+                        role="button" />
                     <div tabindex="0"
                         class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
                         <div class="relative">
-                           
+
                             <div class="h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                 wire:target='report_toName' wire:loading.class='hidden'>
                                 @forelse ($Report_To as $report_to)
@@ -259,7 +258,7 @@
             class="flex flex-col-reverse items-center mt-2 border-2 rounded-sm md:flex-row md:divide-x-2 divide-late-400/25 border-slate-400/25">
 
             <div class="flex-auto p-2 divide-y-2 divide-slate-400/25">
-               
+
                 <div class="flex items-center">
                     <div class="flex-none px-2 w-52">
                         <div class="w-full max-w-md xl:max-w-xl form-control">
@@ -376,13 +375,10 @@
         </table>
 
         <div class="modal-action ">
-
             <x-btn-save-active>{{ __('Submit') }} </x-btn-save-active>
         </div>
     </form>
-
     <script nonce="{{ csp_nonce() }}">
-        // Short Description
         ClassicEditor
             .create(document.querySelector('#immediate_corrective_action'), {
                 toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
