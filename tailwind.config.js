@@ -20,19 +20,17 @@ module.exports = {
         {
             pattern: /max-w-(sm|md|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl)/,
             variants: ['sm', 'md', 'lg', 'xl', '2xl']
-          }
+        }
     ],
     daisyui: {
-        themes: [
-            {
+        themes: [{
                 nord: {
                     ...require("daisyui/src/theming/themes")["nord"],
-                    ".menu li > *:not(ul):not(.menu-title):not(details).active":
-                        {
-                            "background-color": "#fca311",
-                            "--primary-muted": "78.6% 0.167 70.04",
-                            color: "#000000",
-                        },
+                    ".menu li > *:not(ul):not(.menu-title):not(details).active": {
+                        "background-color": "#fca311",
+                        "--primary-muted": "78.6% 0.167 70.04",
+                        color: "#000000",
+                    },
                     "--base-400": "25.2% 0.056 264.00",
                     "--primary-muted": "78.6% 0.167 70.04",
                 },
@@ -91,6 +89,22 @@ module.exports = {
     },
     theme: {
         extend: {
+            screens: {
+                'sm': '640px',
+                // => @media (min-width: 640px) { ... }
+
+                'md': '768px',
+                // => @media (min-width: 768px) { ... }
+
+                'lg': '1024px',
+                // => @media (min-width: 1024px) { ... }
+
+                'xl': '1280px',
+                // => @media (min-width: 1280px) { ... }
+
+                '2xl': '1536px',
+                // => @media (min-width: 1536px) { ... }
+            },
             colors: {
                 "primary-muted": "oklch(var(--primary-muted) / <alpha-value>)",
                 "base-400": "oklch(var(--base-400) / <alpha-value>)",
@@ -98,7 +112,7 @@ module.exports = {
             fontFamily: {
                 spicy_rice: ['Spicy Rice', 'sans-serif'],
                 signika: ['Signika', 'sans-serif'],
-              },
+            },
         },
     },
     plugins: [require("daisyui")],
