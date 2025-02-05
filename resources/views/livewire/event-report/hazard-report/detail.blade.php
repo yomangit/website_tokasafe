@@ -535,9 +535,7 @@
                         });
 
                     })
-                    .catch(error => {
-                        console.error(error);
-                    });
+                    .catch( /* ... */ );
             </script>
 
             <script nonce="{{ csp_nonce() }}" type="module">
