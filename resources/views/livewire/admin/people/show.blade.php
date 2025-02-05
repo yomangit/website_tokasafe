@@ -10,7 +10,7 @@
         <div role="tabpanel" class="p-6 tab-content bg-base-100 border-base-300 rounded-box">
             <div id="toolbar-container"></div>
             <div id="ckeditor5">
-                <p>This is the initial editor content. </p>
+                <p>This is the initial editor content.</p>
             </div>
         </div>
 
@@ -20,35 +20,21 @@
         </div>
     </div>
     @push('styles')
-        <style>
-            .ck-editor__editable_inline:not(.ck-comment__input *) {
-                height: 155px;
-                overflow-y: auto;
-            }
+        <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js"></script>
 
-            .ck.ck-toolbar.ck-rounded-corners {
-                border-radius: 0px !important;
-            }
-
-            .ck-editor__editable[role="textbox"] {
-                height: 155px;
-                padding-left: 60px;
-                resize: both;
-                overflow-y: auto;
-            }
-        </style>
+        <script>
+            DecoupledEditor
+                .create(document.querySelector('#ckeditor5'), {
+                    toolbar: ['bold', 'italic', 'underline', 'bulletedList', 'numberedList', 'link', 'blockQuote']
+                })
+                .then(editor => {
+                    const toolbarContainer = document.querySelector('#toolbar-container');
+                    toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        </script>
     @endpush
-    <script>
-        DecoupledEditor
-            .create(document.querySelector('#ckeditor5'), {
-                toolbar: ['bold', 'italic', 'underline', 'bulletedList', 'numberedList', 'link', 'blockQuote']
-            })
-            .then(editor => {
-                const toolbarContainer = document.querySelector('#toolbar-container');
-                toolbarContainer.appendChild(editor.ui.view.toolbar.element);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
+
 </div>
