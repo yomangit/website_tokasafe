@@ -83,7 +83,7 @@ class Detail extends Component
                     $this->sub_event_type_id = $HazardReport->sub_event_type_id;
                     $this->report_toName = ($HazardReport->report_to) ? $HazardReport->reportsTo->lookup_name : $HazardReport->report_toName;
                     $this->report_to_nolist = ($HazardReport->report_to_nolist) ? $HazardReport->report_to_nolist : "";
-                    $this->report_byName = ($HazardReport->report_by) ? $HazarmonthdReport->reportBy->lookup_name : $HazardReport->report_byName;
+                    $this->report_byName = ($HazardReport->report_by) ? $HazardReport->reportBy->lookup_name : $HazardReport->report_byName;
                     $this->report_by_nolist = ($HazardReport->report_by_nolist) ? $HazardReport->report_by_nolist : "";
                     $this->date = DateTime::createFromFormat('Y-m-d : H:i', $HazardReport->date)->format('d-m-Y : H:i');
                     $this->site_id = $HazardReport->site_id;
