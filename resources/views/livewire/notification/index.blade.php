@@ -13,10 +13,10 @@
         </label>
         <div tabindex="0"
             class=" z-[1] card card-compact dropdown-content w-56 lg:w-96 h-56 lg:h-96 xl:h-[48rem] bg-base-100 shadow">
-            <div wire:poll
-                class="card-body overflow-y-auto min-h-3/6 w-8/12 sm:w-8/12 sm:min-h-3/6 md:w-7/12 md:min-h-2.5/6 lg:w-5/12 lg:min-h-2.5/6 xl:w-4/12 xl:min-h-2.5/6 2xl:w-3.5/12 2xl:min-h-4/6">
+            <div wire:poll class="card-body ">
 
-                <div role="tablist" class="tabs tabs-bordered">
+                <div role="tablist"
+                    class="tabs tabs-bordered overflow-y-auto min-h-3/6 w-8/12 sm:w-8/12 sm:min-h-3/6 md:w-7/12 md:min-h-2.5/6 lg:w-5/12 lg:min-h-2.5/6 xl:w-4/12 xl:min-h-2.5/6 2xl:w-3.5/12 2xl:min-h-4/6">
                     <input type="radio" name="my_tabs_1" role="tab" class="tab " aria-label="All"
                         checked="checked" />
                     <div role="tabpanel" class="p-10 tab-content">
