@@ -502,7 +502,6 @@
 
                 ClassicEditor
                     .create(document.querySelector('#editor'), {
-                        licenseKey: '<YOUR_LICENSE_KEY>', // Or 'GPL'.
                         plugins: [Essentials, Paragraph, Bold, Italic, Font],
                         toolbar: [
                             'undo', 'redo', '|', 'bold', 'italic', '|',
@@ -516,7 +515,7 @@
                         console.error(error);
                     });
             </script>
-            <script nonce="{{ csp_nonce() }}" type="module">
+            {{-- <script nonce="{{ csp_nonce() }}" type="module">
                 ClassicEditor
                     .create(document.querySelector('#immediate_corrective_action'), {
                         toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
@@ -677,6 +676,6 @@
                     .catch(error => {
                         console.error(error);
                     });
-            </script>
+            </script> --}}
 
 </div>
