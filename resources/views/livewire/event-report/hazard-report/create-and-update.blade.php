@@ -1,4 +1,4 @@
-<div class="p-4 bg-base-200">
+<div>
     <x-notification />
     @section('bradcrumbs')
         {{ Breadcrumbs::render('hazardReportform') }}
