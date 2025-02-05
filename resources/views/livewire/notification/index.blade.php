@@ -13,7 +13,7 @@
         </label>
         <div tabindex="0"
             class=" z-[1] card card-compact dropdown-content w-56 lg:w-96 h-56 lg:h-96 xl:h-[48rem] bg-base-100 shadow">
-            <div wire:poll class="h-56 overflow-y-auto card-body lg:h-96">
+            <div wire:poll class="h-56 overflow-y-auto card-body ">
 
                 <div role="tablist" class="tabs tabs-bordered ">
                     <input type="radio" name="my_tabs_1" role="tab" class="tab " aria-label="All"
