@@ -1,7 +1,8 @@
 <div>
     <x-notification />
     @push('styles')
-        <link nonce="{{ csp_nonce() }}" rel="stylesheet" href="../../assets/vendor/ckeditor5.css">
+        <link nonce="{{ csp_nonce() }}" rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css">
+
         <style>
             .main-container {
                 width: 795px;
@@ -483,8 +484,7 @@
         </form>
         <livewire:event-report.hazard-report.action.create>
             @push('scripts')
-                <script nonce="{{ csp_nonce() }}" src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js">
-                </script>
+                <script nonce="{{ csp_nonce() }}" src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js"></script>
                 {{-- <script type="importmap">
                 {
                     "imports": {
@@ -494,30 +494,32 @@
                 } --}}
             </script>
                 <script nonce="{{ csp_nonce() }}" type="module">
-                    import {
-                        ClassicEditor,
-                        Essentials,
-                        Paragraph,
-                        Bold,
-                        Italic,
-                        Font
-                    } from 'ckeditor5';
-
-                    ClassicEditor
-                        .create(document.querySelector('#editor'), {
-                            plugins: [Essentials, Paragraph, Bold, Italic, Font],
-                            toolbar: [
-                                'undo', 'redo', '|', 'bold', 'italic', '|',
-                                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
-                            ]
-                        })
-                        .then(editor => {
-                            window.editor = editor;
-                        })
-                        .catch(error => {
-                            console.error(error);
-                        });
-                </script>
+                    const {
+				ClassicEditor,
+				Essentials,
+				Paragraph,
+				Bold,
+				Italic,
+				Font
+			} = CKEDITOR;
+			// Create a free account and get <YOUR_LICENSE_KEY>
+			// https://portal.ckeditor.com/checkout?plan=free
+			ClassicEditor
+				.create( document.querySelector( '#editor' ), {
+					licenseKey: '<YOUR_LICENSE_KEY>',
+					plugins: [ Essentials, Paragraph, Bold, Italic, Font ],
+					toolbar: [
+						'undo', 'redo', '|', 'bold', 'italic', '|',
+						'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+					]
+				} )
+				.then( editor => {
+					window.editor = editor;
+				} )
+				.catch( error => {
+					console.error( error );
+				} );
+		</script>
             @endpush
             {{-- <script nonce="{{ csp_nonce() }}" type="module">
                 ClassicEditor
