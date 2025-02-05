@@ -1,6 +1,7 @@
 <div>
     <x-notification />
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js"></script>
     @section('bradcrumbs')
         {{ Breadcrumbs::render('hazardReportDetail', $data_id) }}
     @endsection
