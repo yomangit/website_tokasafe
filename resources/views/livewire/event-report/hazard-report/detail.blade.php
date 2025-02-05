@@ -1,7 +1,7 @@
 <div>
     <x-notification />
     @push('styles')
-        <link rel="stylesheet" href="../../assets/vendor/ckeditor5.css">
+        <link nonce="{{ csp_nonce() }}" rel="stylesheet" href="../../assets/vendor/ckeditor5.css">
         <style>
             .main-container {
                 width: 795px;
@@ -483,7 +483,8 @@
         </form>
         <livewire:event-report.hazard-report.action.create>
             @push('scripts')
-                <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js"></script>
+                <script nonce="{{ csp_nonce() }}" src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js">
+                </script>
                 {{-- <script type="importmap">
                 {
                     "imports": {
@@ -492,7 +493,7 @@
                     }
                 } --}}
             </script>
-                <script type="module">
+                <script nonce="{{ csp_nonce() }}" type="module">
                     import {
                         ClassicEditor,
                         Essentials,
