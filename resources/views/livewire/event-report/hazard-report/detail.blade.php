@@ -474,7 +474,7 @@
                         <x-label-error :messages="$errors->get('comment')" />
                     </div>
                     <div class="main-container">
-                        <div id="editor">
+                        <div wire:ignore id="editor">
                             <p>Hello from CKEditor 5!</p>
                         </div>
                     </div>
