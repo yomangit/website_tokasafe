@@ -21,7 +21,6 @@ class AddContentSecurityPolicyHeaders
 
         return $next($request)->withHeaders([
             'Content-Security-Policy' => "script-src 'nonce-".Vite::cspNonce()."'",
-            'Content-Security-Policy' => "style-src 'nonce-".Vite::cspNonce()."'",
             'Content-Security-Policy' => "base-uri 'self'",
             'Content-Security-Policy' => "connect-src'self'",
             'Content-Security-Policy' => "default-src 'self'",
