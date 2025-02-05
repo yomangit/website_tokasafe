@@ -21,8 +21,18 @@
         <script>
             ClassicEditor
                 .create(document.querySelector('#editor'), {
-                    plugins: [Essentials, Paragraph, Bold, Italic, Underline],
-                    toolbar: ['bold', 'italic', 'underline']
+                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
+                    placeholder: 'Type the content here!'
+                })
+                .then(newEditor3 => {
+                    newEditor3.editing.view.change((writer) => {
+                        writer.setStyle(
+                            "height",
+                            "155px",
+                            newEditor3.editing.view.document.getRoot()
+                        );
+                    });
+
                 })
                 .catch(error => {
                     console.error(error);
