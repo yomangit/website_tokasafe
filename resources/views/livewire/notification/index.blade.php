@@ -18,7 +18,7 @@
                 <div role="tablist" class="tabs tabs-bordered ">
                     <input type="radio" name="my_tabs_1" role="tab" class="tab " aria-label="All"
                         checked="checked" />
-                    <div role="tabpanel" class="px-4 overflow-y-auto h-72 tab-content">
+                    <div role="tabpanel" class="h-64 px-2 overflow-y-auto tab-content">
                         <table class="table table-zebra table-xs">
                             <tbody>
                                 @foreach ($AllNotification as $notification)
@@ -33,11 +33,10 @@
                                 @endforeach
                             </tbody>
                         </table>
-
                     </div>
                     <input type="radio" name="my_tabs_1" role="tab" class="tab text-sky-500"
                         aria-label="Unread" />
-                    <div role="tabpanel" class="px-4 overflow-y-auto h-72 tab-content">
+                    <div role="tabpanel" class="h-64 px-2 overflow-y-auto tab-content">
                         <table class="table table-zebra table-xs">
                             <tbody>
                                 @forelse ($Unread as $notification)
