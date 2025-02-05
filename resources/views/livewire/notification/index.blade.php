@@ -31,7 +31,7 @@
                                                 {{ $notification->data['line'] }}</label>
                                         </td>
                                         <td>
-                                            <X-icon-btn-delete />
+                                            dte
                                         </td>
                                     </tr>
                                 @endforeach
