@@ -1,17 +1,6 @@
 <div>
     <x-notification />
-    @push('styles')
-        <link nonce="{{ csp_nonce() }}" rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css">
-
-        <style>
-            .main-container {
-                width: 795px;
-                margin-left: auto;
-                margin-right: auto;
-            }
-        </style>
-    @endpush
-    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script> --}}
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
     @section('bradcrumbs')
         {{ Breadcrumbs::render('hazardReportDetail', $data_id) }}
     @endsection
@@ -474,45 +463,11 @@
                         </div>
                         <x-label-error :messages="$errors->get('comment')" />
                     </div>
-                    <div class="main-container">
-                        <div id="editor1">
-                            <p>Hello from CKEditor 5!</p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </form>
         <livewire:event-report.hazard-report.action.create>
-            @push('styles')
-                <script nonce="{{ csp_nonce() }}" src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js"></script>
-                <script nonce="{{ csp_nonce() }}" type="module">
-                    const {
-                        ClassicEditor,
-                        Essentials,
-                        Paragraph,
-                        Bold,
-                        Italic,
-                        Font
-                    } = CKEDITOR;
-                    // Create a free account and get <YOUR_LICENSE_KEY>
-                    // https://portal.ckeditor.com/checkout?plan=free
-                    ClassicEditor
-                        .create(document.querySelector('#editor1'), {
-                            plugins: [Essentials, Paragraph, Bold, Italic, Font],
-                            toolbar: [
-                                'undo', 'redo', '|', 'bold', 'italic', '|',
-                                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
-                            ]
-                        })
-                        .then(editor1 => {
-                            window.editor1 = editor;
-                        })
-                        .catch(error => {
-                            console.error(error);
-                        });
-                </script>
-            @endpush
-            {{-- <script nonce="{{ csp_nonce() }}" type="module">
+            <script nonce="{{ csp_nonce() }}" type="module">
                 ClassicEditor
                     .create(document.querySelector('#immediate_corrective_action'), {
                         toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],
@@ -673,6 +628,6 @@
                     .catch(error => {
                         console.error(error);
                     });
-            </script> --}}
+            </script>
 
 </div>
