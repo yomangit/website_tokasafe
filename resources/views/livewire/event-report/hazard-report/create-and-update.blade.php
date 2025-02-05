@@ -1,4 +1,4 @@
-<div>
+<div class="p-4 bg-base-200">
     <x-notification />
     @section('bradcrumbs')
         {{ Breadcrumbs::render('hazardReportform') }}
@@ -350,105 +350,7 @@
             </div>
 
         </div>
-        <script nonce="{{ csp_nonce() }}">
-            ClassicEditor
-                .create(document.querySelector('#immediate_corrective_action'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
 
-                })
-                .then(newEditor => {
-                    newEditor.editing.view.change((writer) => {
-                        writer.setStyle(
-                            "height",
-                            "155px",
-                            newEditor.editing.view.document.getRoot()
-                        );
-                    });
-                    newEditor.model.document.on('change:data', () => {
-                        @this.set('immediate_corrective_action', newEditor.getData())
-                    });
-                    window.addEventListener('articleStore', event => {
-                        newEditor.setData('');
-                    })
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-            // involved person
-            ClassicEditor
-                .create(document.querySelector('#description'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
-
-                })
-                .then(newEditor => {
-                    newEditor.editing.view.change((writer) => {
-                        writer.setStyle(
-                            "height",
-                            "155px",
-                            newEditor.editing.view.document.getRoot()
-                        );
-                    });
-                    newEditor.model.document.on('change:data', () => {
-                        @this.set('description', newEditor.getData())
-                    });
-                    window.addEventListener('articleStore', event => {
-                        newEditor.setData('');
-                    })
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-            // involved Equipment
-            ClassicEditor
-                .create(document.querySelector('#suggested_corrective_action'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
-
-                })
-                .then(newEditor => {
-                    newEditor.editing.view.change((writer) => {
-                        writer.setStyle(
-                            "height",
-                            "155px",
-                            newEditor.editing.view.document.getRoot()
-                        );
-                    });
-                    newEditor.model.document.on('change:data', () => {
-                        @this.set('suggested_corrective_action', newEditor.getData())
-                    });
-                    window.addEventListener('articleStore', event => {
-                        newEditor.setData('');
-                    })
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-            // preliminary cause
-
-            // key learning
-            ClassicEditor
-                .create(document.querySelector('#key_learning'), {
-                    toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
-
-                })
-                .then(newEditor => {
-                    newEditor.editing.view.change((writer) => {
-                        writer.setStyle(
-                            "height",
-                            "155px",
-                            newEditor.editing.view.document.getRoot()
-                        );
-                    });
-                    newEditor.model.document.on('change:data', () => {
-                        @this.set('corrective_action_suggested', newEditor.getData())
-                    });
-                    window.addEventListener('articleStore', event => {
-                        newEditor.setData('');
-                    })
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        </script>
         <table class="table table-xs">
             @foreach ($RiskAssessment as $item)
                 <tr>
@@ -475,7 +377,105 @@
         <div class="modal-action ">
             <x-btn-save-active>{{ __('Submit') }} </x-btn-save-active>
         </div>
-
     </form>
+    <script nonce="{{ csp_nonce() }}">
+        ClassicEditor
+            .create(document.querySelector('#immediate_corrective_action'), {
+                toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
+
+            })
+            .then(newEditor => {
+                newEditor.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        newEditor.editing.view.document.getRoot()
+                    );
+                });
+                newEditor.model.document.on('change:data', () => {
+                    @this.set('immediate_corrective_action', newEditor.getData())
+                });
+                window.addEventListener('articleStore', event => {
+                    newEditor.setData('');
+                })
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        // involved person
+        ClassicEditor
+            .create(document.querySelector('#description'), {
+                toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
+
+            })
+            .then(newEditor => {
+                newEditor.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        newEditor.editing.view.document.getRoot()
+                    );
+                });
+                newEditor.model.document.on('change:data', () => {
+                    @this.set('description', newEditor.getData())
+                });
+                window.addEventListener('articleStore', event => {
+                    newEditor.setData('');
+                })
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        // involved Equipment
+        ClassicEditor
+            .create(document.querySelector('#suggested_corrective_action'), {
+                toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
+
+            })
+            .then(newEditor => {
+                newEditor.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        newEditor.editing.view.document.getRoot()
+                    );
+                });
+                newEditor.model.document.on('change:data', () => {
+                    @this.set('suggested_corrective_action', newEditor.getData())
+                });
+                window.addEventListener('articleStore', event => {
+                    newEditor.setData('');
+                })
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        // preliminary cause
+
+        // key learning
+        ClassicEditor
+            .create(document.querySelector('#key_learning'), {
+                toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
+
+            })
+            .then(newEditor => {
+                newEditor.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "155px",
+                        newEditor.editing.view.document.getRoot()
+                    );
+                });
+                newEditor.model.document.on('change:data', () => {
+                    @this.set('corrective_action_suggested', newEditor.getData())
+                });
+                window.addEventListener('articleStore', event => {
+                    newEditor.setData('');
+                })
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 
 </div>
