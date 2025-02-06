@@ -277,6 +277,8 @@ class Detail extends Component
         $this->nameFileDb = $HazardReport->documentation;
         $this->currentStep = $HazardReport->WorkflowDetails->name;
         $this->responsible_role_id = $HazardReport->WorkflowDetails->responsible_role_id;
+        $this->assign_to = $HazardReport->assign_to;
+        $this->also_assign_to = $HazardReport->also_assign_to;
         if ($this->file_doc) {
             $this->fileUpload = pathinfo($this->file_doc->getClientOriginalName(), PATHINFO_EXTENSION);
             $this->documentation = $this->file_doc->getClientOriginalName();
