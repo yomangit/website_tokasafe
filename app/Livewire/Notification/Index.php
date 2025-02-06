@@ -43,7 +43,7 @@ class Index extends Component
 
         $main =  auth()->user()->notifications->whereIn('id', $this->seleted_notif)->pluck('id');
         try {
-            auth()->user()->notifications->whereIn('id', $main)->delete();
+            auth()->user()->notifications->whereIn('id','like', $main)->delete();
             $this->dispatch(
                 'alert',
                 [
