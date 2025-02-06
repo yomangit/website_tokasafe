@@ -331,6 +331,7 @@ class Detail extends Component
     }
     public function store()
     {
+        dd($this->responsible_role_id);
         $this->description = (!$this->description) ?   $this->description = $this->description_temp :  $this->description;
         $this->immediate_corrective_action = (!$this->immediate_corrective_action) ?   $this->immediate_corrective_action = $this->immediate_corrective_action_temp :  $this->immediate_corrective_action;
         $this->suggested_corrective_action = (!$this->suggested_corrective_action) ?   $this->suggested_corrective_action = $this->suggested_corrective_action_temp :  $this->suggested_corrective_action;
