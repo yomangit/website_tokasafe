@@ -33,7 +33,6 @@ class Index extends Component
         $this->updatePanel();
         $this->workflow_administration_id = (!empty(WorkflowApplicable::where('type_event_report_id', $this->event_type_id)->first()->workflow_administration_id)) ? WorkflowApplicable::where('type_event_report_id', $this->event_type_id)->first()->workflow_administration_id : null;
         $this->Workflows = WorkflowDetail::where('workflow_administration_id', $this->workflow_administration_id)->where('name', $this->current_step)->get();
-        $this->realtimeUpdate();
         $this->userSecurity();
         return view('livewire.event-report.hazard-report.panal.index', [
             "Workflow" => $this->Workflows
@@ -79,9 +78,6 @@ class Index extends Component
         $this->wf_id = $HazardReport->workflow_detail_id;
         $this->division_id = $HazardReport->division_id;
         $this->event_type_id = $HazardReport->event_type_id;
-    }
-    public function realtimeUpdate()
-    {
         if ($this->procced_to === "ERM Assigned") {
             $ERM = ClassHierarchy::searchDivision(trim($this->division_id))->pluck('dept_by_business_unit_id');
             foreach ($ERM as $value) {
@@ -92,10 +88,12 @@ class Index extends Component
                     $this->show = false;
                 }
             }
+            dd($this->EventUserSecurity);
         } else {
             $this->show = false;
         }
     }
+
     public function store()
     {
         if (empty($this->assign_to)) {
