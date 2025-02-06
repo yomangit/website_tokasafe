@@ -59,7 +59,7 @@ class Index extends Component
                 } elseif (EventUserSecurity::where('user_id', $value)->searchDept(trim($Department))->exists()) {
                     $this->muncul = true;
                 } else {
-                    $this->muncul = false;
+                    $this->muncul = true;
                 }
             }
         }else {
