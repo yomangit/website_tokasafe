@@ -64,7 +64,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <label class=" text-rose-500" checked="checked">Delete Checked</label>/>
+                    <label class=" text-rose-500" checked="checked">Delete Checked</label>
                 </div>
 
             </div>
