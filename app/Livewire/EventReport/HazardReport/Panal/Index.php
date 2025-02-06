@@ -86,7 +86,7 @@ class Index extends Component
             $ERM = ClassHierarchy::searchDivision(trim($this->division_id))->pluck('dept_by_business_unit_id');
             foreach ($ERM as $value) {
                 if (!empty($value)) {
-                    $this->EventUserSecurity = ( EventUserSecurity::whereIn('dept_by_business_unit_id', [$value])->where('type_event_report_id', $this->event_type_id)->exists())? EventUserSecurity::whereIn('dept_by_business_unit_id', [$value])->where('type_event_report_id', $this->event_type_id)->get(): EventUserSecurity::whereIn('dept_by_business_unit_id', [$value])->get();
+                    $this->EventUserSecurity = ( EventUserSecurity::where('type_event_report_id', $this->event_type_id)->exists())? EventUserSecurity::whereIn('dept_by_business_unit_id', [$value])->where('type_event_report_id', $this->event_type_id)->get(): EventUserSecurity::whereIn('dept_by_business_unit_id', [$value])->get();
                     $this->show = true;
                 } else {
                     $this->show = false;
