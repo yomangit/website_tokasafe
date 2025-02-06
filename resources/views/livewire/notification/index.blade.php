@@ -64,7 +64,8 @@
                             </tbody>
                         </table>
                     </div>
-                    test
+                    <input type="radio" name="my_tabs_1" role="tab" class="tab text-rose-500"
+                        aria-label="Delete Checked" checked="checked" />
                 </div>
 
             </div>
