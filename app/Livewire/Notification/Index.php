@@ -40,6 +40,7 @@ class Index extends Component
         }
     }
     public function deleteCheked(){
+
         $main =  auth()->user()->notifications->whereIn('id', $this->seleted_notif)->pluck('id');
         try {
             auth()->user()->notifications->whereIn('id', $main)->delete();
