@@ -28,7 +28,8 @@
                                 @foreach ($AllNotification as $notification)
                                     <tr>
                                         <td><x-input-checkbox value="{{ $notification->id }}"
-                                                wire:model.live="seleted_notif" /></td>
+                                                wire:model.live="seleted_notif" />
+                                        </td>
                                         <td>
                                             <label
                                                 wire:click="goTo('{{ $notification->id }}','{{ $notification->data['url'] }}')"
@@ -53,11 +54,19 @@
                             <tbody>
                                 @forelse ($Unread as $notification)
                                     <tr>
+                                        <td><x-input-checkbox value="{{ $notification->id }}"
+                                                wire:model.live="seleted_notif" />
+                                        </td>
                                         <td>
                                             <label
                                                 wire:click="readNotification('{{ $notification->id }}','{{ $notification->data['url'] }}')"
                                                 class="text-xs cursor-pointer font-signika text-sky-500">
                                                 {{ $notification->data['line'] }}</label>
+                                        </td>
+                                        <td>
+                                            <x-icon-btn-delete wire:click="delete('{{ $notification->id }}')"
+                                                wire:confirm.prompt="Are you sure you want to delete this notification ?\n\nType DELETE to confirm|DELETE"
+                                                data-tip="Delete"></x-icon-btn-delete>
                                         </td>
                                     </tr>
                                 @empty
