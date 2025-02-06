@@ -31,6 +31,7 @@ class Index extends Component
     {
         $this->data_id = $id;
         $HazardReport = HazardReport::whereId($id)->first();
+        $this->reference = $HazardReport->reference;
         $this->assign_to = $HazardReport->assign_to;
         $this->assign_to = $HazardReport->assign_to;
         $this->also_assign_to = $HazardReport->also_assign_to;
