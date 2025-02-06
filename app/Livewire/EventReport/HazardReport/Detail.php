@@ -48,7 +48,7 @@ class Detail extends Component
     public $searchLikelihood = '', $searchConsequence = '', $tablerisk_id, $risk_assessment_id, $reference, $workflow_detail_id, $division_id, $division, $parent_Company, $business_unit, $dept;
     public $risk_likelihood_id, $risk_likelihood_notes, $event_category,$select_divisi;
     public $risk_consequence_id, $risk_consequence_doc, $risk_probability_doc;
-    public $workgroup_id, $workgroup_name,  $assign_to, $also_assign_to, $comment = '', $workflow_administration_id, $show = false;
+    public $workgroup_id, $workgroup_name,  $assign_to, $also_assign_to, $comment = '', $workflow_administration_id,$responsible_role_id, $show = false;
     public $search_workgroup = '', $search_report_by = '', $search_report_to = '', $fileUpload, $file_doc, $status, $data_id, $step, $stepJS = [], $currentStep, $nameFileDb;
     public $event_type_id, $sub_event_type_id,  $report_by, $report_byName, $submitter, $report_by_nolist, $report_to, $report_toName, $report_to_nolist, $date, $event_location_id, $site_id, $company_involved, $task_being_done, $documentation, $description, $immediate_corrective_action, $suggested_corrective_action, $corrective_action_suggested;
 
@@ -276,6 +276,7 @@ class Detail extends Component
         $fileName = $HazardReport->documentation;
         $this->nameFileDb = $HazardReport->documentation;
         $this->currentStep = $HazardReport->WorkflowDetails->name;
+        $this->responsible_role_id = $HazardReport->WorkflowDetails->responsible_role_id;
         if ($this->file_doc) {
             $this->fileUpload = pathinfo($this->file_doc->getClientOriginalName(), PATHINFO_EXTENSION);
             $this->documentation = $this->file_doc->getClientOriginalName();
@@ -381,7 +382,8 @@ class Detail extends Component
             ]
         );
         // Notification
-        $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->pluck('user_id')->toArray();
+
+        $getModerator = EventUserSecurity::where('responsible_role_id', $this->responsible_role_id)->pluck('user_id')->toArray();
         $User = User::whereIn('id', $getModerator)->get();
         $url = $this->data_id;
         foreach ($User as $key => $value) {
