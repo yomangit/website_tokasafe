@@ -152,7 +152,7 @@ class Index extends Component
                 $users = User::whereId($value->id)->get();
                 $offerData = [
                     'greeting' => $value->lookup_name,
-                    'subject' => $this->task_being_done,
+                    'subject' => '',
                     'line' =>  $value->lookup_name . ' ' . 'has updated the hazard report status to'. $this->status .', please review',
                     'line2' => 'Please review this report',
                     'line3' => 'Thank you',
@@ -167,7 +167,7 @@ class Index extends Component
                 $report_to = User::whereId($value->id)->get();
                 $offerData = [
                     'greeting' => 'Dear' . '' . $this->report_toName,
-                    'subject' => $this->task_being_done,
+                   'subject' => '',
                     'line' =>  'You have been assigned to a hazard report with reference'. $this->reference . ', please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
@@ -182,7 +182,7 @@ class Index extends Component
                 $report_to = User::whereId($value->id)->get();
                 $offerData = [
                     'greeting' => 'Dear' . '' . $this->report_toName,
-                    'subject' => $this->task_being_done,
+                   'subject' => '',
                    'line' =>  'You have been assigned to a hazard report with reference'. $this->reference . ', please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
