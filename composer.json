@@ -6,6 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
         "cjmellor/approval": "^1.6",
         "diglactic/laravel-breadcrumbs": "^9.0",
         "directorytree/ldaprecord-laravel": "^3.3",
@@ -15,11 +17,12 @@
         "livewire/livewire": "^3.5",
         "maatwebsite/excel": "^3.1",
         "outhebox/blade-flags": "^1.5",
+        "phpoffice/phpspreadsheet": "^1.29",
         "spatie/laravel-csp": "^2.10",
         "wire-elements/modal": "^2.0"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.13",
+
         "fakerphp/faker": "^1.23",
         "laravel/breeze": "^2.1",
         "laravel/pint": "^1.13",
