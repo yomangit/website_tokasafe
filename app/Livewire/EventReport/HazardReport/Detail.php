@@ -331,7 +331,6 @@ class Detail extends Component
     }
     public function store()
     {
-        dd($this->responsible_role_id);
         $this->description = (!$this->description) ?   $this->description = $this->description_temp :  $this->description;
         $this->immediate_corrective_action = (!$this->immediate_corrective_action) ?   $this->immediate_corrective_action = $this->immediate_corrective_action_temp :  $this->immediate_corrective_action;
         $this->suggested_corrective_action = (!$this->suggested_corrective_action) ?   $this->suggested_corrective_action = $this->suggested_corrective_action_temp :  $this->suggested_corrective_action;
@@ -384,10 +383,12 @@ class Detail extends Component
         );
         // Notification
 
-        $getModerator = EventUserSecurity::where('responsible_role_id', $this->responsible_role_id)->pluck('user_id')->toArray();
-        $User = User::whereIn('id', $getModerator)->get();
-        $url = $this->data_id;
-        foreach ($User as $key => $value) {
+        if ($this->responsible_role_id = 1)
+        {
+            $getModerator = EventUserSecurity::where('responsible_role_id', $this->responsible_role_id)->pluck('user_id')->toArray();
+            $User = User::whereIn('id', $getModerator)->get();
+            $url = $this->data_id;
+            foreach ($User as $key => $value) {
             $users = User::whereId($value->id)->get();
             $offerData = [
                 'greeting' => $value->lookup_name,
@@ -398,6 +399,7 @@ class Detail extends Component
                 'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
             ];
             Notification::send($users, new toModerator($offerData));
+        }
         }
         $Users = User::where('id', $this->report_to)->whereNotNull('email')->get();
         foreach ($Users as $key => $value) {
