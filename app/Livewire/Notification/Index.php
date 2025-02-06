@@ -8,7 +8,7 @@ class Index extends Component
     public $searching="",$hidden = false,$seleted_notif=[];
     public function render()
     {
-        $this->hidden = count($this->seleted_notif) <= 2;
+        $this->hidden = count($this->seleted_notif) <= 1;
         $allNotification  = auth()->user()->notifications;
         $unRead = auth()->user()->unreadNotifications;
         return view('livewire.notification.index',[
