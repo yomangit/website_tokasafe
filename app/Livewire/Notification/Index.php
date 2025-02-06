@@ -42,9 +42,12 @@ class Index extends Component
     public function deleteCheked(){
 
         $main =  auth()->user()->notifications->whereIn('id', $this->seleted_notif)->pluck('id');
-        dd($main);
+
         foreach ($main as $key => $value) {
-            # code...
+            $userDeleteNotification = auth()->user()->notifications->where('id','like', $value)->first();
+            if($userDeleteNotification) {
+                $userDeleteNotification->delete();
+            }
         }
     }
 }
