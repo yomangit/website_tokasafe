@@ -1,5 +1,5 @@
 <div>
-    <x-notification />
+
     <div class="dropdown dropdown-end">
         <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">
             <div class="indicator">
