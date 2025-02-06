@@ -47,6 +47,7 @@ class Index extends Component
             $userDeleteNotification = auth()->user()->notifications->where('id','like', $value)->first();
             if($userDeleteNotification) {
                 $userDeleteNotification->delete();
+                $this->seleted_notif = [];
             }
         }
     }
