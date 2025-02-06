@@ -25,7 +25,7 @@
                             <tbody>
                                 @foreach ($AllNotification as $notification)
                                     <tr>
-                                        <td><x-input-checkbox value="{{ $cc->id }}"
+                                        <td><x-input-checkbox value="{{ $notification->id }}"
                                                 wire:model.live="seleted_notif" /></td>
                                         <td>
                                             <label
@@ -66,9 +66,7 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
