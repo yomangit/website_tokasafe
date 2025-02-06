@@ -400,6 +400,35 @@ class Detail extends Component
             ];
             Notification::send($users, new toModerator($offerData));
         }
+        if ($this->assign_to) {
+            $Users = User::where('id', $this->assign_to)->whereNotNull('email')->get();
+            foreach ($Users as $key => $value) {
+                $report_to = User::whereId($value->id)->get();
+                $offerData = [
+                    'greeting' => 'Dear' . '' . $this->report_toName,
+                    'subject' => $this->task_being_done,
+                    'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
+                    'line2' => 'Please check by click the button below',
+                    'line3' => 'Thank you',
+                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                ];
+                Notification::send($report_to, new toModerator($offerData));
+            }
+        }
+        if ($this->also_assign_to) {
+            $Users = User::where('id', $this->also_assign_to)->whereNotNull('email')->get();
+            foreach ($Users as $key => $value) {
+                $report_to = User::whereId($value->id)->get();
+                $offerData = [
+                    'greeting' => 'Dear' . '' . $this->report_toName,
+                    'subject' => $this->task_being_done,
+                    'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
+                    'line2' => 'Please check by click the button below',
+                    'line3' => 'Thank you',
+                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                ];
+                Notification::send($report_to, new toModerator($offerData));
+            }
         }
         $Users = User::where('id', $this->report_to)->whereNotNull('email')->get();
         foreach ($Users as $key => $value) {
