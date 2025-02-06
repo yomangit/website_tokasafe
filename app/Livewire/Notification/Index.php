@@ -50,5 +50,16 @@ class Index extends Component
                 $this->seleted_notif = [];
             }
         }
+        $this->dispatch(
+            'alert',
+            [
+                'text' => "data successfully deleted!!",
+                'duration' => 3000,
+                'destination' => '/contact',
+                'newWindow' => true,
+                'close' => true,
+                'backgroundColor' => "linear-gradient(to right, #ff3333, #ff6666)",
+            ]
+        );
     }
 }
