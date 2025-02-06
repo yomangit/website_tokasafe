@@ -42,31 +42,9 @@ class Index extends Component
     public function deleteCheked(){
 
         $main =  auth()->user()->notifications->whereIn('id', $this->seleted_notif)->pluck('id');
-        try {
-            auth()->user()->notifications->whereIn('id','like', $main)->delete();
-            $this->dispatch(
-                'alert',
-                [
-                    'text' => "data successfully deleted!!",
-                    'duration' => 3000,
-                    'destination' => '/contact',
-                    'newWindow' => true,
-                    'close' => true,
-                    'backgroundColor' => "linear-gradient(to right, #ff3333, #ff6666)",
-                ]
-            );
-        } catch (\Exception $e) {
-            $this->dispatch(
-                'alert',
-                [
-                    'text' => "Something goes wrong!!",
-                    'duration' => 3000,
-                    'destination' => '/contact',
-                    'newWindow' => true,
-                    'close' => true,
-                    'backgroundColor' => "linear-gradient(to right, #ff3333, #ff6666)",
-                ]
-            );
+        dd($main);
+        foreach ($main as $key => $value) {
+            # code...
         }
     }
 }
