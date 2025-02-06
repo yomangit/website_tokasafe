@@ -14,7 +14,7 @@
         <div tabindex="0"
             class=" z-20 card card-compact dropdown-content w-56  lg:w-[28rem] lg:h-[34rem] xl:h-[48rem] bg-base-100 shadow">
             <div wire:poll class=" card-body">
-
+                <label class=" text-rose-500" checked="checked">Delete Checked</label>
                 <div role="tablist" class="tabs tabs-bordered ">
                     <input type="radio" name="my_tabs_1" role="tab" class="tab " aria-label="All"
                         checked="checked" />
@@ -64,7 +64,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <label class=" text-rose-500" checked="checked">Delete Checked</label>
+
                 </div>
 
             </div>
