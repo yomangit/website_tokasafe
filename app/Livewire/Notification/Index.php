@@ -5,9 +5,10 @@ namespace App\Livewire\Notification;
 use Livewire\Component;
 class Index extends Component
 {
-    public $searching="";
+    public $searching="",$hidden = false,$seleted_notif=[];
     public function render()
     {
+        $this->hidden = count($this->seleted_notif) <= 2;
         $allNotification  = auth()->user()->notifications;
         $unRead = auth()->user()->unreadNotifications;
         return view('livewire.notification.index',[
