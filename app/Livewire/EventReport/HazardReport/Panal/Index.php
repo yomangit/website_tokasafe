@@ -87,7 +87,7 @@ class Index extends Component
 
             foreach ($ERM as $value) {
                 if (!empty($value)) {
-                    $this->EventUserSecurity = ( EventUserSecurity::where('type_event_report_id', $this->event_type_id)->exists())? EventUserSecurity::whereIn('dept_by_business_unit_id', [$value])->get():EventUserSecurity::whereIn('dept_by_business_unit_id', [$value])->where('type_event_report_id', $this->event_type_id)->get();
+                    $this->EventUserSecurity = ( EventUserSecurity::whereNotIn('dept_by_business_unit_id', [$value])->where('type_event_report_id', $this->event_type_id)->exists())? EventUserSecurity::whereIn('dept_by_business_unit_id', [$value])->get():EventUserSecurity::whereIn('dept_by_business_unit_id', [$value])->where('type_event_report_id', $this->event_type_id)->get();
                     $this->show = true;
                 } else {
                     $this->show = false;
