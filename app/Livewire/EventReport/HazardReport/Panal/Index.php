@@ -2,13 +2,18 @@
 
 namespace App\Livewire\EventReport\HazardReport\Panal;
 
-use App\Models\ClassHierarchy;
+use App\Models\User;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\HazardReport;
+use App\Models\ClassHierarchy;
 use App\Models\WorkflowDetail;
 use App\Models\EventUserSecurity;
 use App\Models\WorkflowApplicable;
+use App\Notifications\toModerator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
+
 class Index extends Component
 {
     public $procced_to, $EventUserSecurity = [], $Workflows, $show = false, $workflow_detail_id, $data_id, $assign_to, $also_assign_to, $current_step,  $event_type_id, $workflow_administration_id, $status, $bg_status, $muncul = false, $responsible_role_id;
@@ -45,7 +50,7 @@ class Index extends Component
         if ($ClassHierarchy) {
             $Company = $ClassHierarchy->company_category_id;
             $Department = $ClassHierarchy->dept_by_business_unit_id;
-            $User = EventUserSecurity::where('user_id', auth()->user()->id)->where('responsible_role_id',  $this->responsible_role_id)->where('type_event_report_id', $this->event_type_id)->pluck('user_id');
+            $User = EventUserSecurity::where('user_id', Auth::user()->id)->where('responsible_role_id',  $this->responsible_role_id)->where('type_event_report_id', $this->event_type_id)->pluck('user_id');
             foreach ($User as $value) {
                 if (EventUserSecurity::where('user_id', $value)->searchCompany(trim($Company))->exists()) {
                     $this->muncul = true;
@@ -136,6 +141,53 @@ class Index extends Component
                 'backgroundColor' => "linear-gradient(to right, #a3e635, #eab308)",
             ]
         );
+        if ($this->responsible_role_id = 1) {
+            $getModerator = EventUserSecurity::where('responsible_role_id', $this->responsible_role_id)->where('user_id', 'NOT LIKE', Auth::user()->id)->pluck('user_id')->toArray();
+            $User = User::whereIn('id', $getModerator)->get();
+            $url = $this->data_id;
+            foreach ($User as $key => $value) {
+                $users = User::whereId($value->id)->get();
+                $offerData = [
+                    'greeting' => $value->lookup_name,
+                    'subject' => $this->task_being_done,
+                    'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
+                    'line2' => 'Please review this report',
+                    'line3' => 'Thank you',
+                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                ];
+                Notification::send($users, new toModerator($offerData));
+            }
+        }
+        if ($this->assign_to) {
+            $Users = User::where('id', $this->assign_to)->whereNotNull('email')->get();
+            foreach ($Users as $key => $value) {
+                $report_to = User::whereId($value->id)->get();
+                $offerData = [
+                    'greeting' => 'Dear' . '' . $this->report_toName,
+                    'subject' => $this->task_being_done,
+                    'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
+                    'line2' => 'Please check by click the button below',
+                    'line3' => 'Thank you',
+                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                ];
+                Notification::send($report_to, new toModerator($offerData));
+            }
+        }
+        if ($this->also_assign_to) {
+            $Users = User::where('id', $this->also_assign_to)->whereNotNull('email')->get();
+            foreach ($Users as $key => $value) {
+                $report_to = User::whereId($value->id)->get();
+                $offerData = [
+                    'greeting' => 'Dear' . '' . $this->report_toName,
+                    'subject' => $this->task_being_done,
+                    'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
+                    'line2' => 'Please check by click the button below',
+                    'line3' => 'Thank you',
+                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                ];
+                Notification::send($report_to, new toModerator($offerData));
+            }
+        }
         $this->dispatch('panel_updated', $this->data_id);
         $this->dispatch('panel_hazard');
         $this->reset('procced_to');

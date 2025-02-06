@@ -9,7 +9,6 @@ use App\Models\Company;
 use Livewire\Component;
 use App\Models\DeptByBU;
 use App\Models\Division;
-use App\Models\Workgroup;
 use App\Models\BusinesUnit;
 use App\Models\Eventsubtype;
 use App\Models\HazardReport;
@@ -17,7 +16,6 @@ use Livewire\WithPagination;
 use App\Models\LocationEvent;
 use Livewire\WithFileUploads;
 use App\Models\choseEventType;
-use App\Models\IncidentReport;
 use App\Models\RiskAssessment;
 use App\Models\RiskLikelihood;
 use App\Models\WorkflowDetail;
@@ -25,9 +23,9 @@ use App\Models\CompanyCategory;
 use App\Models\RiskConsequence;
 use App\Models\TypeEventReport;
 use App\Models\EventUserSecurity;
-use App\Models\WorkflowApplicable;
 use App\Notifications\toModerator;
 use App\Models\TableRiskAssessment;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Notification;
 
@@ -44,9 +42,9 @@ class CreateAndUpdate extends Component
     public $event_type_id,  $sub_event_type_id,  $report_by, $report_byName, $report_by_nolist, $report_to, $report_toName, $report_to_nolist, $date, $event_location_id, $site_id, $company_involved, $task_being_done, $documentation, $description, $immediate_corrective_action, $suggested_corrective_action, $preliminary_cause, $corrective_action_suggested;
 
     public function mount(){
-            $reportBy = (auth()->user()->lookup_name)?auth()->user()->lookup_name:auth()->user()->name;
+            $reportBy = (Auth::user()->lookup_name)?Auth::user()->lookup_name:Auth::user()->name;
             $this->report_byName = $reportBy;
-            $this->report_by = auth()->user()->id;
+            $this->report_by = Auth::user()->id;
 
     }
     public function rules()
@@ -119,7 +117,7 @@ class CreateAndUpdate extends Component
            }else{
             $Event_type =[];
            }
-           if (auth()->user()->role_user_permit_id == 1) {
+           if (Auth::user()->role_user_permit_id == 1) {
             $this->show=true;
         }
         if ($this->division_id) {
@@ -232,10 +230,7 @@ class CreateAndUpdate extends Component
     }
     public function TableRiskFunction()
     {
-
         $this->RiskAssessment = TableRiskAssessment::with(['RiskAssessment'])->where('risk_likelihood_id', $this->risk_likelihood_id)->where('risk_consequence_id', $this->risk_consequence_id)->get();
-
-
         if ($this->risk_consequence_id) {
             $this->risk_consequence_doc = RiskConsequence::where('id',  $this->risk_consequence_id)->first()->description;
         }
@@ -249,7 +244,6 @@ class CreateAndUpdate extends Component
         }
         $this->TableRisk = TableRiskAssessment::with(['RiskAssessment', 'RiskConsequence', 'RiskLikelihood'])->get();
     }
-
     public function reportedBy($id)
     {
         $this->report_by = $id;
@@ -266,7 +260,6 @@ class CreateAndUpdate extends Component
     }
     public function store()
     {
-
         $hazard = HazardReport::exists();
         $referenceHazard = "TT–OHS–HZD-";
         if (!$hazard) {
@@ -288,7 +281,6 @@ class CreateAndUpdate extends Component
         else {
             $file_name = "";
         }
-
         $HazardReport = HazardReport::create([
             'reference' => $this->reference,
             'event_type_id' => $this->event_type_id,
@@ -314,7 +306,7 @@ class CreateAndUpdate extends Component
             'report_by_nolist' => $this->report_to_nolist,
             'report_to_nolist' => $this->report_to_nolist,
             'workflow_detail_id' => $this->workflow_detail_id,
-            'submitter' =>auth()->user()->id
+            'submitter' =>Auth::user()->id
         ]);
         $this->dispatch(
             'alert',
@@ -329,7 +321,7 @@ class CreateAndUpdate extends Component
         );
         $this->redirectRoute('hazardReportDetail', ['id' => $HazardReport->id]);
         // Notification
-        $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->pluck('user_id')->toArray();
+        $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->where('user_id','NOT LIKE',Auth::user()->id)->pluck('user_id')->toArray();
         $User = User::whereIn('id', $getModerator)->get();
         $url = $HazardReport->id;
         foreach ($User as $key => $value) {
