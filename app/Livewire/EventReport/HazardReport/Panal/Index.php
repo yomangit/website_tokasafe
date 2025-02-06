@@ -16,12 +16,13 @@ use Illuminate\Support\Facades\Notification;
 
 class Index extends Component
 {
-    public $procced_to, $EventUserSecurity = [], $Workflows, $show = false, $workflow_detail_id, $data_id, $assign_to, $also_assign_to, $current_step,  $event_type_id, $workflow_administration_id, $status, $bg_status, $muncul = false, $responsible_role_id;
+    public $procced_to, $EventUserSecurity = [], $Workflows, $show = false, $workflow_detail_id, $data_id, $assign_to, $also_assign_to, $current_step,$reference,  $event_type_id, $workflow_administration_id, $status, $bg_status, $muncul = false, $responsible_role_id;
     public $wf_id, $division_id, $assign_to_old, $also_assign_to_old;
     #[On('hzrd_updated')]
     public function hzrd_updated($id)
     {
         $HazardReport = HazardReport::whereId($id)->first();
+        $this->reference = $HazardReport->reference;
         $this->assign_to_old = $HazardReport->assign_to;
         $this->also_assign_to_old = $HazardReport->also_assign_to;
         $this->responsible_role_id = $HazardReport->WorkflowDetails->ResponsibleRole->id;
@@ -30,6 +31,7 @@ class Index extends Component
     {
         $this->data_id = $id;
         $HazardReport = HazardReport::whereId($id)->first();
+        $this->assign_to = $HazardReport->assign_to;
         $this->assign_to = $HazardReport->assign_to;
         $this->also_assign_to = $HazardReport->also_assign_to;
     }
@@ -150,7 +152,7 @@ class Index extends Component
                 $offerData = [
                     'greeting' => $value->lookup_name,
                     'subject' => $this->task_being_done,
-                    'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
+                    'line' =>  $value->lookup_name . ' ' . 'has updated the hazard report status to'. $this->status .', please review',
                     'line2' => 'Please review this report',
                     'line3' => 'Thank you',
                     'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
@@ -165,7 +167,7 @@ class Index extends Component
                 $offerData = [
                     'greeting' => 'Dear' . '' . $this->report_toName,
                     'subject' => $this->task_being_done,
-                    'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
+                    'line' =>  'You have been assigned to a hazard report with reference'. $this->reference . ', please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
                     'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
@@ -180,7 +182,7 @@ class Index extends Component
                 $offerData = [
                     'greeting' => 'Dear' . '' . $this->report_toName,
                     'subject' => $this->task_being_done,
-                    'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
+                   'line' =>  'You have been assigned to a hazard report with reference'. $this->reference . ', please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
                     'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
