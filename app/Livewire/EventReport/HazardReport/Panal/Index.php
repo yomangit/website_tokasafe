@@ -166,7 +166,7 @@ class Index extends Component
             foreach ($Users as $key => $value) {
                 $report_to = User::whereId($value->id)->get();
                 $offerData = [
-                    'greeting' => 'Dear' . '' . $this->report_toName,
+                    'greeting' =>  '',
                    'subject' => '',
                     'line' =>  'You have been assigned to a hazard report with reference'. $this->reference . ', please review',
                     'line2' => 'Please check by click the button below',
@@ -181,7 +181,7 @@ class Index extends Component
             foreach ($Users as $key => $value) {
                 $report_to = User::whereId($value->id)->get();
                 $offerData = [
-                    'greeting' => 'Dear' . '' . $this->report_toName,
+                    'greeting' =>  '',
                    'subject' => '',
                    'line' =>  'You have been assigned to a hazard report with reference'. $this->reference . ', please review',
                     'line2' => 'Please check by click the button below',
