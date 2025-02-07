@@ -30,6 +30,7 @@ use App\Models\WorkflowApplicable;
 use App\Notifications\toModerator;
 use App\Models\TableRiskAssessment;
 use App\Models\IncidentDocumentation;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
 class Detail extends Component
@@ -54,12 +55,12 @@ class Detail extends Component
         {
 
             $projectAkses = IncidentReport::whereId($id)
-                ->Where('submitter',auth()->user()->id)
-                ->orWhere('report_by',auth()->user()->id)
-                ->orWhere('report_to',auth()->user()->id)
-                ->orWhere('assign_to',auth()->user()->id)
-                ->orWhere('also_assign_to',auth()->user()->id)->exists();
-                if(($projectAkses) || (auth()->user()->role_user_permit_id ==1))
+                ->Where('submitter',Auth::user()->id)
+                ->orWhere('report_by',Auth::user()->id)
+                ->orWhere('report_to',Auth::user()->id)
+                ->orWhere('assign_to',Auth::user()->id)
+                ->orWhere('also_assign_to',Auth::user()->id)->exists();
+                if(($projectAkses) || (Auth::user()->role_user_permit_id ==1))
                 {
 
                     $incidentReport = IncidentReport::whereId($id)->first();
