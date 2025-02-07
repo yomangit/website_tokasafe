@@ -45,7 +45,7 @@ class Detail extends Component
     public $risk_consequence_id, $risk_consequence_doc, $immediate_action_taken_temp, $involved_eqipment_temp, $preliminary_cause_temp;
     public $workgroup_id, $workgroup_name, $data_id, $comments,$comment, $key_learning_temp;
     public $search_workgroup = '', $search_report_by = '', $search_report_to = '', $fileUpload, $temp_coment;
-    public $event_type_id, $sub_event_type_id, $potential_lti,  $report_by, $report_byName, $report_by_nolist, $report_to, $report_toName, $report_to_nolist, $stepJS, $date, $event_location_id, $site_id, $company_involved, $task_being_done, $documentation, $description, $involved_person, $involved_eqipment, $preliminary_cause, $immediate_action_taken, $key_learning;
+    public $event_type_id, $sub_event_type_id, $potential_lti,  $report_by, $report_byName, $report_by_nolist,$responsible_role_id, $report_to, $report_toName, $report_to_nolist, $stepJS, $date, $event_location_id, $site_id, $company_involved, $task_being_done, $documentation, $description, $involved_person, $involved_eqipment, $preliminary_cause, $immediate_action_taken, $key_learning;
     protected $listeners = ['ubahDataIncident' => 'changeData'];
     public function mount($id)
     {
@@ -275,6 +275,7 @@ class Detail extends Component
         $fileName = $incidentReport->documentation;
         $this->nameFileDb = $incidentReport->documentation;
         $this->currentStep = $incidentReport->WorkflowDetails->name;
+        $this->responsible_role_id = $incidentReport->WorkflowDetails->responsible_role_id;
         if ($this->file_doc) {
             $this->fileUpload = pathinfo($this->file_doc->getClientOriginalName(), PATHINFO_EXTENSION);
             $this->documentation = $this->file_doc->getClientOriginalName();
@@ -367,6 +368,69 @@ class Detail extends Component
             'comments' => $this->comments,
             'submitter' => $this->submitter,
         ]);
+
+                // Notification
+                if ($this->responsible_role_id = 1) {
+                    $getModerator = EventUserSecurity::where('responsible_role_id', $this->responsible_role_id)->where('user_id', 'NOT LIKE', Auth::user()->id)->pluck('user_id')->toArray();
+                    $User = User::whereIn('id', $getModerator)->get();
+                    $url = $this->data_id;
+                    foreach ($User as $key => $value) {
+                        $users = User::whereId($value->id)->get();
+                        $offerData = [
+                            'greeting' => $value->lookup_name,
+                            'subject' => $this->task_being_done,
+                            'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
+                            'line2' => 'Please review this report',
+                            'line3' => 'Thank you',
+                            'actionUrl' => url("https://toka.tokasafe.site/eventReport/incidentReportDetail/$url"),
+                        ];
+                        Notification::send($users, new toModerator($offerData));
+                    }
+                }
+                if ($this->assign_to) {
+                    $Users = User::where('id', $this->assign_to)->whereNotNull('email')->get();
+                    foreach ($Users as $key => $value) {
+                        $report_to = User::whereId($value->id)->get();
+                        $offerData = [
+                            'greeting' => 'Dear' . '' . $this->report_toName,
+                            'subject' => $this->task_being_done,
+                            'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
+                            'line2' => 'Please check by click the button below',
+                            'line3' => 'Thank you',
+                            'actionUrl' => url("https://toka.tokasafe.site/eventReport/incidentReportDetail/$url"),
+                        ];
+                        Notification::send($report_to, new toModerator($offerData));
+                    }
+                }
+                if ($this->also_assign_to) {
+                    $Users = User::where('id', $this->also_assign_to)->whereNotNull('email')->get();
+                    foreach ($Users as $key => $value) {
+                        $report_to = User::whereId($value->id)->get();
+                        $offerData = [
+                            'greeting' => 'Dear' . '' . $this->report_toName,
+                            'subject' => $this->task_being_done,
+                            'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
+                            'line2' => 'Please check by click the button below',
+                            'line3' => 'Thank you',
+                            'actionUrl' => url("https://toka.tokasafe.site/eventReport/incidentReportDetail/$url"),
+                        ];
+                        Notification::send($report_to, new toModerator($offerData));
+                    }
+                }
+                $Users = User::where('id', $this->report_to)->whereNotNull('email')->get();
+                foreach ($Users as $key => $value) {
+                    $report_to = User::whereId($value->id)->get();
+                    $offerData = [
+                        'greeting' => 'Dear' . '' . $this->report_toName,
+                        'subject' => $this->task_being_done,
+                        'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
+                        'line2' => 'Please check by click the button below',
+                        'line3' => 'Thank you',
+                        'actionUrl' => url("https://toka.tokasafe.site/eventReport/incidentReportDetail/$url"),
+                    ];
+                    Notification::send($report_to, new toModerator($offerData));
+                }
+
         $this->dispatch(
             'alert',
             [
