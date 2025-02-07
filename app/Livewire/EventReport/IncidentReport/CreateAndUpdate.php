@@ -39,8 +39,8 @@ class CreateAndUpdate extends Component
     public $workgroup_id, $workgroup_name,$parent_Company,$business_unit,$dept,$division_id,$select_divisi;
     public $search_workgroup = '', $search_report_by = '', $search_report_to = '', $fileUpload;
     public $event_type_id, $sub_event_type_id, $potential_lti,  $report_by, $report_byName, $report_by_nolist, $report_to, $report_toName, $report_to_nolist, $date, $event_location_id, $site_id, $company_involved, $task_being_done, $documentation, $description, $involved_person, $involved_eqipment, $preliminary_cause, $immediate_action_taken, $key_learning;
-    
-   
+
+
     public function rules()
     {
         return [
@@ -95,7 +95,7 @@ class CreateAndUpdate extends Component
             'workgroup_name.required' => 'workgroup name fild is required',
         ];
     }
-    
+
     public function changeConditionDivision()
     {
         $this->business_unit = null;
@@ -107,9 +107,9 @@ class CreateAndUpdate extends Component
             $reportBy = (auth()->user()->lookup_name)?auth()->user()->lookup_name:auth()->user()->name;
             $this->report_byName = $reportBy;
             $this->report_by = auth()->user()->id;
-        
+
     }
-     
+
     public function ReportByAndReportTo()
     {
         if (!empty($this->report_by_nolist)) {
@@ -123,30 +123,30 @@ class CreateAndUpdate extends Component
     }
     public function render()
     {
-        
+
         if (choseEventType::where('route_name','LIKE',Request::getPathInfo())->exists()) {
             $eventType = choseEventType::where('route_name','LIKE',Request::getPathInfo())->pluck('event_type_id');
             $Event_type = TypeEventReport::whereIn('id', $eventType)->get();
-           
+
            }else{
             $Event_type =[];
            }
         if (auth()->user()->role_user_permit_id == 1) {
             $this->show=true;
         }
-      
+
         if ($this->division_id) {
-           
+
             $divisi = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company','Section'])->whereId($this->division_id)->first();
-            
+
             if (!empty($divisi->company_id) && !empty($divisi->section_id)) {
-                
+
                 $this->workgroup_name =  $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company . '-' . $divisi->Section->name;
             }
             elseif($divisi->company_id){
                 $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company;
             }
-           
+
             elseif ($divisi->section_id) {
                 $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name. '-' . $divisi->Section->name;
             }
@@ -159,7 +159,7 @@ class CreateAndUpdate extends Component
        {
              $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->searchDeptCom(trim($this->workgroup_name))->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
        }
-      
+
         $this->ReportByAndReportTo();
         if ($this->documentation) {
             $file_name = $this->documentation->getClientOriginalName();
@@ -173,10 +173,10 @@ class CreateAndUpdate extends Component
         }
         $this->TableRiskFunction();
         $this->EventSubType = (isset($this->event_type_id)) ?  $this->EventSubType = Eventsubtype::where('event_type_id', $this->event_type_id)->get() : [];
-        
-        
-        
-      
+
+
+
+
         return view('livewire.event-report.incident-report.create-and-update', [
             'RiskAssessments' => RiskAssessment::get(),
             'RiskConsequence' => RiskConsequence::get(),
@@ -195,14 +195,14 @@ class CreateAndUpdate extends Component
 
         ])->extends('base.index', ['header' => 'Incident Report', 'title' => 'Incident Report'])->section('content');
     }
-   
+
     public function select_division($id)
     {
         $this->division_id = $id;
     }
     public function parentCompany($id)
     {
-        
+
         $this->parent_Company = $id;
         $this->business_unit = null;
         $this->dept = null;
@@ -237,7 +237,7 @@ class CreateAndUpdate extends Component
         $this->division_id = null;
         $this->select_divisi=null;
     }
-   
+
     public function riskId($risk_likelihood_id, $risk_consequence_id, $risk_assessment_id)
     {
         // $this->tablerisk_id = TableRiskAssessment::where('risk_likelihood_id', $risk_likelihood_id)->where('risk_consequence_id', $risk_consequence_id)->where('risk_assessment_id', $risk_assessment_id)->first()->id;
@@ -286,11 +286,11 @@ class CreateAndUpdate extends Component
             $file_name = $this->documentation->getClientOriginalName();
             $this->fileUpload = pathinfo($file_name, PATHINFO_EXTENSION);
             $this->documentation->storeAs('public/documents/icd', $file_name);
-           
+
         } else {
             $file_name = "";
         }
-       
+
         $incident = IncidentReport::exists();
         $referenceIncident = "TT–OHS–ICDN-";
         if (!$incident) {
@@ -332,7 +332,7 @@ class CreateAndUpdate extends Component
             'workflow_detail_id' => $this->workflow_detail_id,
             'submitter' =>auth()->user()->id
         ]);
-        
+
         $this->dispatch(
             'alert',
             [
@@ -346,38 +346,38 @@ class CreateAndUpdate extends Component
         );
         $this->redirectRoute('incidentReportDetail', ['id' => $IncidentReport->id]);
 
-        // $name = (auth()->user()->lookup_name) ? auth()->user()->lookup_name : auth()->user()->name;
-        // $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->where('user_id', 'not like', auth()->user()->id)->pluck('user_id')->toArray();
-        // $User = User::whereIn('id', $getModerator)->whereNotNull('email')->get();
-        // $url = $IncidentReport->id;
-        // foreach ($User as $key => $value) {
-        //     $users = User::whereId($value->id)->get();
-        //     $offerData = [
-        //         'greeting' => 'Dear' . ' ' . $value->lookup_name,
-        //         'subject' => $this->task_being_done,
-        //         'line' =>  $this->report_byName . ' ' . 'enters the event report data',
-        //         'line2' => 'Please check by click the button below',
-        //         'line3' => 'Thank you',
-        //         'actionUrl' => url("http://127.0.0.1:8000/eventReport/incidentReportDetail/$url"),
+        $name = (auth()->user()->lookup_name) ? auth()->user()->lookup_name : auth()->user()->name;
+        $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->where('user_id', 'not like', auth()->user()->id)->pluck('user_id')->toArray();
+        $User = User::whereIn('id', $getModerator)->whereNotNull('email')->get();
+        $url = $IncidentReport->id;
+        foreach ($User as $key => $value) {
+            $users = User::whereId($value->id)->get();
+            $offerData = [
+                'greeting' => 'Dear' . ' ' . $value->lookup_name,
+                'subject' => $this->task_being_done,
+                'line' =>  $this->report_byName . ' ' . 'has submitted a hazard report, please review',
+                'line2' => 'Please check by click the button below',
+                'line3' => 'Thank you',
+                'actionUrl' => url("https://toka.tokasafe.site/eventReport/incidentReportDetail/$url"),
 
-        //     ];
-        //     Notification::send($users, new toModerator($offerData));
-        // }
-        // if ($this->report_toName) {
-        //     $Users = User::whereIn('id',  $this->report_to)->whereNotNull('email')->get();
-        //     foreach ($Users as $key => $value) {
-        //         $report_to = User::whereId($value->id)->get();
-        //         $offerData = [
-        //             'greeting' => 'Dear' . '' . $this->report_toName,
-        //             'subject' => $this->task_being_done,
-        //             'line' =>  $this->report_byName . '' . 'reports event report to you',
-        //             'line2' => 'Please check by click the button below',
-        //             'line3' => 'Thank you',
-        //             'actionUrl' => url("http://127.0.0.1:8000/eventReport/incidentReportDetail/$url"),
-        //         ];
-        //         Notification::send($report_to, new toModerator($offerData));
-        //     }
-        // }
+            ];
+            Notification::send($users, new toModerator($offerData));
+        }
+        if ($this->report_toName) {
+            $Users = User::whereIn('id',  $this->report_to)->whereNotNull('email')->get();
+            foreach ($Users as $key => $value) {
+                $report_to = User::whereId($value->id)->get();
+                $offerData = [
+                    'greeting' => 'Dear' . '' . $this->report_toName,
+                    'subject' => $this->task_being_done,
+                    'line' =>  $this->report_byName . '' . 'has sent a hazard report to you, please review it',
+                    'line2' => 'Please check by click the button below',
+                    'line3' => 'Thank you',
+                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/incidentReportDetail/$url"),
+                ];
+                Notification::send($report_to, new toModerator($offerData));
+            }
+        }
 
     }
 }
