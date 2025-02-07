@@ -44,6 +44,7 @@ class Detail extends Component
     // TABLE
     #[Validate]
     public $risk_consequence_id, $risk_likelihood_id, $risk_assessment_id, $TableRisk = [], $RiskAssessment = [], $tablerisk_id, $risk_probability_doc, $risk_consequence_doc, $risk_likelihood_notes, $risk_probability_id;
+    public $assign_to,$also_assign_to;
     protected $listeners = [
 
         'pto_detail' => 'render',
@@ -66,6 +67,8 @@ class Detail extends Component
                 $pto_report=pto_report::whereId($id)->first();
                 $this->name_observer = $pto_report->name_observer;
                 $this->user_id = $pto_report->user_id;
+                $this->assign_to = $pto_report->assign_to;
+                $this->also_assign_to = $pto_report->also_assign_to;
                 $this->supervisor_area_id = $pto_report->supervisor_area_id;
                 $this->job_title = $pto_report->job_title;
                 $this->date_time = DateTime::createFromFormat('Y-m-d : H:i', $pto_report->date_time)->format('d-m-Y : H:i');
