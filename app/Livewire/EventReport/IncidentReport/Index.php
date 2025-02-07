@@ -5,17 +5,19 @@ namespace App\Livewire\EventReport\IncidentReport;
 use Livewire\Component;
 use App\Models\StatusEvent;
 use Livewire\Attributes\On;
+use App\Models\EventKeyword;
 use App\Models\Eventsubtype;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use App\Models\EventKeyword;
+use App\Models\route_request;
 use App\Models\ActionIncident;
+use App\Models\choseEventType;
 use App\Models\IncidentReport;
 use App\Models\TypeEventReport;
-use App\Models\choseEventType;
+use Illuminate\Support\Facades\Auth;
 use App\Models\IncidentDocumentation;
-use App\Models\route_request;
 use Illuminate\Support\Facades\Request;
+
 class Index extends Component
 {
     use WithPagination;
@@ -29,7 +31,7 @@ class Index extends Component
     public function render()
     {
          if ($this->in_tray) {
-            $this->user_id = auth()->user()->id;
+            $this->user_id = Auth::user()->id;
         } else {
             $this->user_id = '';
         }
@@ -50,7 +52,7 @@ class Index extends Component
             ])->searchTray(trim($this->user_id))->searchStatus(trim($this->search_status))->searchEventType(trim($this->search_eventType))->searchEventSubType(trim($this->search_eventSubType))->search(trim($this->searching))->paginate(30);
         }
        
-        if (auth()->user()->role_user_permit_id == 1) {
+        if (Auth::user()->role_user_permit_id == 1) {
             $this->show=true;
         }
         if (route_request::where('route_name','LIKE',Request::getPathInfo())->exists()) {

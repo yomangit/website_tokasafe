@@ -2,6 +2,7 @@
 
 namespace App\Livewire\EventReport\PtoReport;
 
+use DateTime;
 use App\Models\User;
 use App\Models\Company;
 use Livewire\Component;
@@ -15,11 +16,15 @@ use App\Models\RiskLikelihood;
 use App\Models\WorkflowDetail;
 use App\Models\CompanyCategory;
 use App\Models\RiskConsequence;
+use App\Models\EventUserSecurity;
 use Livewire\Attributes\Validate;
+use App\Notifications\toModerator;
 use App\Models\TableRiskAssessment;
+use Illuminate\Support\Facades\Auth;
 use Cjmellor\Approval\Models\Approval;
 use Illuminate\Support\Facades\Request;
-use DateTime;
+use Illuminate\Support\Facades\Notification;
+
 class Create extends Component
 {
     public $divider = "PLAN TASK OBSERVATION (PTO) FORM";
@@ -52,7 +57,7 @@ class Create extends Component
     {
         $this->division_id = $id;
     }
-    
+
     public function parentCompany($id)
     {
         $this->parent_Company = $id;
@@ -129,17 +134,17 @@ class Create extends Component
     {
         $this->workflow_detail_id = WorkflowDetail::where('workflow_administration_id', $this->workflow_template_id)->first()->id;
         if ($this->division_id) {
-           
+
             $divisi = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->whereId($this->division_id)->first();
-            
+
             if (!empty($divisi->company_id) && !empty($divisi->section_id)) {
-                
+
                 $this->workgroup_name =  $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company . '-' . $divisi->Section->name;
             }
             elseif($divisi->company_id){
                 $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company;
             }
-           
+
             elseif ($divisi->section_id) {
                 $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name. '-' . $divisi->Section->name;
             }
@@ -351,6 +356,38 @@ class Create extends Component
                 'backgroundColor' => "linear-gradient(to right, #00b09b, #96c93d)",
             ]
         );
+        $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->where('user_id', 'not like', Auth::user()->id)->pluck('user_id')->toArray();
+        $User = User::whereIn('id', $getModerator)->whereNotNull('email')->get();
+        $url = $pto->id;
+        foreach ($User as $key => $value) {
+            $users = User::whereId($value->id)->get();
+            $offerData = [
+                'greeting' => 'Dear' . ' ' . $value->lookup_name,
+                'subject' => "PTO Report",
+                'line' =>  $this->name_observer . ' ' . 'has submitted a PTO report, please review',
+                'line2' => 'Please check by click the button below',
+                'line3' => 'Thank you',
+                'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+
+            ];
+            Notification::send($users, new toModerator($offerData));
+
+        }
+        if ($this->supervisor_area) {
+            $Users = User::whereIn('id',  $this->supervisor_area_id)->whereNotNull('email')->get();
+            foreach ($Users as $key => $value) {
+                $report_to = User::whereId($value->id)->get();
+                $offerData = [
+                    'greeting' => 'Dear' . '' . $this->supervisor_area,
+                    'subject' => "PTO Report",
+                    'line' =>  $this->name_observer . '' . 'has sent a PTO report to you, please review it',
+                    'line2' => 'Please check by click the button below',
+                    'line3' => 'Thank you',
+                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+                ];
+                Notification::send($report_to, new toModerator($offerData));
+            }
+        }
         $this->redirectRoute('ptoDetail', ['id' => $pto->id]);
     }
 }

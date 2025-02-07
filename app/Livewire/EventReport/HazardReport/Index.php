@@ -14,6 +14,7 @@ use App\Models\TypeEventReport;
 use App\Models\EventParticipants;
 use App\Models\EventUserSecurity;
 use App\Models\HazardDocumentation;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 class Index extends Component
@@ -33,12 +34,12 @@ class Index extends Component
             $this->workflow_template_id ="";
            }
         if ($this->in_tray) {
-            $this->nilai = auth()->user()->id;
+            $this->nilai = Auth::user()->id;
         } else {
             $this->nilai = '';
         }
 
-        $user_security = EventUserSecurity::where('user_id', auth()->user()->id)->searchEventType(trim($this->event_type_id))->pluck('responsible_role_id');
+        $user_security = EventUserSecurity::where('user_id', Auth::user()->id)->searchEventType(trim($this->event_type_id))->pluck('responsible_role_id');
         foreach ($user_security as $value) {
             if ($value = $this->responsible_role_id) {
                 $this->muncul = true;
@@ -46,7 +47,7 @@ class Index extends Component
                 $this->muncul = false;
             }
         }
-        if (auth()->user()->role_user_permit_id == 1) {
+        if (Auth::user()->role_user_permit_id == 1) {
             $this->view=true;
         }
         if ($this->rangeDate) {

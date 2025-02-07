@@ -10,10 +10,10 @@ use Livewire\Component;
 use App\Models\DeptByBU;
 use App\Models\Division;
 use App\Models\BusinesUnit;
-use App\Models\choseEventType;
 use App\Models\Eventsubtype;
 use Livewire\WithPagination;
 use App\Models\LocationEvent;
+use App\Models\choseEventType;
 use App\Models\IncidentReport;
 use App\Models\RiskAssessment;
 use App\Models\RiskLikelihood;
@@ -25,9 +25,11 @@ use App\Models\EventUserSecurity;
 use App\Models\WorkflowApplicable;
 use App\Notifications\toModerator;
 use App\Models\TableRiskAssessment;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
-use Illuminate\Support\Facades\Request;
+
 class CreateAndUpdate extends Component
 {
     use WithFileUploads;
@@ -104,9 +106,9 @@ class CreateAndUpdate extends Component
          $this->division_id = null;
     }
     public function mount(){
-            $reportBy = (auth()->user()->lookup_name)?auth()->user()->lookup_name:auth()->user()->name;
+            $reportBy = (Auth::user()->lookup_name)?Auth::user()->lookup_name:Auth::user()->name;
             $this->report_byName = $reportBy;
-            $this->report_by = auth()->user()->id;
+            $this->report_by = Auth::user()->id;
 
     }
 
@@ -131,7 +133,7 @@ class CreateAndUpdate extends Component
            }else{
             $Event_type =[];
            }
-        if (auth()->user()->role_user_permit_id == 1) {
+        if (Auth::user()->role_user_permit_id == 1) {
             $this->show=true;
         }
 
@@ -330,7 +332,7 @@ class CreateAndUpdate extends Component
             'report_by_nolist' => $this->report_to_nolist,
             'report_to_nolist' => $this->report_to_nolist,
             'workflow_detail_id' => $this->workflow_detail_id,
-            'submitter' =>auth()->user()->id
+            'submitter' =>Auth::user()->id
         ]);
 
         $this->dispatch(
@@ -346,8 +348,8 @@ class CreateAndUpdate extends Component
         );
         $this->redirectRoute('incidentReportDetail', ['id' => $IncidentReport->id]);
 
-        $name = (auth()->user()->lookup_name) ? auth()->user()->lookup_name : auth()->user()->name;
-        $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->where('user_id', 'not like', auth()->user()->id)->pluck('user_id')->toArray();
+      
+        $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->where('user_id', 'not like', Auth::user()->id)->pluck('user_id')->toArray();
         $User = User::whereIn('id', $getModerator)->whereNotNull('email')->get();
         $url = $IncidentReport->id;
         foreach ($User as $key => $value) {
