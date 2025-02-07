@@ -170,7 +170,7 @@ class Index extends Component
                     $offerData = [
                         'greeting' =>  '',
                         'subject' => '',
-                        'line' =>  'You have been assigned to a hazard report with reference' . $this->reference . ', please review',
+                        'line' =>  'You have been assigned to a hazard report with reference ' . $this->reference . ', please review',
                         'line2' => 'Please check by click the button below',
                         'line3' => 'Thank you',
                         'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),

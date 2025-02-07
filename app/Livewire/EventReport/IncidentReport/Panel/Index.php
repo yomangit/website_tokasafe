@@ -144,7 +144,7 @@ class Index extends Component
                 $offerData = [
                     'greeting' => $value->lookup_name,
                     'subject' => '',
-                    'line' =>  $value->lookup_name . ' ' . 'has updated the hazard report status to' . $this->status .', please review',
+                    'line' =>  $value->lookup_name . ' ' . 'has updated the hazard report status to ' . $this->status .', please review',
                     'line2' => 'Please review this report',
                     'line3' => 'Thank you',
                     'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
