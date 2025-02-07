@@ -2,6 +2,7 @@
 
 namespace App\Livewire\EventReport\IncidentReport\Panel;
 
+use App\Models\User;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\ClassHierarchy;
@@ -9,6 +10,9 @@ use App\Models\IncidentReport;
 use App\Models\WorkflowDetail;
 use App\Models\EventUserSecurity;
 use App\Models\WorkflowApplicable;
+use App\Notifications\toModerator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class Index extends Component
 {
@@ -116,6 +120,55 @@ class Index extends Component
                 'backgroundColor' => "linear-gradient(to right, #a3e635, #eab308)",
             ]
         );
+        if ($this->responsible_role_id = 1) {
+            $getModerator = EventUserSecurity::where('responsible_role_id', $this->responsible_role_id)->where('user_id', 'NOT LIKE', Auth::user()->id)->pluck('user_id')->toArray();
+            $User = User::whereIn('id', $getModerator)->get();
+            $url = $this->data_id;
+            foreach ($User as $key => $value) {
+                $users = User::whereId($value->id)->get();
+                $offerData = [
+                    'greeting' => $value->lookup_name,
+                    'subject' => '',
+                    'line' =>  $value->lookup_name . ' ' . 'has updated the hazard report status to'. $this->status .', please review',
+                    'line2' => 'Please review this report',
+                    'line3' => 'Thank you',
+                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                ];
+                Notification::send($users, new toModerator($offerData));
+            }
+        }
+        if ($this->procced_to === "Assign & Investigation") {
+            if ($this->assign_to) {
+                $Users = User::where('id', $this->assign_to)->whereNotNull('email')->get();
+                foreach ($Users as $key => $value) {
+                    $report_to = User::whereId($value->id)->get();
+                    $offerData = [
+                        'greeting' =>  '',
+                        'subject' => '',
+                        'line' =>  'You have been assigned to a hazard report with reference' . $this->reference . ', please review',
+                        'line2' => 'Please check by click the button below',
+                        'line3' => 'Thank you',
+                        'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                    ];
+                    Notification::send($report_to, new toModerator($offerData));
+                }
+            }
+            if ($this->also_assign_to) {
+                $Users = User::where('id', $this->also_assign_to)->whereNotNull('email')->get();
+                foreach ($Users as $key => $value) {
+                    $report_to = User::whereId($value->id)->get();
+                    $offerData = [
+                        'greeting' =>  '',
+                        'subject' => '',
+                        'line' =>  'You have been assigned to a hazard report with reference' . $this->reference . ', please review',
+                        'line2' => 'Please check by click the button below',
+                        'line3' => 'Thank you',
+                        'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                    ];
+                    Notification::send($report_to, new toModerator($offerData));
+                }
+            }
+        }
         $this->dispatch('panel_incident', $this->data_id);
         $this->dispatch('panel_incident_realtime');
         $this->reset('procced_to');
