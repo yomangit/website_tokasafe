@@ -21,13 +21,15 @@ class Index extends Component
     public function mount( IncidentReport $id)
     {
         $this->data_id = $id->id;
+        $this->assign_to = $id->assign_to;
+        $this->also_assign_to = $id->also_assign_to;
     }
     public function incident_updated()
     {
         $incidentReport = IncidentReport::whereId( $this->data_id)->first();
         $this->assign_to = $incidentReport->assign_to;
-        $this->reference = $incidentReport->reference;
         $this->also_assign_to = $incidentReport->also_assign_to;
+        $this->reference = $incidentReport->reference;
         $this->responsible_role_id = $incidentReport->WorkflowDetails->ResponsibleRole->id;
         $this->current_step = $incidentReport->WorkflowDetails->name;
         $this->status = $incidentReport->WorkflowDetails->Status->status_name;
