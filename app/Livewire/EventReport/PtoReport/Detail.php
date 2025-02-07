@@ -185,6 +185,8 @@ class Detail extends Component
         $PTO_Report = pto_report::whereId($this->pto_id)->first();
         $this->currentStep = $PTO_Report->WorkflowDetails->name;
         $this->responsible_role_id = $PTO_Report->WorkflowDetails->responsible_role_id;
+        $this->assign_to = $PTO_Report->assign_to;
+        $this->also_assign_to = $PTO_Report->also_assign_to;
         if ($this->currentStep === 'Closed' || $this->currentStep === 'Cancelled') {
             $this->disable_btn = "cursor-not-allowed";
             $this->disable_input = 1;
