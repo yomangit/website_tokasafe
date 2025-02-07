@@ -27,7 +27,6 @@ class Index extends Component
     public function incident_updated()
     {
         $incidentReport = IncidentReport::whereId( $this->data_id)->first();
-
         $this->reference = $incidentReport->reference;
         $this->responsible_role_id = $incidentReport->WorkflowDetails->ResponsibleRole->id;
         $this->current_step = $incidentReport->WorkflowDetails->name;

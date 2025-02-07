@@ -19,22 +19,21 @@ class Index extends Component
     public $procced_to, $EventUserSecurity = [], $Workflows, $show = false, $workflow_detail_id, $data_id, $assign_to, $also_assign_to, $current_step,$reference,  $event_type_id, $workflow_administration_id, $status, $bg_status, $muncul = false, $responsible_role_id;
     public $wf_id, $division_id, $assign_to_old, $also_assign_to_old;
     #[On('hzrd_updated')]
-    public function hzrd_updated($id)
+    public function hzrd_updated(HazardReport $id)
     {
-        $HazardReport = HazardReport::whereId($id)->first();
-        $this->reference = $HazardReport->reference;
-        $this->assign_to_old = $HazardReport->assign_to;
-        $this->also_assign_to_old = $HazardReport->also_assign_to;
-        $this->responsible_role_id = $HazardReport->WorkflowDetails->ResponsibleRole->id;
+
+        $this->reference = $id->reference;
+        $this->assign_to_old = $id->assign_to;
+        $this->also_assign_to_old = $id->also_assign_to;
+        $this->responsible_role_id = $id->WorkflowDetails->ResponsibleRole->id;
     }
-    public function mount($id)
+    public function mount(HazardReport $id)
     {
-        $this->data_id = $id;
-        $HazardReport = HazardReport::whereId($id)->first();
-        $this->reference = $HazardReport->reference;
-        $this->assign_to = $HazardReport->assign_to;
-        $this->assign_to = $HazardReport->assign_to;
-        $this->also_assign_to = $HazardReport->also_assign_to;
+        $this->data_id = $id->id;
+        $this->reference = $id->reference;
+        $this->assign_to = $id->assign_to;
+        $this->assign_to = $id->assign_to;
+        $this->also_assign_to = $id->also_assign_to;
     }
     public function render()
     {
