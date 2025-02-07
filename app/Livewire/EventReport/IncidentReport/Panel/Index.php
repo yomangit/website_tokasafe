@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Notification;
 class Index extends Component
 {
     public $assign_to, $also_assign_to, $responsible_role_id, $tampilkan = false, $data_id, $workgroup_id, $event_type_id, $current_step, $status, $bg_status, $wf_id, $procced_to, $show = false, $EventUserSecurity = [], $Workflows, $workflow_administration_id, $workflow_detail_id;
-    public  $division_id, $assign_to_old, $also_assign_to_old;
+    public  $division_id, $assign_to_old, $also_assign_to_old,$reference;
     public function mount( IncidentReport $id)
     {
         $this->data_id = $id->id;
@@ -26,6 +26,7 @@ class Index extends Component
     {
         $incidentReport = IncidentReport::whereId( $this->data_id)->first();
         $this->assign_to_old = $incidentReport->assign_to;
+        $this->reference = $incidentReport->reference;
         $this->also_assign_to_old = $incidentReport->also_assign_to;
         $this->responsible_role_id = $incidentReport->WorkflowDetails->ResponsibleRole->id;
         $this->current_step = $incidentReport->WorkflowDetails->name;
