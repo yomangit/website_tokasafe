@@ -21,13 +21,13 @@ use Illuminate\Support\Facades\Request;
 class Index extends Component
 {
     use WithPagination;
-    #[Url] 
+    #[Url]
     public $rangeDate='', $search_workgroup = '', $search_eventType = '',$search_eventSubType='', $search_status = '',$searching='',$workflow_template_id,$show=false,$in_tray,$user_id;
     public $EventSubType = [];
     public $startDate,$endDate;
     public $tglMulai,$tglAkhir;
-   
-    
+
+
     public function render()
     {
          if ($this->in_tray) {
@@ -35,15 +35,15 @@ class Index extends Component
         } else {
             $this->user_id = '';
         }
-        
+
         if ($this->rangeDate) {
             $incident = IncidentReport::with([
                 'WorkflowDetails',
                 'subEventType',
                 'eventType',
             ])->searchTray(trim($this->user_id))->searchStatus(trim($this->search_status))->searchEventType(trim($this->search_eventType))->searchEventSubType(trim($this->search_eventSubType))->whereBetween('date',array([$this->tglMulai, $this->tglAkhir ]))->search(trim($this->searching))->paginate(30);
-           
-            
+
+
         }else{
             $incident = IncidentReport::with([
                 'WorkflowDetails',
@@ -51,21 +51,21 @@ class Index extends Component
                 'eventType',
             ])->searchTray(trim($this->user_id))->searchStatus(trim($this->search_status))->searchEventType(trim($this->search_eventType))->searchEventSubType(trim($this->search_eventSubType))->search(trim($this->searching))->paginate(30);
         }
-       
+
         if (Auth::user()->role_user_permit_id == 1) {
             $this->show=true;
         }
         if (route_request::where('route_name','LIKE',Request::getPathInfo())->exists()) {
             $this->workflow_template_id = route_request::where('route_name','LIKE',Request::getPathInfo())->first()->workflow_template_id;
-           
+
            }else{
             $this->workflow_template_id ="";
            }
             if (choseEventType::where('route_name','LIKE','%'. '/eventReport/incidentReport'.'%')->exists()) {
             $eventType = choseEventType::where('route_name','LIKE','%'. '/eventReport/incidentReport'.'%')->pluck('event_type_id');
-            
+
             $Event_type = TypeEventReport::whereIn('id', $eventType)->get();
-           
+
            }else{
             $Event_type =[];
            }

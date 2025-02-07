@@ -2,6 +2,7 @@
 
 namespace App\Livewire\EventReport\PtoReport;
 
+use DateTime;
 use App\Models\User;
 use App\Models\Company;
 use Livewire\Component;
@@ -9,21 +10,25 @@ use App\Models\DeptByBU;
 use App\Models\Division;
 use App\Models\pto_report;
 use App\Models\BusinesUnit;
+use App\Models\ObserverTeam;
 use App\Models\LocationEvent;
+use App\Models\ObserverAction;
 use App\Models\RiskAssessment;
 use App\Models\RiskLikelihood;
 use App\Models\CompanyCategory;
-use App\Models\DocumentationOfPto;
-use App\Models\ObserverAction;
-use App\Models\ObserverTeam;
 use App\Models\RiskConsequence;
+use App\Models\EventUserSecurity;
 use Livewire\Attributes\Validate;
+use App\Models\DocumentationOfPto;
+use App\Notifications\toModerator;
 use App\Models\TableRiskAssessment;
-use DateTime;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
+
 class Detail extends Component
 {
     public $divider = "PLAN TASK OBSERVATION (PTO) FORM";
-    public $pto_id, $currentStep, $disable_btn, $disable_input, $stepJS,$opacity,$select_divisi;
+    public $pto_id, $currentStep, $disable_btn, $disable_input, $stepJS,$opacity,$select_divisi,$responsible_role_id;
     // OBSERVER
     #[Validate]
     public $name_observer, $user_id, $job_title, $date_time, $reference, $workflow_template_id, $parent_Company, $workgroup_name, $business_unit, $dept, $division_id, $workflow_detail_id, $division_update;
@@ -51,11 +56,11 @@ class Detail extends Component
 
         if ($projectExists) {
             $projectAkses = pto_report::whereId($id)
-                ->Where('user_id',auth()->user()->id)
-                ->orWhere('supervisor_area_id',auth()->user()->id)
-                ->orWhere('assign_to',auth()->user()->id)
-                ->orWhere('also_assign_to',auth()->user()->id);
-             if($projectAkses->exists() || auth()->user()->role_user_permit_id ==1)
+                ->Where('user_id',Auth::user()->id)
+                ->orWhere('supervisor_area_id',Auth::user()->id)
+                ->orWhere('assign_to',Auth::user()->id)
+                ->orWhere('also_assign_to',Auth::user()->id);
+             if($projectAkses->exists() || Auth::user()->role_user_permit_id ==1)
              {
                 $this->pto_id = $id;
                 $pto_report=pto_report::whereId($id)->first();
@@ -110,7 +115,7 @@ class Detail extends Component
                 $this->workflow_template_id = $pto_report->workflow_template_id;
                 $this->division_id = $pto_report->division_id;
             }
-             else 
+             else
             {
                 abort(401, 'Unauthorized Access Denied');
             }
@@ -135,16 +140,16 @@ class Detail extends Component
         $this->updatePanel();
         $this->TableRiskFunction();
         if ($this->division_id) {
-           
+
             $divisi = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->whereId($this->division_id)->first();
             if (!empty($divisi->company_id) && !empty($divisi->section_id)) {
-                
+
                 $this->workgroup_name =  $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company . '-' . $divisi->Section->name;
             }
             elseif($divisi->company_id){
                 $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company;
             }
-           
+
             elseif ($divisi->section_id) {
                 $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name. '-' . $divisi->Section->name;
             }
@@ -176,6 +181,7 @@ class Detail extends Component
     {
         $PTO_Report = pto_report::whereId($this->pto_id)->first();
         $this->currentStep = $PTO_Report->WorkflowDetails->name;
+        $this->responsible_role_id = $PTO_Report->WorkflowDetails->responsible_role_id;
         if ($this->currentStep === 'Closed' || $this->currentStep === 'Cancelled') {
             $this->disable_btn = "cursor-not-allowed";
             $this->disable_input = 1;
@@ -268,7 +274,7 @@ class Detail extends Component
     }
     public function rules()
     {
-            
+
         if ($this->type_of_activities === "Other activities") {
             return [
                  'name_observer' => 'required',
@@ -379,12 +385,12 @@ class Detail extends Component
     }
     public function store()
     {
-        
+
         $this->validate();
         if ($this->type_of_activities!= "Other activities") {
             $this->type_of_activities_other=null ;
         }
-       
+
         $pto = pto_report::whereId($this->pto_id)->update([
             'name_observer' => $this->name_observer,
             'user_id' => $this->user_id,
@@ -444,11 +450,75 @@ class Detail extends Component
                 'backgroundColor' => "linear-gradient(to right, #00b09b, #96c93d)",
             ]
         );
+        if($this->responsible_role_id == 1)
+        {
+            $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->where('user_id', 'not like', Auth::user()->id)->pluck('user_id')->toArray();
+            $User = User::whereIn('id', $getModerator)->whereNotNull('email')->get();
+            $url = $this->pto_id;
+            foreach ($User as $key => $value) {
+                $users = User::whereId($value->id)->get();
+                $offerData = [
+                    'greeting' => 'Dear' . ' ' . $value->lookup_name,
+                    'subject' => "PTO Report",
+                    'line' =>  Auth::user()->lookup_name . ' ' . 'has update a pto report, please review',
+                    'line2' => 'Please check by click the button below',
+                    'line3' => 'Thank you',
+                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+
+                ];
+                Notification::send($users, new toModerator($offerData));
+        }
+        }
+        if ($this->assign_to) {
+            $Users = User::where('id', $this->assign_to)->whereNotNull('email')->get();
+            foreach ($Users as $key => $value) {
+                $report_to = User::whereId($value->id)->get();
+                $offerData = [
+                    'greeting' => 'Dear' . '' . $value->lookup_name,
+                    'subject' => "PTO Report",
+                    'line' =>  Auth::user()->lookup_name . ' ' . 'has update a PTO Report", please review',
+                    'line2' => 'Please check by click the button below',
+                    'line3' => 'Thank you',
+                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+                ];
+                Notification::send($report_to, new toModerator($offerData));
+            }
+        }
+        if ($this->also_assign_to) {
+            $Users = User::where('id', $this->also_assign_to)->whereNotNull('email')->get();
+            foreach ($Users as $key => $value) {
+                $report_to = User::whereId($value->id)->get();
+                $offerData = [
+                    'greeting' => 'Dear' . '' . $value->lookup_name,
+                    'subject' => "PTO Report",
+                    'line' =>  Auth::user()->lookup_name . ' ' . 'has update a PTO Report", please review',
+                    'line2' => 'Please check by click the button below',
+                    'line3' => 'Thank you',
+                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+                ];
+                Notification::send($report_to, new toModerator($offerData));
+            }
+        }
+        if ($this->supervisor_area) {
+            $Users = User::whereIn('id',  [$this->supervisor_area_id])->whereNotNull('email')->get();
+            foreach ($Users as $key => $value) {
+                $report_to = User::whereId($value->id)->get();
+                $offerData = [
+                    'greeting' => 'Dear' . '' . $value->lookup_name,
+                    'subject' => "PTO Report",
+                    'line' =>  Auth::user()->lookup_name . '' . 'has update a pto report, please review',
+                    'line2' => 'Please check by click the button below',
+                    'line3' => 'Thank you',
+                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+                ];
+                Notification::send($report_to, new toModerator($offerData));
+            }
+        }
         $this->dispatch('panel_pto');
     }
     public function destroy (){
         $incidentReport = pto_report::whereId($this->pto_id);
-       
+
         $files = DocumentationOfPto::where('reference', 'LIKE', $this->reference);
         if (isset( $files->first()->name_doc)) {
             unlink(storage_path('app/public/documents/pto/' .   $files->first()->name_doc));
@@ -456,7 +526,7 @@ class Detail extends Component
         $incidentReport->delete();
         ObserverTeam::where('reference', 'LIKE', $this->reference)->delete();
         ObserverAction::where('reference', 'LIKE', $this->reference)->delete();
-       
+
         $this->dispatch(
             'alert',
             [

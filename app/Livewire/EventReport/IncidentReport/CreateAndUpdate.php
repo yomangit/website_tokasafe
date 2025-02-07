@@ -366,7 +366,7 @@ class CreateAndUpdate extends Component
             Notification::send($users, new toModerator($offerData));
         }
         if ($this->report_toName) {
-            $Users = User::whereIn('id',  $this->report_to)->whereNotNull('email')->get();
+            $Users = User::whereIn('id',  [$this->report_to])->whereNotNull('email')->get();
             foreach ($Users as $key => $value) {
                 $report_to = User::whereId($value->id)->get();
                 $offerData = [

@@ -379,7 +379,7 @@ class Create extends Component
 
         }
         if ($this->supervisor_area) {
-            $Users = User::whereIn('id',  $this->supervisor_area_id)->whereNotNull('email')->get();
+            $Users = User::whereIn('id',  [$this->supervisor_area_id])->whereNotNull('email')->get();
             foreach ($Users as $key => $value) {
                 $report_to = User::whereId($value->id)->get();
                 $offerData = [
