@@ -511,7 +511,7 @@ class Detail extends Component
                 $offerData = [
                     'greeting' => 'Dear' . '' . $value->lookup_name,
                     'subject' => "PTO Report",
-                    'line' =>  Auth::user()->lookup_name . '' . 'has update a pto report, please review',
+                    'line' =>  Auth::user()->lookup_name . ' ' . 'has update a pto report, please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
                     'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
