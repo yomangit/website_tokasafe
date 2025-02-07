@@ -348,7 +348,7 @@ class CreateAndUpdate extends Component
         );
         $this->redirectRoute('incidentReportDetail', ['id' => $IncidentReport->id]);
 
-      
+
         $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->where('user_id', 'not like', Auth::user()->id)->pluck('user_id')->toArray();
         $User = User::whereIn('id', $getModerator)->whereNotNull('email')->get();
         $url = $IncidentReport->id;

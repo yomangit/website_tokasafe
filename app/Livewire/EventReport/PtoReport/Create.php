@@ -29,7 +29,7 @@ class Create extends Component
 {
     public $divider = "PLAN TASK OBSERVATION (PTO) FORM";
 
-    public $reference, $workflow_template_id;
+    public $reference, $workflow_template_id,$ResponsibleRole;
     public $user, $pto_id, $parent_Company, $workgroup_name, $business_unit, $dept, $division_id, $workflow_detail_id,$select_divisi;
     public $supervisor_area = '';
     // OBSERVER
@@ -132,7 +132,12 @@ class Create extends Component
     }
     public function render()
     {
-        $this->workflow_detail_id = WorkflowDetail::where('workflow_administration_id', $this->workflow_template_id)->first()->id;
+        if (WorkflowDetail::where('workflow_administration_id', $this->workflow_template_id)->exists()) {
+            $this->workflow_detail_id = WorkflowDetail::where('workflow_administration_id', $this->workflow_template_id)->first()->id;
+            $WorkflowDetail = WorkflowDetail::where('workflow_administration_id',$this->workflow_template_id)->first();
+            $this->workflow_detail_id = $WorkflowDetail->id;
+            $this->ResponsibleRole = $WorkflowDetail->responsible_role_id;
+        }
         if ($this->division_id) {
 
             $divisi = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->whereId($this->division_id)->first();
