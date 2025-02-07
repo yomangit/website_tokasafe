@@ -7,7 +7,7 @@ use App\Models\Site;
 use App\Models\User;
 use App\Models\Company;
 use Livewire\Component;
-use App\Models\DeptByBU; 
+use App\Models\DeptByBU;
 use App\Models\Division;
 use App\Models\EventKeyword;
 use App\Models\BusinesUnit;
@@ -50,9 +50,9 @@ class Detail extends Component
     {
         $projectExists = IncidentReport::whereId($id)->exists();
         $this->data_id = $id;
-        if ($projectExists) 
+        if ($projectExists)
         {
-            
+
             $projectAkses = IncidentReport::whereId($id)
                 ->Where('submitter',auth()->user()->id)
                 ->orWhere('report_by',auth()->user()->id)
@@ -61,7 +61,7 @@ class Detail extends Component
                 ->orWhere('also_assign_to',auth()->user()->id)->exists();
                 if(($projectAkses) || (auth()->user()->role_user_permit_id ==1))
                 {
-                    
+
                     $incidentReport = IncidentReport::whereId($id)->first();
                     $this->risk_consequence_id = $incidentReport->risk_consequence_id;
                     $this->risk_likelihood_id = $incidentReport->risk_likelihood_id;
@@ -73,9 +73,9 @@ class Detail extends Component
                     $this->sub_event_type_id = $incidentReport->sub_event_type_id;
                     $this->potential_lti = $incidentReport->potential_lti;
                     $this->report_toName = ($incidentReport->report_to) ? $incidentReport->reportsTo->lookup_name : $incidentReport->report_toName;
-                    $this->report_to_nolist = ($incidentReport->report_to) ? $incidentReport->reportsTo->lookup_name : $incidentReport->report_toName;
                     $this->report_byName = ($incidentReport->report_by) ? $incidentReport->reportBy->lookup_name : $incidentReport->report_byName;
-                    $this->report_by_nolist = ($incidentReport->report_by) ? $incidentReport->reportBy->lookup_name : $incidentReport->report_byName;
+                    $this->report_to_nolist = ($incidentReport->report_to_nolist) ? $incidentReport->report_to_nolist : "";
+                    $this->report_by_nolist = ($incidentReport->report_by_nolist) ? $incidentReport->report_by_nolist : "";
                     $this->date =  DateTime::createFromFormat('Y-m-d : H:i', $incidentReport->date)->format('d-m-Y : H:i');
                     $this->site_id = $incidentReport->site_id;
                     $this->task_being_done = $incidentReport->task_being_done;
@@ -94,18 +94,18 @@ class Detail extends Component
                     $this->also_assign_to = $incidentReport->also_assign_to;
                     $this->division_id = $incidentReport->division_id;
                 }
-                 else 
+                 else
                 {
                     abort(401, 'Unauthorized Access Denied');
                 }
              $this->ReportByAndReportTo();
-        } 
-        else 
+        }
+        else
         {
             abort_unless($projectExists, 404, 'Project not found');
         }
     }
-   
+
 
     public function rules()
     {
@@ -173,18 +173,18 @@ class Detail extends Component
     }
     public function render()
     {
-       
+
         if ($this->division_id) {
-           
+
             $divisi = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company'])->whereId($this->division_id)->first();
              if (!empty($divisi->company_id) && !empty($divisi->section_id)) {
-                
+
                 $this->workgroup_name =  $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company . '-' . $divisi->Section->name;
             }
             elseif($divisi->company_id){
                 $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company;
             }
-           
+
             elseif ($divisi->section_id) {
                 $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name. '-' . $divisi->Section->name;
             }
@@ -198,7 +198,7 @@ class Detail extends Component
              $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->searchDeptCom(trim($this->workgroup_name))->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
        }
         $this->workflow_administration_id = (!empty(WorkflowApplicable::where('type_event_report_id', $this->event_type_id)->first()->workflow_administration_id)) ? WorkflowApplicable::where('type_event_report_id', $this->event_type_id)->first()->workflow_administration_id : null;
-       
+
         $this->dataUpdate();
         $this->TableRiskFunction();
         $this->EventSubType = (isset($this->event_type_id)) ?  $this->EventSubType = Eventsubtype::where('event_type_id', $this->event_type_id)->get() : [];
@@ -281,7 +281,7 @@ class Detail extends Component
             $this->fileUpload = pathinfo($fileName, PATHINFO_EXTENSION);
             $this->documentation = $fileName;
         }
-       
+
     }
     public function riskId($risk_likelihood_id, $risk_consequence_id, $risk_assessment_id)
     {
@@ -378,10 +378,10 @@ class Detail extends Component
             ]
         );
     }
-   
+
     public function destroy (){
         $incidentReport = IncidentReport::whereId($this->data_id);
-       
+
         $files = IncidentDocumentation::where('incident_id', $this->data_id);
         if (isset( $files->first()->name_doc)) {
             unlink(storage_path('app/public/documents/incident/' .   $files->first()->name_doc));
