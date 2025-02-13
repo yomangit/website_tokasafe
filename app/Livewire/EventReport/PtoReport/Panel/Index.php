@@ -45,17 +45,16 @@ class Index extends Component
         $ClassHierarchy =  ClassHierarchy::where('division_id', [$this->division_id])->first();
         $Company = $ClassHierarchy->company_category_id;
         $Department = $ClassHierarchy->dept_by_business_unit_id;
-        $User = EventUserSecurity::where('user_id', auth()->user()->id)->where('responsible_role_id',  $this->responsible_role_id)->where('responsible_role_id',  $this->responsible_role_id)->where('type_event_report_id', $this->event_type_id)->pluck('user_id');
-
-        foreach ($User as $value) {
-            if (EventUserSecurity::where('user_id', $value)->searchCompany(trim($Company))->exists()) {
-                $this->tampilkan = true;
-            } elseif (EventUserSecurity::where('user_id', $value)->searchDept(trim($Department))->exists()) {
-                $this->tampilkan = true;
-            } else {
-                $this->tampilkan = false;
+        $User = (EventUserSecurity:: where('user_id', Auth::user()->id)->where('responsible_role_id',  2)->where('type_event_report_id', $this->event_type_id)->exists())? EventUserSecurity:: where('user_id', Auth::user()->id)->where('responsible_role_id',  2)->where('type_event_report_id', $this->event_type_id)->pluck('user_id'):EventUserSecurity:: where('user_id', Auth::user()->id)->where('responsible_role_id',  2)->pluck('user_id');
+            foreach ($User as $value) {
+                if (EventUserSecurity::where('user_id', $value)->searchCompany(trim($Company))->exists()) {
+                    $this->tampilkan = true;
+                } elseif (EventUserSecurity::where('user_id', $value)->searchDept(trim($Department))->exists()) {
+                    $this->tampilkan = true;
+                } else {
+                    $this->tampilkan = false;
+                }
             }
-        }
     }
     public function realtimeUpdate()
     {
