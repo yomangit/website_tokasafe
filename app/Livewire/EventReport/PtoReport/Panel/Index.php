@@ -172,7 +172,7 @@ class Index extends Component
                     $offerData = [
                         'greeting' =>  '',
                         'subject' => '',
-                        'line' =>   Auth::user()->lookup_name.'Closed this PTO Report',
+                        'line' =>   Auth::user()->lookup_name.' Closed this PTO Report',
                         'line2' => 'Please check by click the button below',
                         'line3' => 'Thank you',
                         'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
@@ -187,7 +187,7 @@ class Index extends Component
                     $offerData = [
                         'greeting' =>  '',
                         'subject' => '',
-                        'line' =>   Auth::user()->lookup_name.'Closed this PTO Report',
+                        'line' =>   Auth::user()->lookup_name.' Closed this PTO Report',
                         'line2' => 'Please check by click the button below',
                         'line3' => 'Thank you',
                         'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
