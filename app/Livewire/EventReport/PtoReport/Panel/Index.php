@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Notification;
 
 class Index extends Component
 {
-    public $pto_id, $assign_to, $also_assign_to, $current_step, $workflow_administration_id;
+    public $pto_id, $assign_to, $also_assign_to, $current_step, $workflow_administration_id,$reference;
     public $Workflows, $Workflows_id, $bg_status, $status, $tampilkan = false, $responsible_role_id, $show = false, $EventUserSecurity = [], $division_id, $event_type_id, $procced_to;
     protected $listeners = [
 
@@ -24,12 +24,13 @@ class Index extends Component
     public function mount(pto_report $id)
     {
         $this->pto_id = $id->id;
+        $this->reference = $id->reference;
     }
     public function update()
     {
         $id = pto_report::whereId($this->pto_id)->first();
         $this->Workflows_id = $id->workflow_detail_id;
-
+        $this->reference = $id->reference;
         $this->current_step = $id->WorkflowDetails->name;
         $this->bg_status = $id->WorkflowDetails->Status->bg_status;
         $this->status = $id->WorkflowDetails->Status->status_name;
