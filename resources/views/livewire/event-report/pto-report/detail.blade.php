@@ -772,11 +772,11 @@
                                 }
                             });
                         });
-                        newEditor.editing.view.change((writer) => {
+                        newEditor1.editing.view.change((writer) => {
                             writer.setStyle(
                                 "height"
                                 , "155px"
-                                , newEditor.editing.view.document.getRoot()
+                                , newEditor1.editing.view.document.getRoot()
                             );
                         });
                         newEditor1.model.document.on('change:data', () => {
