@@ -31,14 +31,14 @@ class Index extends Component
             $references =  str_pad($reference, 4, "0", STR_PAD_LEFT);
             $this->reference = $referencePTO . $references;
         }
-        
-        
-        if (route_request::exists()) {
+
+
+        if (route_request::where('route_name','LIKE',Request::getPathInfo())->exists()) {
         $this->workflow_template_id = route_request::where('route_name','LIKE',Request::getPathInfo())->first()->workflow_template_id;
        }else{
         $this->workflow_template_id ="";
        }
-        
+
         if (auth()->user()->role_user_permit_id == 1) {
             $this->show=true;
         }
