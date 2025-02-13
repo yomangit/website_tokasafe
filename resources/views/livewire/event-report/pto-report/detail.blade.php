@@ -19,7 +19,7 @@
     <livewire:event-report.pto-report.panel.index :id="$pto_id">
         <form wire:submit.prevent='store'>
             <div wire:target='store' wire:loading.class="skeleton">
-                <div wire:target="store" wire:loading.class="skeleton" class="left-0 p-1 mb-1 border rounded-sm  border-slate-300">
+                <div wire:target="store" wire:loading.class="skeleton" class="left-0 p-1 mb-1 border rounded-sm border-slate-300">
                     <x-btn-save wire:target="store" wire:loading.class="btn-disabled" class="{{ $disable_btn}}">
                         {{ __('Save') }}</x-btn-save>
                     <x-btn-delete wire:click='destroy' wire:target="store" class="{{ $disable_btn}}" wire:loading.class="btn-disabled" wire:confirm.prompt="Are you sure delete {{ $reference }}?\n\nType DELETE to confirm|DELETE">{{ __('Delete') }}</x-btn-delete>
@@ -96,7 +96,7 @@
                                                 </ul>
                                             </div>
                                             <div class="grid flex-grow h-40 overflow-auto card bg-base-300 rounded-box">
-                                                <ul class="w-56 px-4 py-2 list-disc list-inside  bg-base-200 rounded-box">
+                                                <ul class="w-56 px-4 py-2 list-disc list-inside bg-base-200 rounded-box">
 
                                                     @forelse ($Division as $item)
                                                     <li wire:click="select_division({{ $item->id }})" class="text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer"> {{ $item->DeptByBU->BusinesUnit->Company->name_company }}-{{ $item->DeptByBU->Department->department_name }}
@@ -120,7 +120,7 @@
                         </div>
                         <div class="mt-2 card bg-base-100 ">
                             <div class="p-2 border border-gray-300 card-body rounded-box">
-                                <label class="text-sm font-extrabold text-transparent  divider divider-info bg-clip-text bg-gradient-to-r from-rose-500 to-orange-500">
+                                <label class="text-sm font-extrabold text-transparent divider divider-info bg-clip-text bg-gradient-to-r from-rose-500 to-orange-500">
                                     Observer Team</label>
                                 <x-btn-add data-tip="Add people" class="{{ $disable_btn }}" wire:click="$dispatch('openModalPtoTeam')" />
                                 <livewire:event-report.pto-report.observer-team.detail :reference="$reference" :id="$pto_id">
@@ -776,7 +776,7 @@
                             writer.setStyle(
                                 "height"
                                 , "155px"
-                                , Key_learnings.editing.view.document.getRoot()
+                                , newEditor.editing.view.document.getRoot()
                             );
                         });
                         newEditor1.model.document.on('change:data', () => {

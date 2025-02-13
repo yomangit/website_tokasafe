@@ -763,7 +763,7 @@
                 writer.setStyle(
                     "height"
                     , "155px"
-                    , Key_learnings.editing.view.document.getRoot()
+                    , newEditor.editing.view.document.getRoot()
                 );
             });
             newEditor.model.document.on('change:data', () => {
