@@ -131,7 +131,7 @@ class Index extends Component
                 Notification::send($users, new toModerator($offerData));
             }
         }
-      if ($this->procced_to === "Assign & Investigation") {
+      if ($this->procced_to === "Assigned") {
             if ($this->assign_to) {
                 $Users = User::where('id', $this->assign_to)->whereNotNull('email')->get();
                 foreach ($Users as $key => $value) {
