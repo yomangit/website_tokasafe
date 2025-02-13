@@ -35,7 +35,6 @@ class Index extends Component
         $this->bg_status = $id->WorkflowDetails->Status->bg_status;
         $this->status = $id->WorkflowDetails->Status->status_name;
         $this->responsible_role_id = $id->WorkflowDetails->ResponsibleRole->id;
-        $this->workflow_administration_id = $id->workflow_template_id;
         $this->division_id = $id->division_id;
         $this->assign_to = $id->assign_to;
         $this->also_assign_to = $id->also_assign_to;
@@ -79,7 +78,7 @@ class Index extends Component
         $this->update();
         $this->userSecurity();
         $this->realtimeUpdate();
-
+        $this->workflow_administration_id = (!empty(WorkflowApplicable::where('type_event_report_id', $this->event_type_id)->first()->workflow_administration_id)) ? WorkflowApplicable::where('type_event_report_id', $this->event_type_id)->first()->workflow_administration_id : null;
             $this->Workflows = WorkflowDetail::where('workflow_administration_id', $this->workflow_administration_id)->where('name', $this->current_step)->get();
 
         return view('livewire.event-report.pto-report.panel.index', [
