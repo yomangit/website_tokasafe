@@ -79,7 +79,7 @@ class Index extends Component
         $this->update();
         $this->userSecurity();
         $this->realtimeUpdate();
-                dd($this->workflow_administration_id);
+
             $this->Workflows = WorkflowDetail::where('workflow_administration_id', $this->workflow_administration_id)->where('name', $this->current_step)->get();
 
         return view('livewire.event-report.pto-report.panel.index', [
