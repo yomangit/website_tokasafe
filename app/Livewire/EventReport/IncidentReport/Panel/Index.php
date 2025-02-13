@@ -184,6 +184,38 @@ class Index extends Component
                 }
             }
         }
+        if ($this->procced_to === "Closed") {
+            if ($this->assign_to) {
+                $Users = User::where('id', $this->assign_to)->whereNotNull('email')->get();
+                foreach ($Users as $key => $value) {
+                    $report_to = User::whereId($value->id)->get();
+                    $offerData = [
+                        'greeting' =>  '',
+                        'subject' => '',
+                          'line' =>   Auth::user()->lookup_name.' Closed this Hazard Report',
+                        'line2' => 'Please check by click the button below',
+                        'line3' => 'Thank you',
+                        'actionUrl' => url("https://toka.tokasafe.site/eventReport/incidentReportDetail/$url"),
+                    ];
+                    Notification::send($report_to, new toModerator($offerData));
+                }
+            }
+            if ($this->also_assign_to) {
+                $Users = User::where('id', $this->also_assign_to)->whereNotNull('email')->get();
+                foreach ($Users as $key => $value) {
+                    $report_to = User::whereId($value->id)->get();
+                    $offerData = [
+                        'greeting' =>  '',
+                        'subject' => '',
+                          'line' =>   Auth::user()->lookup_name.' Closed this Hazard Report',
+                        'line2' => 'Please check by click the button below',
+                        'line3' => 'Thank you',
+                        'actionUrl' => url("https://toka.tokasafe.site/eventReport/incidentReportDetail/$url"),
+                    ];
+                    Notification::send($report_to, new toModerator($offerData));
+                }
+            }
+        }
         $this->dispatch('panel_incident', $this->data_id);
         $this->dispatch('panel_incident_realtime');
         $this->reset('procced_to');
