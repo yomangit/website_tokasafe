@@ -147,7 +147,7 @@ class Index extends Component
                     'line' =>  $value->lookup_name . ' ' . 'has updated the hazard report status to ' . $this->status .', please review',
                     'line2' => 'Please review this report',
                     'line3' => 'Thank you',
-                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/incidentReportDetail/$url"),
                 ];
                 Notification::send($users, new toModerator($offerData));
             }
@@ -163,7 +163,7 @@ class Index extends Component
                         'line' =>  'You have been assigned to a hazard report with reference ' . $this->reference . ', please review',
                         'line2' => 'Please check by click the button below',
                         'line3' => 'Thank you',
-                        'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+                        'actionUrl' => url("https://toka.tokasafe.site/eventReport/incidentReportDetail/$url"),
                     ];
                     Notification::send($report_to, new toModerator($offerData));
                 }
@@ -178,7 +178,7 @@ class Index extends Component
                         'line' =>  'You have been assigned to a hazard report with reference ' . $this->reference . ', please review',
                         'line2' => 'Please check by click the button below',
                         'line3' => 'Thank you',
-                        'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+                        'actionUrl' => url("https://toka.tokasafe.site/eventReport/incidentReportDetail/$url"),
                     ];
                     Notification::send($report_to, new toModerator($offerData));
                 }
