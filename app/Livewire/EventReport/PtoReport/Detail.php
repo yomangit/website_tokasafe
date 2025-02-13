@@ -455,11 +455,12 @@ class Detail extends Component
                 'backgroundColor' => "linear-gradient(to right, #00b09b, #96c93d)",
             ]
         );
+        $url = $this->pto_id;
         if($this->responsible_role_id == 1)
         {
             $getModerator = EventUserSecurity::where('responsible_role_id', $this->responsible_role_id)->where('user_id', 'not like', Auth::user()->id)->pluck('user_id')->toArray();
             $User = User::whereIn('id', $getModerator)->whereNotNull('email')->get();
-            $url = $this->pto_id;
+
             foreach ($User as $key => $value) {
                 $users = User::whereId($value->id)->get();
                 $offerData = [
