@@ -1,6 +1,6 @@
 <div>
     <div class="overflow-x-auto sm:w-full w-[370px] h-36">
-        <table class="table table-xs table-pin-rows">
+        <table class="table table-xs ">
             <!-- head -->
             <thead>
                 <tr>
