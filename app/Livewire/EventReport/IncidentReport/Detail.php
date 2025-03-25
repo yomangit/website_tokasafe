@@ -61,7 +61,7 @@ class Detail extends Component
                 ->orWhere('also_assign_to', Auth::user()->id)->exists();
             if (($projectAkses) || (Auth::user()->role_user_permit_id == 1)) {
 
-                $incidentReport = IncidentReport::whereId($id)->first();
+                $incidentReport = IncidentReport::with(['reportsTo', 'reportBy'])->whereId($id)->first();
                 $this->risk_consequence_id = $incidentReport->risk_consequence_id;
                 $this->risk_likelihood_id = $incidentReport->risk_likelihood_id;
                 $this->reference = $incidentReport->reference;
@@ -71,10 +71,10 @@ class Detail extends Component
                 $this->event_type_id = $incidentReport->event_type_id;
                 $this->sub_event_type_id = $incidentReport->sub_event_type_id;
                 $this->potential_lti = $incidentReport->potential_lti;
-                $this->report_toName = ($incidentReport->report_to) ? $incidentReport->reportsTo->lookup_name : $incidentReport->report_toName;
-                $this->report_byName = ($incidentReport->report_by) ? $incidentReport->reportBy->lookup_name : $incidentReport->report_byName;
                 $this->report_to_nolist = ($incidentReport->report_to_nolist) ? $incidentReport->report_to_nolist : "";
                 $this->report_by_nolist = ($incidentReport->report_by_nolist) ? $incidentReport->report_by_nolist : "";
+                $this->report_toName = ($incidentReport->report_to) ? $incidentReport->report_toName :  $this->report_to_nolist;
+                $this->report_byName = ($incidentReport->report_by) ? $incidentReport->report_byName : $this->report_by_nolist;
                 $this->date =  DateTime::createFromFormat('Y-m-d : H:i', $incidentReport->date)->format('d-m-Y : H:i');
                 $this->site_id = $incidentReport->site_id;
                 $this->task_being_done = $incidentReport->task_being_done;
