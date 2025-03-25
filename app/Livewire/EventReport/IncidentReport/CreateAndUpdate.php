@@ -344,7 +344,7 @@ class CreateAndUpdate extends Component
         $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->where('user_id', 'not like', Auth::user()->id)->pluck('user_id')->toArray();
         $User = User::whereIn('id', $getModerator)->whereNotNull('email')->get();
         $url = $IncidentReport->id;
-        $app_url =  env('APP_URL');
+
         foreach ($User as $key => $value) {
             $users = User::whereId($value->id)->get();
             $offerData = [
