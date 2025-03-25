@@ -71,8 +71,8 @@ class Detail extends Component
                 $this->event_type_id = $incidentReport->event_type_id;
                 $this->sub_event_type_id = $incidentReport->sub_event_type_id;
                 $this->potential_lti = $incidentReport->potential_lti;
-                $this->report_to_nolist = ($incidentReport->report_to_nolist) ? $incidentReport->report_to_nolist : "";
-                $this->report_by_nolist = ($incidentReport->report_by_nolist) ? $incidentReport->report_by_nolist : "";
+                $this->report_to_nolist = ($incidentReport->report_to_nolist != null) ? $incidentReport->report_to_nolist : "";
+                $this->report_by_nolist = ($incidentReport->report_by_nolist != null) ? $incidentReport->report_by_nolist : "";
                 $this->report_toName = ($incidentReport->report_to) ? $incidentReport->report_toName :  $this->report_to_nolist;
                 $this->report_byName = ($incidentReport->report_by) ? $incidentReport->report_byName : $this->report_by_nolist;
                 $this->date =  DateTime::createFromFormat('Y-m-d : H:i', $incidentReport->date)->format('d-m-Y : H:i');
