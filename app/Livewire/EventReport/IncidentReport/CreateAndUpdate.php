@@ -169,8 +169,9 @@ class CreateAndUpdate extends Component
         $this->TableRiskFunction();
         $this->EventSubType = (isset($this->event_type_id)) ?  $this->EventSubType = Eventsubtype::where('event_type_id', $this->event_type_id)->get() : [];
 
-        $app_url = env('APP_URL');
-        dd($app_url);
+
+
+
         return view('livewire.event-report.incident-report.create-and-update', [
             'RiskAssessments' => RiskAssessment::get(),
             'RiskConsequence' => RiskConsequence::get(),
@@ -343,7 +344,7 @@ class CreateAndUpdate extends Component
         $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->where('user_id', 'not like', Auth::user()->id)->pluck('user_id')->toArray();
         $User = User::whereIn('id', $getModerator)->whereNotNull('email')->get();
         $url = $IncidentReport->id;
-        $app_url = env('APP_URL');
+
         foreach ($User as $key => $value) {
             $users = User::whereId($value->id)->get();
             $offerData = [
@@ -352,7 +353,7 @@ class CreateAndUpdate extends Component
                 'line' =>  $this->report_byName . ' ' . 'has submitted a hazard report, please review',
                 'line2' => 'Please check by click the button below',
                 'line3' => 'Thank you',
-                'actionUrl' => url("$app_url/eventReport/incidentReportDetail/$url"),
+                'actionUrl' => url("https://tokasafe.archimining.com/eventReport/incidentReportDetail/$url"),
 
             ];
             Notification::send($users, new toModerator($offerData));
@@ -367,7 +368,7 @@ class CreateAndUpdate extends Component
                     'line' =>  $this->report_byName . '' . 'has sent a hazard report to you, please review it',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
-                    'actionUrl' => url("$app_url/eventReport/incidentReportDetail/$url"),
+                    'actionUrl' => url("https://tokasafe.archimining.com/eventReport/incidentReportDetail/$url"),
                 ];
                 Notification::send($report_to, new toModerator($offerData));
             }
