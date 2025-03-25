@@ -1,5 +1,5 @@
 <div>
-    <div class="overflow-x-auto sm:w-full w-[370px] h-36">
+    <div class="overflow-x-auto sm:w-full w-80 h-36">
         <table class="table table-xs ">
             <!-- head -->
             <thead>
