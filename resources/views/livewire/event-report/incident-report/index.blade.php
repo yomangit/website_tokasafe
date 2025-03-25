@@ -8,14 +8,16 @@
     <x-notification />
     <div class="flex flex-col items-center sm:flex-row sm:justify-between">
         <div>
-            <x-icon-btn-a href="{{ route('incidentReportform', ['workflow_template_id' => $workflow_template_id]) }}" data-tip="Add Data" />
+            <x-icon-btn-a href="{{ route('incidentReportform', ['workflow_template_id' => $workflow_template_id]) }}"
+                data-tip="Add Data" />
 
             @if ($show)
-            <x-btn-admin-template
-                wire:click="$dispatch('openModal', { component: 'admin.route-request.create'})">Chose Workflow Template</x-btn-admin-template>
-        @endif
+                <x-btn-admin-template
+                    wire:click="$dispatch('openModal', { component: 'admin.route-request.create'})">Chose Workflow
+                    Template</x-btn-admin-template>
+            @endif
 
-        <div class="flex flex-row form-control">
+            <div class="flex flex-row form-control">
                 <label class="gap-4 cursor-pointer label">
                     <span class="label-text font-spicy_rice">My Tray</span>
                     <input type="checkbox" wire:model.live='in_tray'
@@ -71,11 +73,11 @@
                     <th>Status</th>
                 </tr>
             </thead>
-            <tbody >
+            <tbody>
 
                 @forelse ($IncidentReport as $index => $item)
                     <tr wire:target='rangeDate,search_workgroup,search_eventType,search_eventSubType,search_status,searching,in_tray'
-                    wire:loading.class='hidden' class="text-center">
+                        wire:loading.class='hidden' class="text-center">
                         <th>{{ $IncidentReport->firstItem() + $index }}</th>
                         <td>{{ DateTime::createFromFormat('Y-m-d : H:i', $item->date)->format('d-m-Y') }}</td>
                         <td>{{ $item->reference }}</td>
@@ -97,32 +99,30 @@
                         </td>
                         <td>
                             <div class="">
-                                 @if (
-                                    auth()->user()->role_user_permit_id == 1 ||
-                                    $item->submitter == auth()->user()->id ||
-                                    $item->report_by == auth()->user()->id ||
-                                    $item->report_to == auth()->user()->id ||
-                                    $item->assign_to == auth()->user()->id ||
-                                    $item->also_assign_to == auth()->user()->id
-                                    )
-                                <x-icon-btn-detail href="{{ route('incidentReportDetail', ['id' => $item->id]) }}"
-                                    data-tip="Details" />
+                                @if (auth()->user()->role_user_permit_id == 1 ||
+                                        $item->submitter == auth()->user()->id ||
+                                        $item->report_by == auth()->user()->id ||
+                                        $item->report_to == auth()->user()->id ||
+                                        $item->assign_to == auth()->user()->id ||
+                                        $item->also_assign_to == auth()->user()->id)
+                                    <x-icon-btn-detail href="{{ route('incidentReportDetail', ['id' => $item->id]) }}"
+                                        data-tip="Details" />
 
-                                <x-icon-btn-delete data-tip="delete" wire:click='delete({{ $item->id }})'
-                                    wire:confirm.prompt="Are you sure delete {{ $item->reference }}?\n\nType DELETE to confirm|DELETE" />
-                                     @endif
+                                    <x-icon-btn-delete data-tip="delete" wire:click='delete({{ $item->id }})'
+                                        wire:confirm.prompt="Are you sure delete {{ $item->reference }}?\n\nType DELETE to confirm|DELETE" />
+                                @endif
                             </div>
                         </td>
                     </tr>
-                    @empty
+                @empty
                     <tr wire:loading.class='hidden '
-                    wire:target='rangeDate,search_workgroup,search_eventType,search_eventSubType,search_status,searching,in_tray'>
-                    <th colspan="8" class="text-xl text-center font-signika"> <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-yellow-500">
-                            data not found
-                        </span>
-                    </th>
-                </tr>
+                        wire:target='rangeDate,search_workgroup,search_eventType,search_eventSubType,search_status,searching,in_tray'>
+                        <th colspan="8" class="text-xl text-center font-signika"> <span
+                                class="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-yellow-500">
+                                data not found
+                            </span>
+                        </th>
+                    </tr>
                 @endforelse
                 <tr class="hidden bg-transparent"
                     wire:target='rangeDate,search_workgroup,search_eventType,search_eventSubType,search_status,searching,in_tray'
@@ -135,7 +135,7 @@
         </table>
         <div></div>
     </div>
-    {{-- <script nonce="{{ csp_nonce() }}" src="https://cdn.jsdelivr.net/npm/flatpickr"></script> --}}
+    <script nonce="{{ csp_nonce() }}" src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script nonce="{{ csp_nonce() }}">
         flatpickr("#rangeDate", {
             mode: 'range',
