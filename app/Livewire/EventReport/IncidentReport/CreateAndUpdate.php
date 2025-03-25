@@ -169,10 +169,8 @@ class CreateAndUpdate extends Component
         $this->TableRiskFunction();
         $this->EventSubType = (isset($this->event_type_id)) ?  $this->EventSubType = Eventsubtype::where('event_type_id', $this->event_type_id)->get() : [];
 
-
         $app_url = env('APP_URL');
         dd($app_url);
-
         return view('livewire.event-report.incident-report.create-and-update', [
             'RiskAssessments' => RiskAssessment::get(),
             'RiskConsequence' => RiskConsequence::get(),
