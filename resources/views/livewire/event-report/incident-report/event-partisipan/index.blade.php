@@ -1,5 +1,5 @@
 <div>
-    <div class="overflow-x-auto h-36">
+    <div class="overflow-x-auto sm:w-full :w-[370px] h-36">
         <table class="table table-xs table-pin-rows">
             <!-- head -->
             <thead>
@@ -20,8 +20,9 @@
                         <td>{{ $value->User->company_id ? $value->User->company->name_company : '' }}</td>
                         <td>
                             <div class="flex gap-1">
-                               
-                                <x-icon-btn-edit data-tip="Edit" class="{{ $current_step === 'Closed' || $current_step === 'Cancelled' ? 'btn-disabled' : '' }}" 
+
+                                <x-icon-btn-edit data-tip="Edit"
+                                    class="{{ $current_step === 'Closed' || $current_step === 'Cancelled' ? 'btn-disabled' : '' }}"
                                     wire:click="$dispatch('openModal', { component: 'event-report.incident-report.event-partisipan.create-and-update', arguments: { incident: {{ $data_id }},participan:{{ $value->id }}  }})" />
                                 <x-icon-btn-delete wire:click="delete({{ $value->id }})"
                                     wire:confirm.prompt="Are you sure delete {{ $value->User->lookup_name }}?\n\nType DELETE to confirm|DELETE"
