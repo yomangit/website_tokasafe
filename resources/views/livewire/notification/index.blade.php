@@ -18,14 +18,14 @@
                 <label wire:click='deleteCheked' class=" text-rose-500 btn-link btn-xs {{ $hidden ? 'hidden' : '' }}"
                     checked="checked">Delete
                     Checked</label>
-                <div role="tablist" class="tabs tabs-bordered ">
+                <div wire:poll role="tablist" class="tabs tabs-bordered ">
                     <input type="radio" name="my_tabs_1" role="tab" class="tab " aria-label="All"
                         checked="checked" />
                     <div role="tabpanel"
                         class="lg:h-[28rem] xl:h-[42rem] max-h-full  overflow-y-auto md:max-h-screen tab-content">
                         <table class="table table-zebra table-xs">
                             <tbody>
-                                @foreach ($AllNotification as $notification)
+                                @forelse  ($AllNotification as $notification)
                                     <tr>
                                         <td><x-input-checkbox value="{{ $notification->id }}"
                                                 wire:model.live="seleted_notif" />
@@ -42,7 +42,11 @@
                                                 data-tip="Delete"></x-icon-btn-delete>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td>all notifications are read</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
