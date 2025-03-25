@@ -275,7 +275,6 @@ class CreateAndUpdate extends Component
     }
     public function store()
     {
-
         $this->validate();
         if (!empty($this->documentation)) {
             $file_name = $this->documentation->getClientOriginalName();
