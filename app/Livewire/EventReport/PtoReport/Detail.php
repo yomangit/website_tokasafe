@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Notification;
 class Detail extends Component
 {
     public $divider = "PLAN TASK OBSERVATION (PTO) FORM";
-    public $pto_id, $currentStep, $disable_btn, $disable_input, $stepJS,$opacity,$select_divisi,$responsible_role_id;
+    public $pto_id, $currentStep, $disable_btn, $disable_input, $stepJS, $opacity, $select_divisi, $responsible_role_id;
     // OBSERVER
     #[Validate]
     public $name_observer, $user_id, $job_title, $date_time, $reference, $workflow_template_id, $parent_Company, $workgroup_name, $business_unit, $dept, $division_id, $workflow_detail_id, $division_update;
@@ -44,7 +44,7 @@ class Detail extends Component
     // TABLE
     #[Validate]
     public $risk_consequence_id, $risk_likelihood_id, $risk_assessment_id, $TableRisk = [], $RiskAssessment = [], $tablerisk_id, $risk_probability_doc, $risk_consequence_doc, $risk_likelihood_notes, $risk_probability_id;
-    public $assign_to,$also_assign_to;
+    public $assign_to, $also_assign_to;
     protected $listeners = [
 
         'pto_detail' => 'render',
@@ -57,14 +57,13 @@ class Detail extends Component
 
         if ($projectExists) {
             $projectAkses = pto_report::whereId($id)
-                ->Where('user_id',Auth::user()->id)
-                ->orWhere('supervisor_area_id',Auth::user()->id)
-                ->orWhere('assign_to',Auth::user()->id)
-                ->orWhere('also_assign_to',Auth::user()->id);
-             if($projectAkses->exists() || Auth::user()->role_user_permit_id ==1)
-             {
+                ->Where('user_id', Auth::user()->id)
+                ->orWhere('supervisor_area_id', Auth::user()->id)
+                ->orWhere('assign_to', Auth::user()->id)
+                ->orWhere('also_assign_to', Auth::user()->id);
+            if ($projectAkses->exists() || Auth::user()->role_user_permit_id == 1) {
                 $this->pto_id = $id;
-                $pto_report=pto_report::whereId($id)->first();
+                $pto_report = pto_report::whereId($id)->first();
                 $this->name_observer = $pto_report->name_observer;
                 $this->user_id = $pto_report->user_id;
                 $this->assign_to = $pto_report->assign_to;
@@ -117,12 +116,9 @@ class Detail extends Component
                 $this->reference = $pto_report->reference;
                 $this->workflow_template_id = $pto_report->workflow_template_id;
                 $this->division_id = $pto_report->division_id;
-            }
-             else
-            {
+            } else {
                 abort(401, 'Unauthorized Access Denied');
             }
-
         } else {
             abort_unless($projectExists, 404, 'page not found');
         }
@@ -148,23 +144,17 @@ class Detail extends Component
             if (!empty($divisi->company_id) && !empty($divisi->section_id)) {
 
                 $this->workgroup_name =  $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company . '-' . $divisi->Section->name;
+            } elseif ($divisi->company_id) {
+                $this->workgroup_name = $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company;
+            } elseif ($divisi->section_id) {
+                $this->workgroup_name = $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Section->name;
+            } else {
+                $this->workgroup_name = $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name;
             }
-            elseif($divisi->company_id){
-                $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company;
-            }
-
-            elseif ($divisi->section_id) {
-                $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name. '-' . $divisi->Section->name;
-            }
-            else{
-                $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name;
-            }
-        $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->whereId($this->division_id)->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
+            $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->whereId($this->division_id)->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
+        } else {
+            $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->searchDeptCom(trim($this->workgroup_name))->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
         }
-       else
-       {
-             $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->searchDeptCom(trim($this->workgroup_name))->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
-       }
         return view('livewire.event-report.pto-report.detail', [
             'Observer' => User::searchFor(trim($this->name_observer))->limit(500)->get(),
             'Supervisor_Area' => User::searchFor(trim($this->supervisor_area))->limit(500)->get(),
@@ -176,7 +166,7 @@ class Detail extends Component
             'ParentCompany' => CompanyCategory::whereId(1)->get(),
             'BusinessUnit' => BusinesUnit::with(['Department', 'Company'])->get(),
             'Department' => DeptByBU::with(['Department', 'BusinesUnit'])->orderBy('busines_unit_id', 'asc')->get(),
-           'Divisi' => Division::whereNotNull('company_id')->with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company'])->groupBy('company_id')->get(),
+            'Divisi' => Division::whereNotNull('company_id')->with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company'])->groupBy('company_id')->get(),
             'Division' => $divisi_search,
         ])->extends('base.index', ['header' => 'PTO', 'title' => 'PTO'])->section('content');
     }
@@ -192,14 +182,15 @@ class Detail extends Component
             $this->disable_input = 1;
             $this->opacity = "opacity-35 bg-gray-500";
         } else {
-            $this->reset(['disable_btn', 'disable_input','opacity']);
+            $this->reset(['disable_btn', 'disable_input', 'opacity']);
         }
     }
-    public function changeConditionDivision(){
+    public function changeConditionDivision()
+    {
         $this->business_unit = null;
         $this->dept = null;
-         $this->division_id = null;
-        $this->select_divisi=null;
+        $this->division_id = null;
+        $this->select_divisi = null;
     }
     public function select_division($id)
     {
@@ -210,16 +201,16 @@ class Detail extends Component
         $this->parent_Company = $id;
         $this->business_unit = null;
         $this->dept = null;
-         $this->workgroup_name=null;
+        $this->workgroup_name = null;
         $this->division_id = null;
-        $this->select_divisi=null;
+        $this->select_divisi = null;
     }
     public function divisi($id)
     {
-        $this->select_divisi=$id;
+        $this->select_divisi = $id;
         $this->parent_Company = null;
         $this->business_unit = null;
-         $this->workgroup_name=null;
+        $this->workgroup_name = null;
         $this->dept = null;
         $this->division_id = null;
     }
@@ -228,9 +219,9 @@ class Detail extends Component
         $this->business_unit = $id;
         $this->parent_Company = null;
         $this->dept = null;
-         $this->workgroup_name=null;
+        $this->workgroup_name = null;
         $this->division_id = null;
-        $this->select_divisi=null;
+        $this->select_divisi = null;
     }
     public function department($id)
     {
@@ -238,8 +229,8 @@ class Detail extends Component
         $this->parent_Company = null;
         $this->business_unit = null;
         $this->division_id = null;
-         $this->workgroup_name=null;
-        $this->select_divisi=null;
+        $this->workgroup_name = null;
+        $this->select_divisi = null;
     }
     public function spvClick(User $user)
     {
@@ -282,7 +273,7 @@ class Detail extends Component
 
         if ($this->type_of_activities === "Other activities") {
             return [
-                 'name_observer' => 'required',
+                'name_observer' => 'required',
                 'user_id' => 'required',
                 'supervisor_area_id' => 'required',
                 'job_title' => 'required',
@@ -392,8 +383,8 @@ class Detail extends Component
     {
 
         $this->validate();
-        if ($this->type_of_activities!= "Other activities") {
-            $this->type_of_activities_other=null ;
+        if ($this->type_of_activities != "Other activities") {
+            $this->type_of_activities_other = null;
         }
 
         $pto = pto_report::whereId($this->pto_id)->update([
@@ -456,8 +447,7 @@ class Detail extends Component
             ]
         );
         $url = $this->pto_id;
-        if($this->responsible_role_id == 1)
-        {
+        if ($this->responsible_role_id == 1) {
             $getModerator = EventUserSecurity::where('responsible_role_id', $this->responsible_role_id)->where('user_id', 'not like', Auth::user()->id)->pluck('user_id')->toArray();
             $User = User::whereIn('id', $getModerator)->whereNotNull('email')->get();
 
@@ -469,11 +459,11 @@ class Detail extends Component
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a pto report, please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
-                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+                    'actionUrl' => url("https://tokasafe.archimining.com/eventReport/PTOReport/detail/$url"),
 
                 ];
                 Notification::send($users, new toModerator($offerData));
-        }
+            }
         }
         if ($this->assign_to) {
             $Users = User::where('id', $this->assign_to)->whereNotNull('email')->get();
@@ -485,7 +475,7 @@ class Detail extends Component
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a PTO Report", please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
-                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+                    'actionUrl' => url("https://tokasafe.archimining.com/eventReport/PTOReport/detail/$url"),
                 ];
                 Notification::send($report_to, new toModerator($offerData));
             }
@@ -500,7 +490,7 @@ class Detail extends Component
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a PTO Report", please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
-                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+                    'actionUrl' => url("https://tokasafe.archimining.com/eventReport/PTOReport/detail/$url"),
                 ];
                 Notification::send($report_to, new toModerator($offerData));
             }
@@ -515,18 +505,19 @@ class Detail extends Component
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a pto report, please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
-                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+                    'actionUrl' => url("https://tokasafe.archimining.com/eventReport/PTOReport/detail/$url"),
                 ];
                 Notification::send($report_to, new toModerator($offerData));
             }
         }
         $this->dispatch('panel_pto');
     }
-    public function destroy (){
+    public function destroy()
+    {
         $incidentReport = pto_report::whereId($this->pto_id);
 
         $files = DocumentationOfPto::where('reference', 'LIKE', $this->reference);
-        if (isset( $files->first()->name_doc)) {
+        if (isset($files->first()->name_doc)) {
             unlink(storage_path('app/public/documents/pto/' .   $files->first()->name_doc));
         }
         $incidentReport->delete();

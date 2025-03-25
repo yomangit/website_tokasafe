@@ -33,19 +33,19 @@ class CreateAndUpdate extends Component
 {
     use WithFileUploads;
     use WithPagination;
-    public $location_name, $search, $location_id, $divider = 'Input Incident Report', $TableRisk = [], $RiskAssessment = [], $EventSubType = [], $ResponsibleRole,$division_id,$parent_Company, $business_unit, $dept,$workflow_template_id;
-    public $searchLikelihood = '', $searchConsequence = '', $tablerisk_id, $risk_assessment_id, $workflow_detail_id, $reference,$select_divisi;
+    public $location_name, $search, $location_id, $divider = 'Input Incident Report', $TableRisk = [], $RiskAssessment = [], $EventSubType = [], $ResponsibleRole, $division_id, $parent_Company, $business_unit, $dept, $workflow_template_id;
+    public $searchLikelihood = '', $searchConsequence = '', $tablerisk_id, $risk_assessment_id, $workflow_detail_id, $reference, $select_divisi;
     public $risk_likelihood_id, $risk_likelihood_notes;
-    public $risk_consequence_id, $risk_consequence_doc, $risk_probability_doc,$show=false;
+    public $risk_consequence_id, $risk_consequence_doc, $risk_probability_doc, $show = false;
     public $workgroup_id, $workgroup_name;
     public $search_workgroup = '', $search_report_by = '', $search_report_to = '', $fileUpload;
     public $event_type_id,  $sub_event_type_id,  $report_by, $report_byName, $report_by_nolist, $report_to, $report_toName, $report_to_nolist, $date, $event_location_id, $site_id, $company_involved, $task_being_done, $documentation, $description, $immediate_corrective_action, $suggested_corrective_action, $preliminary_cause, $corrective_action_suggested;
 
-    public function mount(){
-            $reportBy = (Auth::user()->lookup_name)?Auth::user()->lookup_name:Auth::user()->name;
-            $this->report_byName = $reportBy;
-            $this->report_by = Auth::user()->id;
-
+    public function mount()
+    {
+        $reportBy = (Auth::user()->lookup_name) ? Auth::user()->lookup_name : Auth::user()->name;
+        $this->report_byName = $reportBy;
+        $this->report_by = Auth::user()->id;
     }
     public function rules()
     {
@@ -110,44 +110,36 @@ class CreateAndUpdate extends Component
 
     public function render()
     {
-        if (choseEventType::where('route_name','LIKE',Request::getPathInfo())->exists()) {
-            $eventType = choseEventType::where('route_name','LIKE',Request::getPathInfo())->pluck('event_type_id');
+        if (choseEventType::where('route_name', 'LIKE', Request::getPathInfo())->exists()) {
+            $eventType = choseEventType::where('route_name', 'LIKE', Request::getPathInfo())->pluck('event_type_id');
             $Event_type = TypeEventReport::whereIn('id', $eventType)->get();
-
-           }else{
-            $Event_type =[];
-           }
-           if (Auth::user()->role_user_permit_id == 1) {
-            $this->show=true;
+        } else {
+            $Event_type = [];
+        }
+        if (Auth::user()->role_user_permit_id == 1) {
+            $this->show = true;
         }
         if ($this->division_id) {
 
-            $divisi = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company','Section'])->whereId($this->division_id)->first();
-             if (!empty($divisi->company_id) && !empty($divisi->section_id)) {
+            $divisi = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->whereId($this->division_id)->first();
+            if (!empty($divisi->company_id) && !empty($divisi->section_id)) {
 
                 $this->workgroup_name =  $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company . '-' . $divisi->Section->name;
+            } elseif ($divisi->company_id) {
+                $this->workgroup_name = $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company;
+            } elseif ($divisi->section_id) {
+                $this->workgroup_name = $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Section->name;
+            } else {
+                $this->workgroup_name = $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name;
             }
-            elseif($divisi->company_id){
-                $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company;
-            }
-
-            elseif ($divisi->section_id) {
-                $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name. '-' . $divisi->Section->name;
-            }
-            else{
-                $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name;
-            }
-        $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->whereId($this->division_id)->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
+            $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->whereId($this->division_id)->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
+        } else {
+            $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->searchDeptCom(trim($this->workgroup_name))->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
         }
-       else
-       {
-             $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->searchDeptCom(trim($this->workgroup_name))->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
-       }
         if (WorkflowDetail::where('workflow_administration_id', $this->workflow_template_id)->exists()) {
-            $WorkflowDetail = WorkflowDetail::where('workflow_administration_id',$this->workflow_template_id)->first();
+            $WorkflowDetail = WorkflowDetail::where('workflow_administration_id', $this->workflow_template_id)->first();
             $this->workflow_detail_id = $WorkflowDetail->id;
             $this->ResponsibleRole = $WorkflowDetail->responsible_role_id;
-
         }
         $this->ReportByAndReportTo();
         if ($this->documentation) {
@@ -167,58 +159,59 @@ class CreateAndUpdate extends Component
             'ParentCompany' => CompanyCategory::whereId(1)->get(),
             'BusinessUnit' => BusinesUnit::with(['Department', 'Company'])->get(),
             'Department' => DeptByBU::with(['Department', 'BusinesUnit'])->orderBy('busines_unit_id', 'asc')->get(),
-             'Divisi' => Division::whereNotNull('company_id')->with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company'])->groupBy('company_id')->get(),
+            'Divisi' => Division::whereNotNull('company_id')->with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company'])->groupBy('company_id')->get(),
             'Division' => $divisi_search,
             'Report_By' => User::searchFor(trim($this->report_byName))->paginate(100, ['*'], 'Report_By'),
             'Report_To' => User::searchFor(trim($this->report_toName))->paginate(100, ['*'], 'Report_To'),
             'Location' => LocationEvent::get()
         ])->extends('base.index', ['header' => 'Hazard Report', 'title' => 'Hazard Report'])->section('content');
     }
-    public function changeConditionDivision(){
+    public function changeConditionDivision()
+    {
         $this->business_unit = null;
         $this->dept = null;
-        $this->select_divisi=null;
-         $this->division_id = null;
+        $this->select_divisi = null;
+        $this->division_id = null;
     }
-     public function select_division($id)
+    public function select_division($id)
     {
         $this->division_id = $id;
     }
-     public function parentCompany($id)
+    public function parentCompany($id)
     {
         $this->parent_Company = $id;
-         $this->workgroup_name=null;
+        $this->workgroup_name = null;
         $this->business_unit = null;
         $this->dept = null;
         $this->division_id = null;
-        $this->select_divisi=null;
+        $this->select_divisi = null;
     }
     public function divisi($id)
     {
-        $this->select_divisi=$id;
+        $this->select_divisi = $id;
         $this->parent_Company = null;
         $this->business_unit = null;
         $this->dept = null;
-         $this->workgroup_name=null;
+        $this->workgroup_name = null;
         $this->division_id = null;
     }
     public function businessUnit($id)
     {
         $this->business_unit = $id;
-         $this->workgroup_name=null;
+        $this->workgroup_name = null;
         $this->parent_Company = null;
         $this->dept = null;
         $this->division_id = null;
-        $this->select_divisi=null;
+        $this->select_divisi = null;
     }
     public function department($id)
     {
         $this->dept = $id;
         $this->parent_Company = null;
         $this->business_unit = null;
-         $this->workgroup_name=null;
+        $this->workgroup_name = null;
         $this->division_id = null;
-        $this->select_divisi=null;
+        $this->select_divisi = null;
     }
 
     public function riskId($risk_likelihood_id, $risk_consequence_id, $risk_assessment_id)
@@ -277,15 +270,14 @@ class CreateAndUpdate extends Component
             $file_name = $this->documentation->getClientOriginalName();
             $this->fileUpload = pathinfo($file_name, PATHINFO_EXTENSION);
             $this->documentation->storeAs('public/documents/hzd', $file_name);
-        }
-        else {
+        } else {
             $file_name = "";
         }
         $HazardReport = HazardReport::create([
             'reference' => $this->reference,
             'event_type_id' => $this->event_type_id,
             'sub_event_type_id' => $this->sub_event_type_id,
-            'division_id' =>$this->division_id,
+            'division_id' => $this->division_id,
             'report_by' => $this->report_by,
             'report_to' => $this->report_to,
             'site_id' => $this->site_id,
@@ -306,7 +298,7 @@ class CreateAndUpdate extends Component
             'report_by_nolist' => $this->report_to_nolist,
             'report_to_nolist' => $this->report_to_nolist,
             'workflow_detail_id' => $this->workflow_detail_id,
-            'submitter' =>Auth::user()->id
+            'submitter' => Auth::user()->id
         ]);
         $this->dispatch(
             'alert',
@@ -321,7 +313,7 @@ class CreateAndUpdate extends Component
         );
         $this->redirectRoute('hazardReportDetail', ['id' => $HazardReport->id]);
         // Notification
-        $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->where('user_id','NOT LIKE',Auth::user()->id)->pluck('user_id')->toArray();
+        $getModerator = EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->where('user_id', 'NOT LIKE', Auth::user()->id)->pluck('user_id')->toArray();
         $User = User::whereIn('id', $getModerator)->get();
         $url = $HazardReport->id;
         foreach ($User as $key => $value) {
@@ -332,22 +324,22 @@ class CreateAndUpdate extends Component
                 'line' =>  $this->report_byName . ' ' . 'has submitted a hazard report, please review',
                 'line2' => 'Please review this report',
                 'line3' => 'Thank you',
-                'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                'actionUrl' => url("https://tokasafe.archimining.com/eventReport/hazardReportDetail/$url"),
             ];
             Notification::send($users, new toModerator($offerData));
         }
         $Users = User::where('id', $this->report_to)->whereNotNull('email')->get();
         foreach ($Users as $key => $value) {
-                $report_to = User::whereId($value->id)->get();
-                $offerData = [
-                    'greeting' => 'Dear' . '' . $this->report_toName,
-                    'subject' => $this->task_being_done,
-                    'line' =>  $this->report_byName . '' . 'has sent a hazard report to you, please review it',
-                    'line2' => 'Please check by click the button below',
-                    'line3' => 'Thank you',
-                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
-                ];
-                Notification::send($report_to, new toModerator($offerData));
+            $report_to = User::whereId($value->id)->get();
+            $offerData = [
+                'greeting' => 'Dear' . '' . $this->report_toName,
+                'subject' => $this->task_being_done,
+                'line' =>  $this->report_byName . '' . 'has sent a hazard report to you, please review it',
+                'line2' => 'Please check by click the button below',
+                'line3' => 'Thank you',
+                'actionUrl' => url("https://tokasafe.archimining.com/eventReport/hazardReportDetail/$url"),
+            ];
+            Notification::send($report_to, new toModerator($offerData));
         }
     }
 }

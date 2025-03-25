@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Notification;
 
 class Index extends Component
 {
-    public $procced_to, $EventUserSecurity = [], $Workflows, $show = false, $workflow_detail_id, $data_id, $assign_to, $also_assign_to, $current_step,$reference,  $event_type_id, $workflow_administration_id, $status, $bg_status, $muncul = false, $responsible_role_id;
+    public $procced_to, $EventUserSecurity = [], $Workflows, $show = false, $workflow_detail_id, $data_id, $assign_to, $also_assign_to, $current_step, $reference,  $event_type_id, $workflow_administration_id, $status, $bg_status, $muncul = false, $responsible_role_id;
     public $wf_id, $division_id, $assign_to_old, $also_assign_to_old;
     #[On('hzrd_updated')]
     public function hzrd_updated(HazardReport $id)
@@ -53,7 +53,7 @@ class Index extends Component
         if ($ClassHierarchy) {
             $Company = $ClassHierarchy->company_category_id;
             $Department = $ClassHierarchy->dept_by_business_unit_id;
-            $User = (EventUserSecurity:: where('user_id', Auth::user()->id)->where('responsible_role_id',  2)->where('type_event_report_id', $this->event_type_id)->exists())? EventUserSecurity:: where('user_id', Auth::user()->id)->where('responsible_role_id',  2)->where('type_event_report_id', $this->event_type_id)->pluck('user_id'):EventUserSecurity:: where('user_id', Auth::user()->id)->where('responsible_role_id',  2)->pluck('user_id');
+            $User = (EventUserSecurity::where('user_id', Auth::user()->id)->where('responsible_role_id',  2)->where('type_event_report_id', $this->event_type_id)->exists()) ? EventUserSecurity::where('user_id', Auth::user()->id)->where('responsible_role_id',  2)->where('type_event_report_id', $this->event_type_id)->pluck('user_id') : EventUserSecurity::where('user_id', Auth::user()->id)->where('responsible_role_id',  2)->pluck('user_id');
             foreach ($User as $value) {
                 if (EventUserSecurity::where('user_id', $value)->searchCompany(trim($Company))->exists()) {
                     $this->muncul = true;
@@ -63,7 +63,7 @@ class Index extends Component
                     $this->muncul = false;
                 }
             }
-        }else {
+        } else {
             $this->dispatch(
                 'alert',
                 [
@@ -94,7 +94,7 @@ class Index extends Component
             $ERM = ClassHierarchy::searchDivision(trim($this->division_id))->pluck('dept_by_business_unit_id');
             foreach ($ERM as $value) {
                 if (!empty($value)) {
-                    $this->EventUserSecurity = ( EventUserSecurity::where('responsible_role_id',2)->where('dept_by_business_unit_id', $value)->where('type_event_report_id', $this->event_type_id)->exists())? EventUserSecurity::where('responsible_role_id',2)->where('dept_by_business_unit_id', $value)->where('type_event_report_id', $this->event_type_id)->get(): EventUserSecurity::where('responsible_role_id',2)->where('dept_by_business_unit_id', $value)->get();
+                    $this->EventUserSecurity = (EventUserSecurity::where('responsible_role_id', 2)->where('dept_by_business_unit_id', $value)->where('type_event_report_id', $this->event_type_id)->exists()) ? EventUserSecurity::where('responsible_role_id', 2)->where('dept_by_business_unit_id', $value)->where('type_event_report_id', $this->event_type_id)->get() : EventUserSecurity::where('responsible_role_id', 2)->where('dept_by_business_unit_id', $value)->get();
                     $this->show = true;
                 } else {
                     $this->show = false;
@@ -153,10 +153,10 @@ class Index extends Component
                 $offerData = [
                     'greeting' => $value->lookup_name,
                     'subject' => '',
-                    'line' =>  $value->lookup_name . ' ' . 'has updated the hazard report status to '. $this->status .', please review',
+                    'line' =>  $value->lookup_name . ' ' . 'has updated the hazard report status to ' . $this->status . ', please review',
                     'line2' => 'Please review this report',
                     'line3' => 'Thank you',
-                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                    'actionUrl' => url("https://tokasafe.archimining.com/eventReport/hazardReportDetail/$url"),
                 ];
                 Notification::send($users, new toModerator($offerData));
             }
@@ -172,7 +172,7 @@ class Index extends Component
                         'line' =>  'You have been assigned to a hazard report with reference ' . $this->reference . ', please review',
                         'line2' => 'Please check by click the button below',
                         'line3' => 'Thank you',
-                        'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                        'actionUrl' => url("https://tokasafe.archimining.com/eventReport/hazardReportDetail/$url"),
                     ];
                     Notification::send($report_to, new toModerator($offerData));
                 }
@@ -187,7 +187,7 @@ class Index extends Component
                         'line' =>  'You have been assigned to a hazard report with reference ' . $this->reference . ', please review',
                         'line2' => 'Please check by click the button below',
                         'line3' => 'Thank you',
-                        'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                        'actionUrl' => url("https://tokasafe.archimining.com/eventReport/hazardReportDetail/$url"),
                     ];
                     Notification::send($report_to, new toModerator($offerData));
                 }

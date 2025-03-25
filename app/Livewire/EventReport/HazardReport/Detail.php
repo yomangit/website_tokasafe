@@ -381,7 +381,7 @@ class Detail extends Component
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a hazard report, please review',
                     'line2' => 'Please review this report',
                     'line3' => 'Thank you',
-                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                    'actionUrl' => url("https://tokasafe.archimining.com/eventReport/hazardReportDetail/$url"),
                 ];
                 Notification::send($users, new toModerator($offerData));
             }
@@ -396,7 +396,7 @@ class Detail extends Component
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a hazard report, please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
-                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                    'actionUrl' => url("https://tokasafe.archimining.com/eventReport/hazardReportDetail/$url"),
                 ];
                 Notification::send($report_to, new toModerator($offerData));
             }
@@ -411,7 +411,7 @@ class Detail extends Component
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a hazard report, please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
-                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                    'actionUrl' => url("https://tokasafe.archimining.com/eventReport/hazardReportDetail/$url"),
                 ];
                 Notification::send($report_to, new toModerator($offerData));
             }
@@ -425,7 +425,7 @@ class Detail extends Component
                 'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
                 'line2' => 'Please check by click the button below',
                 'line3' => 'Thank you',
-                'actionUrl' => url("https://toka.tokasafe.site/eventReport/hazardReportDetail/$url"),
+                'actionUrl' => url("https://tokasafe.archimining.com/eventReport/hazardReportDetail/$url"),
             ];
             Notification::send($report_to, new toModerator($offerData));
         }

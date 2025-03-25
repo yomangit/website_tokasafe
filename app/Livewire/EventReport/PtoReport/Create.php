@@ -29,8 +29,8 @@ class Create extends Component
 {
     public $divider = "PLAN TASK OBSERVATION (PTO) FORM";
 
-    public $reference, $workflow_template_id,$ResponsibleRole;
-    public $user, $pto_id, $parent_Company, $workgroup_name, $business_unit, $dept, $division_id, $workflow_detail_id,$select_divisi;
+    public $reference, $workflow_template_id, $ResponsibleRole;
+    public $user, $pto_id, $parent_Company, $workgroup_name, $business_unit, $dept, $division_id, $workflow_detail_id, $select_divisi;
     public $supervisor_area = '';
     // OBSERVER
     #[Validate]
@@ -47,11 +47,12 @@ class Create extends Component
     // TABLE
     #[Validate]
     public $risk_consequence_id, $risk_likelihood_id, $risk_assessment_id, $TableRisk = [], $RiskAssessment = [], $tablerisk_id, $risk_probability_doc, $risk_consequence_doc, $risk_likelihood_notes, $risk_probability_id;
-    public function changeConditionDivision(){
+    public function changeConditionDivision()
+    {
         $this->business_unit = null;
         $this->dept = null;
-        $this->select_divisi=null;
-         $this->division_id = null;
+        $this->select_divisi = null;
+        $this->division_id = null;
     }
     public function select_division($id)
     {
@@ -64,15 +65,15 @@ class Create extends Component
         $this->business_unit = null;
         $this->dept = null;
         $this->division_id = null;
-         $this->workgroup_name=null;
-        $this->select_divisi=null;
+        $this->workgroup_name = null;
+        $this->select_divisi = null;
     }
     public function divisi($id)
     {
-        $this->select_divisi=$id;
+        $this->select_divisi = $id;
         $this->parent_Company = null;
         $this->business_unit = null;
-         $this->workgroup_name=null;
+        $this->workgroup_name = null;
         $this->dept = null;
         $this->division_id = null;
     }
@@ -82,17 +83,17 @@ class Create extends Component
         $this->parent_Company = null;
         $this->dept = null;
         $this->division_id = null;
-        $this->select_divisi=null;
-         $this->workgroup_name=null;
+        $this->select_divisi = null;
+        $this->workgroup_name = null;
     }
     public function department($id)
     {
         $this->dept = $id;
         $this->parent_Company = null;
         $this->business_unit = null;
-         $this->workgroup_name=null;
+        $this->workgroup_name = null;
         $this->division_id = null;
-        $this->select_divisi=null;
+        $this->select_divisi = null;
     }
     public function spvClick(User $user)
     {
@@ -134,7 +135,7 @@ class Create extends Component
     {
         if (WorkflowDetail::where('workflow_administration_id', $this->workflow_template_id)->exists()) {
             $this->workflow_detail_id = WorkflowDetail::where('workflow_administration_id', $this->workflow_template_id)->first()->id;
-            $WorkflowDetail = WorkflowDetail::where('workflow_administration_id',$this->workflow_template_id)->first();
+            $WorkflowDetail = WorkflowDetail::where('workflow_administration_id', $this->workflow_template_id)->first();
             $this->workflow_detail_id = $WorkflowDetail->id;
             $this->ResponsibleRole = $WorkflowDetail->responsible_role_id;
         }
@@ -145,23 +146,17 @@ class Create extends Component
             if (!empty($divisi->company_id) && !empty($divisi->section_id)) {
 
                 $this->workgroup_name =  $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company . '-' . $divisi->Section->name;
+            } elseif ($divisi->company_id) {
+                $this->workgroup_name = $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company;
+            } elseif ($divisi->section_id) {
+                $this->workgroup_name = $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Section->name;
+            } else {
+                $this->workgroup_name = $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name;
             }
-            elseif($divisi->company_id){
-                $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company;
-            }
-
-            elseif ($divisi->section_id) {
-                $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name. '-' . $divisi->Section->name;
-            }
-            else{
-                $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name;
-            }
-        $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->whereId($this->division_id)->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
+            $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->whereId($this->division_id)->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
+        } else {
+            $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->searchDeptCom(trim($this->workgroup_name))->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
         }
-       else
-       {
-             $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->searchDeptCom(trim($this->workgroup_name))->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
-       }
         $this->user = auth()->user()->id;
         $this->TableRiskFunction();
         return view('livewire.event-report.pto-report.create', [
@@ -372,11 +367,10 @@ class Create extends Component
                 'line' =>  $this->name_observer . ' ' . 'has submitted a PTO report, please review',
                 'line2' => 'Please check by click the button below',
                 'line3' => 'Thank you',
-                'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+                'actionUrl' => url("https://tokasafe.archimining.com/eventReport/PTOReport/detail/$url"),
 
             ];
             Notification::send($users, new toModerator($offerData));
-
         }
         if ($this->supervisor_area) {
             $Users = User::whereIn('id',  [$this->supervisor_area_id])->whereNotNull('email')->get();
@@ -388,7 +382,7 @@ class Create extends Component
                     'line' =>  $this->name_observer . '' . 'has sent a PTO report to you, please review it',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
-                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/PTOReport/detail/$url"),
+                    'actionUrl' => url("https://tokasafe.archimining.com/eventReport/PTOReport/detail/$url"),
                 ];
                 Notification::send($report_to, new toModerator($offerData));
             }

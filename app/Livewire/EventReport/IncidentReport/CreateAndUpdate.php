@@ -34,11 +34,11 @@ class CreateAndUpdate extends Component
 {
     use WithFileUploads;
     use WithPagination;
-    public $location_name, $search, $location_id, $divider = 'Input Incident Report', $TableRisk = [], $RiskAssessment = [], $EventSubType = [], $ResponsibleRole,$workflow_template_id,$show=false;
+    public $location_name, $search, $location_id, $divider = 'Input Incident Report', $TableRisk = [], $RiskAssessment = [], $EventSubType = [], $ResponsibleRole, $workflow_template_id, $show = false;
     public $searchLikelihood = '', $searchConsequence = '', $tablerisk_id, $risk_assessment_id, $workflow_detail_id, $reference;
     public $risk_likelihood_id, $risk_likelihood_notes;
     public $risk_consequence_id, $risk_consequence_doc;
-    public $workgroup_id, $workgroup_name,$parent_Company,$business_unit,$dept,$division_id,$select_divisi;
+    public $workgroup_id, $workgroup_name, $parent_Company, $business_unit, $dept, $division_id, $select_divisi;
     public $search_workgroup = '', $search_report_by = '', $search_report_to = '', $fileUpload;
     public $event_type_id, $sub_event_type_id, $potential_lti,  $report_by, $report_byName, $report_by_nolist, $report_to, $report_toName, $report_to_nolist, $date, $event_location_id, $site_id, $company_involved, $task_being_done, $documentation, $description, $involved_person, $involved_eqipment, $preliminary_cause, $immediate_action_taken, $key_learning;
 
@@ -102,14 +102,14 @@ class CreateAndUpdate extends Component
     {
         $this->business_unit = null;
         $this->dept = null;
-        $this->select_divisi=null;
-         $this->division_id = null;
+        $this->select_divisi = null;
+        $this->division_id = null;
     }
-    public function mount(){
-            $reportBy = (Auth::user()->lookup_name)?Auth::user()->lookup_name:Auth::user()->name;
-            $this->report_byName = $reportBy;
-            $this->report_by = Auth::user()->id;
-
+    public function mount()
+    {
+        $reportBy = (Auth::user()->lookup_name) ? Auth::user()->lookup_name : Auth::user()->name;
+        $this->report_byName = $reportBy;
+        $this->report_by = Auth::user()->id;
     }
 
     public function ReportByAndReportTo()
@@ -126,41 +126,34 @@ class CreateAndUpdate extends Component
     public function render()
     {
 
-        if (choseEventType::where('route_name','LIKE',Request::getPathInfo())->exists()) {
-            $eventType = choseEventType::where('route_name','LIKE',Request::getPathInfo())->pluck('event_type_id');
+        if (choseEventType::where('route_name', 'LIKE', Request::getPathInfo())->exists()) {
+            $eventType = choseEventType::where('route_name', 'LIKE', Request::getPathInfo())->pluck('event_type_id');
             $Event_type = TypeEventReport::whereIn('id', $eventType)->get();
-
-           }else{
-            $Event_type =[];
-           }
+        } else {
+            $Event_type = [];
+        }
         if (Auth::user()->role_user_permit_id == 1) {
-            $this->show=true;
+            $this->show = true;
         }
 
         if ($this->division_id) {
 
-            $divisi = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company','Section'])->whereId($this->division_id)->first();
+            $divisi = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->whereId($this->division_id)->first();
 
             if (!empty($divisi->company_id) && !empty($divisi->section_id)) {
 
                 $this->workgroup_name =  $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company . '-' . $divisi->Section->name;
-            }
-            elseif($divisi->company_id){
-                $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company;
-            }
-
-            elseif ($divisi->section_id) {
-                $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name. '-' . $divisi->Section->name;
-            }
-            else{
-                $this->workgroup_name =$divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name;
+            } elseif ($divisi->company_id) {
+                $this->workgroup_name = $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company;
+            } elseif ($divisi->section_id) {
+                $this->workgroup_name = $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Section->name;
+            } else {
+                $this->workgroup_name = $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name;
             }
             $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->whereId($this->division_id)->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
+        } else {
+            $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->searchDeptCom(trim($this->workgroup_name))->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
         }
-        else
-       {
-             $divisi_search = Division::with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company', 'Section'])->searchDeptCom(trim($this->workgroup_name))->searchParent(trim($this->parent_Company))->searchBU(trim($this->business_unit))->searchDept(trim($this->dept))->searchComp(trim($this->select_divisi))->orderBy('dept_by_business_unit_id', 'asc')->get();
-       }
 
         $this->ReportByAndReportTo();
         if ($this->documentation) {
@@ -169,7 +162,7 @@ class CreateAndUpdate extends Component
         }
 
         if (WorkflowDetail::where('workflow_administration_id', $this->workflow_template_id)->exists()) {
-            $WorkflowDetail = WorkflowDetail::where('workflow_administration_id',$this->workflow_template_id)->first();
+            $WorkflowDetail = WorkflowDetail::where('workflow_administration_id', $this->workflow_template_id)->first();
             $this->workflow_detail_id = $WorkflowDetail->id;
             $this->ResponsibleRole = $WorkflowDetail->responsible_role_id;
         }
@@ -209,13 +202,13 @@ class CreateAndUpdate extends Component
         $this->business_unit = null;
         $this->dept = null;
         $this->division_id = null;
-        $this->select_divisi=null;
-        $this->workgroup_name=null;
+        $this->select_divisi = null;
+        $this->workgroup_name = null;
     }
     public function divisi($id)
     {
-        $this->workgroup_name=null;
-        $this->select_divisi=$id;
+        $this->workgroup_name = null;
+        $this->select_divisi = $id;
         $this->parent_Company = null;
         $this->business_unit = null;
         $this->dept = null;
@@ -223,21 +216,21 @@ class CreateAndUpdate extends Component
     }
     public function businessUnit($id)
     {
-        $this->workgroup_name=null;
+        $this->workgroup_name = null;
         $this->business_unit = $id;
         $this->parent_Company = null;
         $this->dept = null;
         $this->division_id = null;
-        $this->select_divisi=null;
+        $this->select_divisi = null;
     }
     public function department($id)
     {
-        $this->workgroup_name=null;
+        $this->workgroup_name = null;
         $this->dept = $id;
         $this->parent_Company = null;
         $this->business_unit = null;
         $this->division_id = null;
-        $this->select_divisi=null;
+        $this->select_divisi = null;
     }
 
     public function riskId($risk_likelihood_id, $risk_consequence_id, $risk_assessment_id)
@@ -283,12 +276,11 @@ class CreateAndUpdate extends Component
     public function store()
     {
 
-       $this->validate();
+        $this->validate();
         if (!empty($this->documentation)) {
             $file_name = $this->documentation->getClientOriginalName();
             $this->fileUpload = pathinfo($file_name, PATHINFO_EXTENSION);
             $this->documentation->storeAs('public/documents/icd', $file_name);
-
         } else {
             $file_name = "";
         }
@@ -332,7 +324,7 @@ class CreateAndUpdate extends Component
             'report_by_nolist' => $this->report_to_nolist,
             'report_to_nolist' => $this->report_to_nolist,
             'workflow_detail_id' => $this->workflow_detail_id,
-            'submitter' =>Auth::user()->id
+            'submitter' => Auth::user()->id
         ]);
 
         $this->dispatch(
@@ -360,7 +352,7 @@ class CreateAndUpdate extends Component
                 'line' =>  $this->report_byName . ' ' . 'has submitted a hazard report, please review',
                 'line2' => 'Please check by click the button below',
                 'line3' => 'Thank you',
-                'actionUrl' => url("https://toka.tokasafe.site/eventReport/incidentReportDetail/$url"),
+                'actionUrl' => url("https://tokasafe.archimining.com/eventReport/incidentReportDetail/$url"),
 
             ];
             Notification::send($users, new toModerator($offerData));
@@ -375,11 +367,10 @@ class CreateAndUpdate extends Component
                     'line' =>  $this->report_byName . '' . 'has sent a hazard report to you, please review it',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
-                    'actionUrl' => url("https://toka.tokasafe.site/eventReport/incidentReportDetail/$url"),
+                    'actionUrl' => url("https://tokasafe.archimining.com/eventReport/incidentReportDetail/$url"),
                 ];
                 Notification::send($report_to, new toModerator($offerData));
             }
         }
-
     }
 }
