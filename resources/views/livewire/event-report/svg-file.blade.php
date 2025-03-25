@@ -45,7 +45,7 @@
         </g>
     </svg>
 @elseif($fileUpload === 'xlsx')
-    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
     <svg width="30px" height="30px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink">
         <defs>
@@ -80,7 +80,7 @@
         <path d="M19.581,16H30v6.5H19.581Z" style="fill:#107c41" />
     </svg>
 @elseif($fileUpload === 'docx')
-    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
     <svg width="30px" height="30px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
         <title>file_type_word2</title>
         <path
@@ -94,8 +94,6 @@
             style="fill:#fff" />
     </svg>
 @elseif($fileUpload === 'pdf')
-    <?xml version="1.0" encoding="iso-8859-1"?>
-
     <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
     <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
     <svg version="1.1" id="_x35_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -134,7 +132,7 @@
                 </g>
             </g>
             <polygon style="opacity:0.08;fill:#040000;"
-                points="475.435,117.825 475.435,512 47.791,512 47.791,419.581 247.705,219.667 
+                points="475.435,117.825 475.435,512 47.791,512 47.791,419.581 247.705,219.667
 		259.54,207.832 266.098,201.273 277.029,190.343 289.995,177.377 412.491,54.881 	" />
             <polygon style="fill:#771B1B;" points="475.435,117.836 357.599,117.836 357.599,0 	" />
             <g>

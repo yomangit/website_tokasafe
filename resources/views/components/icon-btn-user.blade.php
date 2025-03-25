@@ -1,6 +1,5 @@
 <label {{ $attributes->merge(['class' => 'btn btn-xs btn-error btn-square btn-outline tooltip tooltip-top tooltip-error']) }}>
 
-    <?xml version="1.0" encoding="iso-8859-1"?>
     <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
     <svg  class="size-5 ml-[5%] mt-[5%]" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
          viewBox="0 0 512 512" xml:space="preserve">

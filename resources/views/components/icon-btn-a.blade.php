@@ -1,6 +1,6 @@
 <a {{$slot}} {{ $attributes->merge(['class' => 'btn btn-xs btn-success btn-square btn-outline tooltip tooltip-right tooltip-success']) }}>
 
-    <?xml version="1.0" encoding="utf-8"?>
+    
 
     <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
     <svg version="1.1" id="Uploaded to svgrepo.com" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 

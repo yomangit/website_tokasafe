@@ -1,11 +1,13 @@
-<button {{ $attributes->merge([ 'type' => 'submit', 'class' =>
-    'btn
-    btn-xs btn-success btn-active']) }}>
+<button {{ $attributes->merge([
+    'type' => 'submit',
+    'class' => 'btn
+    btn-xs btn-success btn-active',
+]) }}>
     {{ $slot }}
     <?xml version="1.0" encoding="iso-8859-1"?>
     <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
 
-    <?xml version="1.0" encoding="utf-8"?>
+
     <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
     <svg version="1.1" id="Uploaded to svgrepo.com" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" class="size-4" viewBox="0 0 32 32" xml:space="preserve">
