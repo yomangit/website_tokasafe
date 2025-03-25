@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'laravel/laravel',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '3d7259e344887d050d3b195d99af8d0e9eb17844',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'b882aaf3ec6fe6d284b88b17370ff3a57aa66b97',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -86,9 +86,9 @@
             'dev_requirement' => false,
         ),
         'diglactic/laravel-breadcrumbs' => array(
-            'pretty_version' => 'v9.0.0',
-            'version' => '9.0.0.0',
-            'reference' => '88e8f01e013e811215770e27b40a74014c28f2c4',
+            'pretty_version' => 'v10.0.0',
+            'version' => '10.0.0.0',
+            'reference' => '1bfe5e29aacf88beeab64ae3e860e0f2d8ace36a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../diglactic/laravel-breadcrumbs',
             'aliases' => array(),
@@ -485,9 +485,9 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '3d7259e344887d050d3b195d99af8d0e9eb17844',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'b882aaf3ec6fe6d284b88b17370ff3a57aa66b97',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

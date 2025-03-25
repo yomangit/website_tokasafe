@@ -9,7 +9,7 @@
         "ext-fileinfo": "*",
         "ext-gd": "*",
         "cjmellor/approval": "^1.6",
-        "diglactic/laravel-breadcrumbs": "^9.0",
+        "diglactic/laravel-breadcrumbs": "^10.0",
         "directorytree/ldaprecord-laravel": "^3.3",
         "hashids/hashids": "^5.0",
         "laravel/framework": "^11.9",
