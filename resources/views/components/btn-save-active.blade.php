@@ -4,7 +4,7 @@
     btn-xs btn-success btn-active',
 ]) }}>
     {{ $slot }}
-    <?xml version="1.0" encoding="iso-8859-1"?>
+
     <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
 
 
