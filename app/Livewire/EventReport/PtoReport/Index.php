@@ -31,8 +31,6 @@ class Index extends Component
             $references =  str_pad($reference, 4, "0", STR_PAD_LEFT);
             $this->reference = $referencePTO . $references;
         }
-
-
         if (route_request::where('route_name','LIKE',Request::getPathInfo())->exists()) {
         $this->workflow_template_id = route_request::where('route_name','LIKE',Request::getPathInfo())->first()->workflow_template_id;
        }else{
