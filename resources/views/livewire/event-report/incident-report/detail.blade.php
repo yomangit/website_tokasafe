@@ -120,7 +120,6 @@
                                     </div>
                                     <div class="grid flex-grow h-40 overflow-auto card bg-base-300 rounded-box">
                                         <ul class="w-56 px-4 py-2 list-disc list-inside bg-base-200 rounded-box">
-
                                             @forelse ($Division as $item)
                                                 <li wire:click="select_division({{ $item->id }})"
                                                     class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer">
