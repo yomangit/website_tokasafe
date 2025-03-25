@@ -1,8 +1,7 @@
 <div>
     @vite(['resources/js/apexchart.js'])
-    <script src="https://unpkg.com/gridjs/dist/gridjs.production.min.js"></script>
-    <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
-    <div class="stats shadow w-full my-2">
+
+    <div class="w-full my-2 shadow stats">
         <div class="stat">
             <div class="stat-figure text-primary">
                 <x-svg-hazard />
@@ -33,7 +32,7 @@
     </div>
 
     <div class=" bg-slate-300" id="all_injury_vs_ltifr"></div>
-    <div class="overflow-x-auto my-2">
+    <div class="my-2 overflow-x-auto">
         <div class="flex gap-2">
             <div class="grow">
                 <table class="table table-xs table-zebra"id="dataGrid">
@@ -56,21 +55,23 @@
                     </tbody>
                 </table>
             </div>
-            <div class="stats shadow bg-accent text-accent-content">
+            <div class="shadow stats bg-accent text-accent-content">
                 <div class="stat">
-                    <div class="stat-title font-signika bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Manhours LTI Free</div>
+                    <div
+                        class="text-transparent stat-title font-signika bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">
+                        Manhours LTI Free</div>
                     <div class="stat-value font-signika ">{{ $manhoursltifree }}</div>
-                    <div class="stat-desc font-semibold">periode {{ $month }}</div>
+                    <div class="font-semibold stat-desc">periode {{ $month }}</div>
                 </div>
             </div>
         </div>
         <div id="table-gridjs"></div>
     </div>
-    <div class="grid grid-rows-4 lg:grid-cols-2 gap-2 ">
-        <div class="bg-slate-300 my-2 lg:my-0" id="lagging_and_leading_indicator_12Months"></div>
-        <div class="bg-slate-300 my-2 lg:my-0" id="ohs_incident_deptCont"></div>
-        <div class="bg-slate-300 my-2 lg:my-0" id="cause_analysis"></div>
-        <div class="bg-slate-300 my-2 lg:my-0" id="lagging_and_leading_indicator_status"></div>
+    <div class="grid grid-rows-4 gap-2 lg:grid-cols-2 ">
+        <div class="my-2 bg-slate-300 lg:my-0" id="lagging_and_leading_indicator_12Months"></div>
+        <div class="my-2 bg-slate-300 lg:my-0" id="ohs_incident_deptCont"></div>
+        <div class="my-2 bg-slate-300 lg:my-0" id="cause_analysis"></div>
+        <div class="my-2 bg-slate-300 lg:my-0" id="lagging_and_leading_indicator_status"></div>
     </div>
 </div>
 
@@ -95,7 +96,7 @@
             <td>${data_table.lti_fr[i]}</td>
             <td>${data_table.departement_incident[i]}</td>
             <td>${data_table.departement_incident_previouse[i]}</td>
-           
+
 
             </tr>
             `;
@@ -240,7 +241,7 @@
             categories: lagging_and_leading.date,
 
         },
-        
+
         legend: {
             position: 'bottom',
             horizontalAlign: 'center',
@@ -290,7 +291,7 @@
             categories: incident_deptCont.name,
         },
         title: {
-            text: 'OHS Incidents Responsibility By Department & Contractor in '+incident_deptCont.years,
+            text: 'OHS Incidents Responsibility By Department & Contractor in ' + incident_deptCont.years,
             align: 'left',
             style: {
                 fontSize: '12px',
@@ -310,7 +311,7 @@
     var condition = JSON.parse('<?php echo $condition; ?>');
     var action = JSON.parse('<?php echo $action; ?>');
     console.log(condition);
-    
+
     var cause_analysis = {
         series: [action, condition, ],
         chart: {
