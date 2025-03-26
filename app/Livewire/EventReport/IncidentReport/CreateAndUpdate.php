@@ -258,7 +258,6 @@ class CreateAndUpdate extends Component
         }
         $this->TableRisk = TableRiskAssessment::with(['RiskAssessment', 'RiskConsequence', 'RiskLikelihood'])->get();
     }
-
     public function reportedBy($id)
     {
         $this->report_by = $id;
