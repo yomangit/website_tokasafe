@@ -20,15 +20,15 @@ class TemporaryUploadedFile extends UploadedFile
         $this->storage = Storage::disk($this->disk);
         $this->path = FileUploadConfiguration::path($path, false);
 
-        $tmpFile = tmpfile();
+        $tmpfname = tempnam(sys_get_temp_dir(), '');
+        $tmpFile = fopen($tmpfname, 'w');
 
         parent::__construct(stream_get_meta_data($tmpFile)['uri'], $this->path);
 
         // While running tests, update the last modified timestamp to the current
         // Carbon timestamp (which respects time traveling), because otherwise
         // cleanupOldUploads() will mess up with the filesystem...
-        if (app()->runningUnitTests())
-        {
+        if (app()->runningUnitTests()) {
             @touch($this->path(), now()->timestamp);
         }
     }
@@ -114,16 +114,31 @@ class TemporaryUploadedFile extends UploadedFile
         }
 
         return URL::temporarySignedRoute(
-            'livewire.preview-file', now()->addMinutes(30)->endOfHour(), ['filename' => $this->getFilename()]
+            'livewire.preview-file',
+            now()->addMinutes(30)->endOfHour(),
+            ['filename' => $this->getFilename()]
         );
     }
 
     public function isPreviewable()
     {
         $supportedPreviewTypes = config('livewire.temporary_file_upload.preview_mimes', [
-            'png', 'gif', 'bmp', 'svg', 'wav', 'mp4',
-            'mov', 'avi', 'wmv', 'mp3', 'm4a',
-            'jpg', 'jpeg', 'mpga', 'webp', 'wma',
+            'png',
+            'gif',
+            'bmp',
+            'svg',
+            'wav',
+            'mp4',
+            'mov',
+            'avi',
+            'wmv',
+            'mp3',
+            'm4a',
+            'jpg',
+            'jpeg',
+            'mpga',
+            'webp',
+            'wma',
         ]);
 
         return in_array($this->guessExtension(),  $supportedPreviewTypes);
@@ -155,10 +170,12 @@ class TemporaryUploadedFile extends UploadedFile
 
         $disk = Arr::pull($options, 'disk') ?: $this->disk;
 
-        $newPath = trim($path.'/'.$name, '/');
+        $newPath = trim($path . '/' . $name, '/');
 
         Storage::disk($disk)->put(
-            $newPath, $this->storage->readStream($this->path), $options
+            $newPath,
+            $this->storage->readStream($this->path),
+            $options
         );
 
         return $newPath;
@@ -167,10 +184,10 @@ class TemporaryUploadedFile extends UploadedFile
     public static function generateHashNameWithOriginalNameEmbedded($file)
     {
         $hash = str()->random(30);
-        $meta = str('-meta'.base64_encode($file->getClientOriginalName()).'-')->replace('/', '_');
-        $extension = '.'.$file->getClientOriginalExtension();
+        $meta = str('-meta' . base64_encode($file->getClientOriginalName()) . '-')->replace('/', '_');
+        $extension = '.' . $file->getClientOriginalExtension();
 
-        return $hash.$meta.$extension;
+        return $hash . $meta . $extension;
     }
 
     public function hashName($path = null)
@@ -217,7 +234,9 @@ class TemporaryUploadedFile extends UploadedFile
             if (str($subject)->startsWith('livewire-files:')) {
                 $paths = json_decode(str($subject)->after('livewire-files:'), true);
 
-                return collect($paths)->map(function ($path) { return static::createFromLivewire($path); })->toArray();
+                return collect($paths)->map(function ($path) {
+                    return static::createFromLivewire($path);
+                })->toArray();
             }
         }
 
@@ -232,11 +251,11 @@ class TemporaryUploadedFile extends UploadedFile
 
     public function serializeForLivewireResponse()
     {
-        return 'livewire-file:'.$this->getFilename();
+        return 'livewire-file:' . $this->getFilename();
     }
 
     public static function serializeMultipleForLivewireResponse($files)
     {
-        return 'livewire-files:'.json_encode(collect($files)->map->getFilename());
+        return 'livewire-files:' . json_encode(collect($files)->map->getFilename());
     }
 }
