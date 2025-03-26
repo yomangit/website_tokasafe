@@ -14,7 +14,15 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register(): void {}
+    public function register(): void
+    {
+        Request::macro('hasValidSignature', function ($absolute = true) {
+            if ('livewire/upload-file' == request()->path()) {
+                return true;
+            }
+            return \Illuminate\Support\Facades\URL::hasValidSignature($this, $absolute);
+        });
+    }
 
     /**
      * Bootstrap any application services.
