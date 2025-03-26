@@ -58,7 +58,7 @@ class Create extends ModalComponent
         );
         if ($doc) {
 
-            $this->file_doc->storeAs('/documents/incident/',  $file_name, ['disk' => 'public']);
+            $this->file_doc->storeAs('/incident/',  $file_name, ['disk' => 'public']);
         }
         if ($this->documentation_id) {
             $this->dispatch(
