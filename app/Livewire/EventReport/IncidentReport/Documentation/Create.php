@@ -12,11 +12,11 @@ use LivewireUI\Modal\ModalComponent;
 
 class Create extends ModalComponent
 {
-   
+
     use WithFileUploads;
-    public  $divider, $documentation_id,$current_step;
+    public  $divider, $documentation_id, $current_step;
     #[Validate]
-    public $description, $name_doc, $incident_id,$file_doc;
+    public $description, $name_doc, $incident_id, $file_doc;
 
     public function mount(IncidentReport $doc)
     {
@@ -24,10 +24,10 @@ class Create extends ModalComponent
     }
     public function render()
     {
-        $this->divider="Add Documentation";
+        $this->divider = "Add Documentation";
         return view('livewire.event-report.incident-report.documentation.create');
     }
-   
+
     public function rules()
     {
         return [
@@ -47,8 +47,8 @@ class Create extends ModalComponent
     {
         $this->validate();
         $file_name = $this->file_doc->getClientOriginalName();
-      
-       $doc= IncidentDocumentation::updateOrCreate(
+
+        $doc = IncidentDocumentation::updateOrCreate(
             ['id' => $this->documentation_id],
             [
                 'description' => $this->description,
@@ -56,8 +56,9 @@ class Create extends ModalComponent
                 'incident_id' => $this->incident_id
             ]
         );
-        if($doc){
-            $this->file_doc->storeAs('public/documents/incident', $file_name);
+        if ($doc) {
+
+            $this->file_doc->storeAs('/documents/incident/', $this->nama_foto, ['disk' => 'public']);
         }
         if ($this->documentation_id) {
             $this->dispatch(
@@ -89,7 +90,7 @@ class Create extends ModalComponent
         }
         $this->dispatch('documents_created');
     }
-     /**
+    /**
      * Supported: 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl'
      */
     public static function modalMaxWidth(): string
