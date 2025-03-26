@@ -18,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\setLocale::class,
             // AddCspHeaders::class,
-            AddContentSecurityPolicyHeaders::class,
+            // AddContentSecurityPolicyHeaders::class,
         ]);
         $middleware->alias([
             'admin' => AdminMiddleware::class,
