@@ -324,7 +324,7 @@ class CreateAndUpdate extends Component
                 'line' =>  $this->report_byName . ' ' . 'has submitted a hazard report, please review',
                 'line2' => 'Please review this report',
                 'line3' => 'Thank you',
-                'actionUrl' => url("https://tokasafe.archimining.com/eventReport/hazardReportDetail/$url"),
+                'actionUrl' => url("/eventReport/hazardReportDetail/$url"),
             ];
             Notification::send($users, new toModerator($offerData));
         }
@@ -337,7 +337,7 @@ class CreateAndUpdate extends Component
                 'line' =>  $this->report_byName . '' . 'has sent a hazard report to you, please review it',
                 'line2' => 'Please check by click the button below',
                 'line3' => 'Thank you',
-                'actionUrl' => url("https://tokasafe.archimining.com/eventReport/hazardReportDetail/$url"),
+                'actionUrl' => url("/eventReport/hazardReportDetail/$url"),
             ];
             Notification::send($report_to, new toModerator($offerData));
         }
