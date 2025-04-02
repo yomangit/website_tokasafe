@@ -38,7 +38,7 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root'   => public_path() . '/myfiles',
+            'root'   => '/home/tokasafearchimin/public_html/storage',
             'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
