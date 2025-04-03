@@ -298,7 +298,7 @@ class Detail extends Component
     }
     public function download()
     {
-        return response()->download(public_path('documents/icd' . $this->documentation));
+        return response()->download(public_path('documents/icd/' . $this->documentation));
     }
     public function reportedBy($id)
     {
