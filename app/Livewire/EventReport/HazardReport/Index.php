@@ -20,19 +20,18 @@ use Illuminate\Support\Facades\Request;
 class Index extends Component
 {
     #[Url]
-    public $rangeDate = '', $searching = '', $search_workgroup = '', $search_eventType = '', $search_eventSubType = '', $search_status = '',$responsible_role_id,$workflow_template_id;
-    public $EventSubType = [], $show = false, $in_tray, $nilai,$muncul=false,$event_type_id,$view=false;
+    public $rangeDate = '', $searching = '', $search_workgroup = '', $search_eventType = '', $search_eventSubType = '', $search_status = '', $responsible_role_id, $workflow_template_id;
+    public $EventSubType = [], $show = false, $in_tray, $nilai, $muncul = false, $event_type_id, $view = false;
     public $startDate, $endDate;
     public $tglMulai, $tglAkhir;
     public function render()
     {
 
-        if (route_request::where('route_name','LIKE',Request::getPathInfo())->exists()) {
-            $this->workflow_template_id = route_request::where('route_name','LIKE',Request::getPathInfo())->first()->workflow_template_id;
-
-           }else{
-            $this->workflow_template_id ="";
-           }
+        if (route_request::where('route_name', 'LIKE', Request::getPathInfo())->exists()) {
+            $this->workflow_template_id = route_request::where('route_name', 'LIKE', Request::getPathInfo())->first()->workflow_template_id;
+        } else {
+            $this->workflow_template_id = "";
+        }
         if ($this->in_tray) {
             $this->nilai = Auth::user()->id;
         } else {
@@ -48,7 +47,7 @@ class Index extends Component
             }
         }
         if (Auth::user()->role_user_permit_id == 1) {
-            $this->view=true;
+            $this->view = true;
         }
         if ($this->rangeDate) {
 
@@ -65,15 +64,14 @@ class Index extends Component
             ])->findSubmitter(trim($this->nilai))->searchStatus(trim($this->search_status))->searchEventType(trim($this->search_eventType))->searchEventSubType(trim($this->search_eventSubType))->search(trim($this->searching))->paginate(30);
         }
 
-         if (choseEventType::where('route_name','LIKE','%'. '/eventReport/hazardReport'.'%')->exists()) {
-            $eventType = choseEventType::where('route_name','LIKE','%'. '/eventReport/hazardReport'.'%')->pluck('event_type_id');
+        if (choseEventType::where('route_name', 'LIKE', '%' . '/eventReport/hazardReport' . '%')->exists()) {
+            $eventType = choseEventType::where('route_name', 'LIKE', '%' . '/eventReport/hazardReport' . '%')->pluck('event_type_id');
 
             $Event_type = TypeEventReport::whereIn('id', $eventType)->get();
-
-           }else{
-            $Event_type =[];
-           }
-            $this->EventSubType = (isset($this->search_eventType)) ?  $this->EventSubType = Eventsubtype::where('event_type_id', $this->search_eventType)->get() : [];
+        } else {
+            $Event_type = [];
+        }
+        $this->EventSubType = (isset($this->search_eventType)) ?  $this->EventSubType = Eventsubtype::where('event_type_id', $this->search_eventType)->get() : [];
         return view('livewire.event-report.hazard-report.index', [
             'HazardReport' => $Hazard,
             'ActionHazard' => ActionHazard::get(),
@@ -86,11 +84,11 @@ class Index extends Component
         $HazardReport = HazardReport::whereId($id);
         $files = HazardDocumentation::searchHzdID(trim($id));
         if (isset($files->first()->name_doc)) {
-            unlink(storage_path('app/public/documents/hazard/' .   $files->first()->name_doc));
+            unlink(storage_path('app/public/documents/hzd/' .   $files->first()->name_doc));
         }
         $reference = $HazardReport->first()->reference;
         $HazardReport->delete();
-        EventParticipants::where('reference',$reference)->delete();
+        EventParticipants::where('reference', $reference)->delete();
         return redirect()->route('hazardReport');
         $this->dispatch(
             'alert',
@@ -104,5 +102,4 @@ class Index extends Component
             ]
         );
     }
-
 }
