@@ -10,7 +10,7 @@ use App\Models\IncidentDocumentation;
 
 class Index extends Component
 {
-    public $incident_id,$current_step;
+    public $incident_id, $current_step;
     use WithPagination;
     protected $listeners = [
         'documents_created' => 'render',
@@ -32,16 +32,16 @@ class Index extends Component
         $IncidentReport = IncidentReport::whereId($this->incident_id)->first();
         $this->current_step = $IncidentReport->WorkflowDetails->name;
     }
-    public function download($id)
+    public function download(IncidentDocumentation $id)
     {
-        $name = IncidentDocumentation::whereId($id)->first()->name_doc;
-        return response()->download(storage_path('app/public/documents/incident/' . $name));
+        $name = $id->name_doc;
+        return response()->download(public_path('storage/documents/incident_doc/' .  $name));
     }
     public function destroy($id)
     {
         $files = IncidentDocumentation::whereId($id);
         $files->first()->name_doc;
-        unlink(storage_path('app/public/documents/incident/' . $files->first()->name_doc));
+        unlink(storage_path('app/public/documents/incident_doc/' . $files->first()->name_doc));
         $this->dispatch(
             'alert',
             [
