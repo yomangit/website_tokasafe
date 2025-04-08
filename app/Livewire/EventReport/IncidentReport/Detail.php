@@ -117,7 +117,7 @@ class Detail extends Component
             'task_being_done' => ['required'],
             'file_doc' => 'nullable|mimes:jpg,jpeg,png,svg,gif,xlsx,pdf,docx',
             'description' => ['required'],
-            'involved_eqipment' => ['required'],
+            'involved_eqipment' => ['nullable'],
             'preliminary_cause' => ['required'],
             'event_location_id' => ['required'],
             'immediate_action_taken' => ['required'],

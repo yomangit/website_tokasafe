@@ -300,7 +300,7 @@
                     </div>
                     <div>
                         <div wire:ignore class="w-full form-control">
-                            <x-label-req :value="__('involved_eqipment')" />
+                            <x-label-no-req :value="__('involved_eqipment')" />
                             <textarea id="involved_eqipment">{{ $involved_eqipment_temp }}</textarea>
                         </div>
                         <x-label-error :messages="$errors->get('involved_eqipment')" />
@@ -486,7 +486,7 @@
         </form>
         <livewire:event-report.incident-report.action.create>
 
-            <script type="module">
+            <script nonce="{{ csp_nonce() }}">
                 ClassicEditor
                     .create(document.querySelector('#description'), {
                         toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link'],

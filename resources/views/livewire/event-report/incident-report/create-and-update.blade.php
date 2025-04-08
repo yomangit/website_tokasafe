@@ -274,7 +274,7 @@
             </div>
             <div>
                 <div wire:ignore class="w-full form-control">
-                    <x-label-req :value="__('involved_eqipment')" />
+                    <x-label-no-req :value="__('involved_eqipment')" />
                     <x-text-area id="involved_eqipment" wire:model.live='involved_eqipment' :error="$errors->get('involved_eqipment')" />
                 </div>
                 <x-label-error :messages="$errors->get('involved_eqipment')" />

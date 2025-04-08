@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     @endpush
     <x-notification />
-    <div class="flex flex-col justify-items-stretch sm:flex-row sm:justify-between mb-2">
+    <div class="flex flex-col mb-2 justify-items-stretch sm:flex-row sm:justify-between">
         <div class="justify-self-start">
             <div>
                 <x-icon-btn-a href="{{ route('hazardReportform', ['workflow_template_id' => $workflow_template_id]) }}"
@@ -19,8 +19,8 @@
             </div>
 
 
-            <div class="form-control flex flex-row">
-                <label class="cursor-pointer label gap-4">
+            <div class="flex flex-row form-control">
+                <label class="gap-4 cursor-pointer label">
                     <span class="label-text font-spicy_rice">My Tray</span>
                     <input type="checkbox" wire:model.live='in_tray' checked="checked"
                         class="checkbox [--chkbg:oklch(var(--a))] [--chkfg:oklch(var(--p))] checkbox-xs" />
@@ -101,17 +101,15 @@
                         </td>
                         <td>
                             <div class="">
-                                @if (
-                                    auth()->user()->role_user_permit_id == 1 ||
-                                    $item->submitter == auth()->user()->id ||
-                                    $item->report_by == auth()->user()->id ||
-                                    $item->report_to == auth()->user()->id ||
-                                    $item->assign_to == auth()->user()->id ||
-                                    $item->also_assign_to == auth()->user()->id
-                                        )
+                                @if (auth()->user()->role_user_permit_id == 1 ||
+                                        $item->submitter == auth()->user()->id ||
+                                        $item->report_by == auth()->user()->id ||
+                                        $item->report_to == auth()->user()->id ||
+                                        $item->assign_to == auth()->user()->id ||
+                                        $item->also_assign_to == auth()->user()->id)
                                     <x-icon-btn-detail href="{{ route('hazardReportDetail', ['id' => $item->id]) }}"
                                         data-tip="Details" />
-                              
+
                                     <x-icon-btn-delete data-tip="delete" wire:click='delete({{ $item->id }})'
                                         wire:confirm.prompt="Are you sure delete {{ $item->reference }}?\n\nType DELETE to confirm|DELETE" />
                                 @endif
@@ -121,7 +119,7 @@
                 @empty
                     <tr wire:loading.class='hidden '
                         wire:target='rangeDate,search_workgroup,search_eventType,search_eventSubType,search_status,searching,in_tray'>
-                        <th colspan="9" class="text-center font-signika text-xl"> <span
+                        <th colspan="9" class="text-xl text-center font-signika"> <span
                                 class="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-yellow-500">
                                 data not found
                             </span>
@@ -131,7 +129,7 @@
                 <tr class="hidden skeleton"
                     wire:target='rangeDate,search_workgroup,search_eventType,search_eventSubType,search_status,searching,in_tray'
                     wire:loading.class.remove='hidden '>
-                    <th colspan="10" class="text-center h-32">
+                    <th colspan="10" class="h-32 text-center">
                         <x-loading-spinner />
                     </th>
                 </tr>
