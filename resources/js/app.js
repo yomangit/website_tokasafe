@@ -8,12 +8,13 @@ import monthSelectPlugin from "flatpickr/dist/plugins/monthSelect";
 import "flatpickr/dist/themes/dark.css";
 import "flatpickr/dist/plugins/monthSelect/style.css";
 
-if ('serviceWorker' in navigator)
-{
-    navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(function (registration) {
-        console.log(`SW registered successfully!`);
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js', {
+        scope: '/'
+    }).then(function (registration) {
+
     }).catch(function (registrationError) {
-        console.log(`SW registration failed`);
+
     });
 }
 // flatpickr datepicker
@@ -39,15 +40,15 @@ flatpickr("#date_birth", {
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#date_commenced", {
-     disableMobile: "true",
+    disableMobile: "true",
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#end_date", {
-     disableMobile: "true",
+    disableMobile: "true",
     dateFormat: "d-m-Y ", //defaults to "F Y"
 });
 flatpickr("#month", {
-     disableMobile: "true",
+    disableMobile: "true",
     plugins: [
         new monthSelectPlugin({
             shorthand: true, //defaults to false
