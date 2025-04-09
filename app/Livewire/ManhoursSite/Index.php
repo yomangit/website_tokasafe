@@ -15,25 +15,23 @@ use Maatwebsite\Excel\Facades\Excel;
 class Index extends Component
 {
     use WithFileUploads;
-    public $manhoursSite_id, $modal;
+    public $manhoursSite_id, $modal, $search = '';
     public $date, $files, $company_employee, $company_manhours, $Company_Cummulatives, $Contractor_Workhours, $Contractor_Employee, $Contractor_Cummulatives, $Total_Employee, $Total_Workhours, $Total_Cummulatives, $Cummulatives_Manhours_By_LTI, $Manhours_Lost, $LTI, $LTI_Date;
     public function modalMS(ManhoursSite $id)
     {
-         $this->modal="modal-open";
-         $this->manhoursSite_id =$id->id;
-        
-        if($this->manhoursSite_id)
-        {
+        $this->modal = "modal-open";
+        $this->manhoursSite_id = $id->id;
+
+        if ($this->manhoursSite_id) {
             $this->date = date('M-Y', strtotime($id->date));
         }
-      
     }
-    
+
     public function render()
     {
         $this->getManhoursSite();
         return view('livewire.manhours-site.index', [
-            'ManhoursSite' => ManhoursSite::orderBy('date','desc')->get()
+            'ManhoursSite' => ManhoursSite::orderBy('date', 'desc')->get()
         ])->extends('base.index', ['header' => 'Manhours Site', 'title' => 'Manhours Site'])->section('content');
     }
     public function getManhoursSite()
@@ -48,7 +46,7 @@ class Index extends Component
             $totalCum = $prev_cummulatives->Total_Cummulatives;
             $cumbyLTI = $prev_cummulatives->Cummulatives_Manhours_By_LTI;
             $Manhours = Manhours::searchDate(trim($date));
-            $ManhoursCont =Manhours::searchDate(trim($date));
+            $ManhoursCont = Manhours::searchDate(trim($date));
             $ManhoursTotal = Manhours::searchDate(trim($date));
 
             $this->company_employee = $Manhours->where('company_category', 'LIKE', '%' . "ARCHI" . '%')->sum('manpower');
@@ -59,12 +57,12 @@ class Index extends Component
             $this->Contractor_Cummulatives = $contCum + $this->Contractor_Workhours;
             $this->Total_Employee = $ManhoursTotal->sum('manpower');
             $this->Total_Workhours = (int) $ManhoursTotal->sum('manhours');
-           
+
             $this->Total_Cummulatives = $totalCum + $this->Total_Workhours;
             if (IncidentReport::searchMonth(trim($date))->search(trim('LTI'))->exists()) {
                 $this->LTI = IncidentReport::searchMonth(trim($date))->search(trim('LTI'))->count('sub_event_type_id');
                 $lti_date = IncidentReport::searchMonth(trim($date))->search(trim('LTI'))->first()->date;
-              
+
                 $this->LTI_Date =  DateTime::createFromFormat('Y-m-d : H:i', $lti_date)->format('d-m-Y');
                 $year = date('Y', strtotime($this->LTI_Date));
                 $month = date('m', strtotime($this->LTI_Date));
@@ -73,10 +71,10 @@ class Index extends Component
                 $this->Manhours_Lost = round(round($day / $totalDaysofMonths, 2) * $this->Total_Workhours, 0);
                 $this->Cummulatives_Manhours_By_LTI = $this->Total_Workhours - $this->Manhours_Lost;
             } else {
-                $this->LTI =null;
+                $this->LTI = null;
                 $this->LTI_Date = null;
                 $this->Manhours_Lost = null;
-                $this->Cummulatives_Manhours_By_LTI = $this->Total_Workhours + $cumbyLTI;   
+                $this->Cummulatives_Manhours_By_LTI = $this->Total_Workhours + $cumbyLTI;
             }
         }
     }
@@ -86,36 +84,37 @@ class Index extends Component
         ManhoursSite::updateOrCreate(
             ['id' => $this->manhoursSite_id],
             [
-            'date' => date('Y-m-d', strtotime($this->date)),
-            'Company_Employee' => $this->company_employee,
-            'Company_Workhours' => $this->company_manhours,
-            'Company_Cummulatives' => $this->Company_Cummulatives,
-            'Contractor_Employee' => $this->Contractor_Employee,
-            'Contractor_Workhours' => $this->Contractor_Workhours,
-            'Contractor_Cummulatives' => $this->Contractor_Cummulatives,
-            'Total_Employee' => $this->Total_Employee,
-            'Total_Workhours' => $this->Total_Workhours,
-            'Total_Cummulatives' => $this->Total_Cummulatives,
-            'Cummulatives_Manhours_By_LTI' => $this->Cummulatives_Manhours_By_LTI,
-            'Manhours_Lost' => $this->Manhours_Lost,
-            'LTI' => $this->LTI,
-            'LTI_Date' => $this->LTI_Date
-            ]);
+                'date' => date('Y-m-d', strtotime($this->date)),
+                'Company_Employee' => $this->company_employee,
+                'Company_Workhours' => $this->company_manhours,
+                'Company_Cummulatives' => $this->Company_Cummulatives,
+                'Contractor_Employee' => $this->Contractor_Employee,
+                'Contractor_Workhours' => $this->Contractor_Workhours,
+                'Contractor_Cummulatives' => $this->Contractor_Cummulatives,
+                'Total_Employee' => $this->Total_Employee,
+                'Total_Workhours' => $this->Total_Workhours,
+                'Total_Cummulatives' => $this->Total_Cummulatives,
+                'Cummulatives_Manhours_By_LTI' => $this->Cummulatives_Manhours_By_LTI,
+                'Manhours_Lost' => $this->Manhours_Lost,
+                'LTI' => $this->LTI,
+                'LTI_Date' => $this->LTI_Date
+            ]
+        );
 
-            $this->dispatch(
-                'alert',
-                [
-                    'text' => "Data added Successfully!!",
-                    'duration' => 3000,
-                    'destination' => '/contact',
-                    'newWindow' => true,
-                    'close' => true,
-                    'backgroundColor' => "linear-gradient(to right, #00b09b, #96c93d)",
-                ]
-            );
-            if($this->manhoursSite_id){
-                 $this->closeModal();
-            }
+        $this->dispatch(
+            'alert',
+            [
+                'text' => "Data added Successfully!!",
+                'duration' => 3000,
+                'destination' => '/contact',
+                'newWindow' => true,
+                'close' => true,
+                'backgroundColor' => "linear-gradient(to right, #00b09b, #96c93d)",
+            ]
+        );
+        if ($this->manhoursSite_id) {
+            $this->closeModal();
+        }
     }
     public function uploadManhours()
     {
@@ -139,7 +138,7 @@ class Index extends Component
     {
         $this->reset('modal');
     }
-     public function delete($id)
+    public function delete($id)
     {
         $deleteFile = ManhoursSite::whereId($id);
         $deleteFile->delete();
