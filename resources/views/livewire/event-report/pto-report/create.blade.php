@@ -873,7 +873,7 @@
                 <input type="radio" name="my_tabs_5" role="tab"
                     class="font-semibold tab font-signika text-rose-500 " aria-label="5.&ensp;Documentation"
                     checked="checked" />
-                <div role="tabpanel" class="p-6 tab-content bg-base-100 border-base-300 rounded-box ">
+                <div role="tabpanel" class="p-6 overflow-x-auto tab-content bg-base-100 border-base-300 rounded-box ">
                     <x-btn-add data-tip="Add data" wire:click="$dispatch('documentation_pto')" />
 
                     <livewire:event-report.pto-report.documentation.index :reference="$reference">
