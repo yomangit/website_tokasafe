@@ -883,8 +883,8 @@
             <div role="tablist" class="mb-4 tabs tabs-lifted">
                 <input type="radio" name="my_tabs_6" role="tab"
                     class="font-semibold tab font-signika text-rose-500 "
-                    aria-label="5.&ensp;Detail Of Corrective Actions" checked="checked" />
-                <div role="tabpanel" class="p-6 tab-content bg-base-100 border-base-300 rounded-box ">
+                    aria-label="6.&ensp;Detail Of Corrective Actions" checked="checked" />
+                <div role="tabpanel" class="p-6 overflow-x-auto tab-content bg-base-100 border-base-300 rounded-box">
                     <x-btn-add data-tip="Add data" wire:click="$dispatch('openModalActionPTO')" />
 
                     <livewire:event-report.pto-report.action.index :reference="$reference">
