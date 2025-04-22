@@ -319,7 +319,7 @@ class CreateAndUpdate extends Component
         foreach ($User as $key => $value) {
             $users = User::whereId($value->id)->get();
             $offerData = [
-                'greeting' => $value->lookup_name,
+                'greeting' => 'Hi' . '' .  $value->lookup_name,
                 'subject' => $this->task_being_done,
                 'line' =>  $this->report_byName . ' ' . 'has submitted a hazard report, please review',
                 'line2' => 'Please review this report',

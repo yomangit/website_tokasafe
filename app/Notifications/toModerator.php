@@ -26,7 +26,7 @@ class toModerator extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -35,12 +35,12 @@ class toModerator extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-        ->greeting($this->offerData['greeting'])
-        ->subject($this->offerData['subject'])
-        ->line($this->offerData['line'])
-        ->line($this->offerData['line2'])
-        ->action('View Event', url($this->offerData['actionUrl']))
-        ->line($this->offerData['line3']);
+            ->greeting($this->offerData['greeting'])
+            ->subject($this->offerData['subject'])
+            ->line($this->offerData['line'])
+            ->line($this->offerData['line2'])
+            ->action('View Event', url($this->offerData['actionUrl']))
+            ->line($this->offerData['line3']);
     }
 
     /**
@@ -52,11 +52,11 @@ class toModerator extends Notification
     {
         return [
             'greeting' => $this->offerData['greeting'],
-            'subject' =>$this->offerData['subject'],
-            'line' =>$this->offerData['line'],
-            'line2' =>$this->offerData['line2'],
-            'url' =>$this->offerData['actionUrl'],
-            'line3' =>$this->offerData['line3']
+            'subject' => $this->offerData['subject'],
+            'line' => $this->offerData['line'],
+            'line2' => $this->offerData['line2'],
+            'url' => $this->offerData['actionUrl'],
+            'line3' => $this->offerData['line3']
         ];
     }
 }
