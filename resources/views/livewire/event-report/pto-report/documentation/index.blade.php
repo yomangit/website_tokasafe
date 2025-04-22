@@ -6,8 +6,8 @@
             <thead>
                 <tr>
 
-                    <th>{{__('Document/Image')}}</th>
-                    <th>{{__('Description')}}</th>
+                    <th>{{ __('Document/Image') }}</th>
+                    <th>{{ __('Description') }}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -17,10 +17,10 @@
 
                         <td>
                             <div class="flex items-center gap-3">
-                                <div wire:click="download('{{ $item->id }}')" class="avatar cursor-pointer">
-                                    {{-- <div class="mask mask-squircle h-12 w-12"> --}}
+                                <div wire:click="download('{{ $item->id }}')" class="cursor-pointer avatar">
+                                    {{-- <div class="w-12 h-12 mask mask-squircle"> --}}
                                     @if (pathinfo(public_path($item->new_data['name_doc']))['extension'] === 'docx')
-                                        <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                                        <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                                         <svg class="size-8" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                                             <title>file_type_word</title>
                                             <path
@@ -35,7 +35,7 @@
                                         </svg>
                                     @elseif(pathinfo(public_path($item->new_data['name_doc']))['extension'] === 'xlsx' ||
                                             pathinfo(public_path($item->new_data['name_doc']))['extension'] === 'csv')
-                                        <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                                        <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                                         <svg class="size-8" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                                             <title>file_type_excel</title>
                                             <path
@@ -57,7 +57,7 @@
                                         </svg>
                                     @elseif(pathinfo(public_path($item->new_data['name_doc']))['extension'] === 'pdf' ||
                                             pathinfo(public_path($item->new_data['name_doc']))['extension'] === 'PDF')
-                                        <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                                        <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                                         <svg class="size-8" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                                             <title>file_type_pdf</title>
                                             <path d="M24.1,2.072h0l5.564,5.8V29.928H8.879V30H29.735V7.945L24.1,2.072"
@@ -93,8 +93,6 @@
                                             pathinfo(public_path($item->new_data['name_doc']))['extension'] === 'JPG' ||
                                             pathinfo(public_path($item->new_data['name_doc']))['extension'] === 'PNG' ||
                                             pathinfo(public_path($item->new_data['name_doc']))['extension'] === 'jpg')
-                                        <?xml version="1.0" encoding="utf-8"?>
-
                                         <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                                         <svg class="size-8" viewBox="0 0 14 14" role="img" focusable="false"
                                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
@@ -128,12 +126,13 @@
                             {{ $item->new_data['description'] }}
                         </td>
                         <th>
-                            <x-icon-btn-delete class="" data-tip="delete" wire:click='destroy({{$item->id}})'
+                            <x-icon-btn-delete class="" data-tip="delete"
+                                wire:click='destroy({{ $item->id }})'
                                 wire:confirm.prompt="Are you sure delete {{ $item->new_data['name_doc'] }}?\n\nType DELETE to confirm|DELETE" />
                         </th>
                     </tr>
                 @empty
-                    <tr class="text-center text-rose-500 font-semibold">
+                    <tr class="font-semibold text-center text-rose-500">
                         <td colspan="4">there is no documentation </td>
                     </tr>
                 @endforelse
@@ -141,7 +140,7 @@
 
             </tbody>
             <!-- foot -->
-           
+
         </table>
     </div>
 </div>
