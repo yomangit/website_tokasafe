@@ -392,7 +392,7 @@ class Detail extends Component
             foreach ($Users as $key => $value) {
                 $report_to = User::whereId($value->id)->get();
                 $offerData = [
-                    'greeting' => 'Hi' . '' . $this->report_toName,
+                    'greeting' => 'Hi' . ' ' . $this->report_toName,
                     'subject' => 'Hazard Report' . ' ' . $this->task_being_done,
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a hazard report, please review',
                     'line2' => 'Please check by click the button below',
@@ -407,7 +407,7 @@ class Detail extends Component
             foreach ($Users as $key => $value) {
                 $report_to = User::whereId($value->id)->get();
                 $offerData = [
-                    'greeting' => 'Hi' . '' . $this->report_toName,
+                    'greeting' => 'Hi' . ' ' . $this->report_toName,
                     'subject' => 'Hazard Report' . ' ' . $this->task_being_done,
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a hazard report, please review',
                     'line2' => 'Please check by click the button below',
