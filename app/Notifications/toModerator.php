@@ -39,7 +39,7 @@ class toModerator extends Notification
             ->subject($this->offerData['subject'])
             ->line($this->offerData['line'])
             ->line($this->offerData['line2'])
-            ->action('View Event', url($this->offerData['actionUrl']))
+            ->action('View Report', url($this->offerData['actionUrl']))
             ->line($this->offerData['line3']);
     }
 

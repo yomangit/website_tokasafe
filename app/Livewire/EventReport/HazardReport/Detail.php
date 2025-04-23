@@ -27,6 +27,7 @@ use App\Models\WorkflowApplicable;
 use App\Notifications\toModerator;
 use App\Models\HazardDocumentation;
 use App\Models\TableRiskAssessment;
+use App\Notifications\toERM;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
@@ -376,7 +377,7 @@ class Detail extends Component
             foreach ($User as $key => $value) {
                 $users = User::whereId($value->id)->get();
                 $offerData = [
-                    'greeting' => $value->lookup_name,
+                    'greeting' => 'Hi' . '' .   $value->lookup_name,
                     'subject' => $this->task_being_done,
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a hazard report, please review',
                     'line2' => 'Please review this report',
@@ -391,14 +392,14 @@ class Detail extends Component
             foreach ($Users as $key => $value) {
                 $report_to = User::whereId($value->id)->get();
                 $offerData = [
-                    'greeting' => 'Dear' . '' . $this->report_toName,
+                    'greeting' => 'Hi' . '' . $this->report_toName,
                     'subject' => "Hazard Report",
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a hazard report, please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
                     'actionUrl' => url("/eventReport/hazardReportDetail/$url"),
                 ];
-                Notification::send($report_to, new toModerator($offerData));
+                Notification::send($report_to, new toERM($offerData));
             }
         }
         if ($this->also_assign_to) {
