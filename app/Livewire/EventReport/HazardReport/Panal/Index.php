@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Notification;
 class Index extends Component
 {
     public $procced_to, $EventUserSecurity = [], $Workflows, $show = false, $workflow_detail_id, $data_id, $assign_to, $also_assign_to, $current_step, $reference,  $event_type_id, $workflow_administration_id, $status, $bg_status, $muncul = false, $responsible_role_id;
-    public $wf_id, $division_id, $assign_to_old, $also_assign_to_old;
+    public $wf_id, $division_id, $assign_to_old, $also_assign_to_old, $task_being_done;
     #[On('hzrd_updated')]
     public function hzrd_updated(HazardReport $id)
     {
@@ -26,6 +26,7 @@ class Index extends Component
         $this->assign_to_old = $id->assign_to;
         $this->also_assign_to_old = $id->also_assign_to;
         $this->responsible_role_id = $id->WorkflowDetails->ResponsibleRole->id;
+        $this->task_being_done = $id->task_being_done;
     }
     public function mount(HazardReport $id)
     {
@@ -34,6 +35,7 @@ class Index extends Component
         $this->assign_to = $id->assign_to;
         $this->assign_to = $id->assign_to;
         $this->also_assign_to = $id->also_assign_to;
+        $this->task_being_done = $id->task_being_done;
     }
     public function render()
     {
