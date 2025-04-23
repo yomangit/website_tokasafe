@@ -151,9 +151,9 @@ class Index extends Component
             foreach ($User as $key => $value) {
                 $users = User::whereId($value->id)->get();
                 $offerData = [
-                    'greeting' => $value->lookup_name,
-                    'subject' => '',
-                    'line' =>  $value->lookup_name . ' ' . 'has updated the hazard report status to ' . $this->status . ', please review',
+                    'greeting' => 'Hi' . ' ' . $value->lookup_name,
+                    'subject' => 'Hazard Report' . ' ' . $this->task_being_done,
+                    'line' =>  Auth::user()->lookup_name . ' ' . 'has updated the hazard report status to ' . $this->status . ', please review',
                     'line2' => 'Please review this report',
                     'line3' => 'Thank you',
                     'actionUrl' => url("https://tokasafe.archimining.com/eventReport/hazardReportDetail/$url"),
@@ -167,8 +167,8 @@ class Index extends Component
                 foreach ($Users as $key => $value) {
                     $report_to = User::whereId($value->id)->get();
                     $offerData = [
-                        'greeting' =>  '',
-                        'subject' => '',
+                        'greeting' => 'Hi' . ' ' . $value->lookup_name,
+                        'subject' => 'Hazard Report' . ' ' . $this->task_being_done,
                         'line' =>  'You have been assigned to a hazard report with reference ' . $this->reference . ', please review',
                         'line2' => 'Please check by click the button below',
                         'line3' => 'Thank you',
@@ -182,8 +182,8 @@ class Index extends Component
                 foreach ($Users as $key => $value) {
                     $report_to = User::whereId($value->id)->get();
                     $offerData = [
-                        'greeting' =>  '',
-                        'subject' => '',
+                        'greeting' => 'Hi' . ' ' . $value->lookup_name,
+                        'subject' => 'Hazard Report' . ' ' . $this->task_being_done,
                         'line' =>  'You have been assigned to a hazard report with reference ' . $this->reference . ', please review',
                         'line2' => 'Please check by click the button below',
                         'line3' => 'Thank you',

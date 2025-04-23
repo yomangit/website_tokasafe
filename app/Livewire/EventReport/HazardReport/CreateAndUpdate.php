@@ -320,7 +320,7 @@ class CreateAndUpdate extends Component
             $users = User::whereId($value->id)->get();
             $offerData = [
                 'greeting' => 'Hi' . '' .  $value->lookup_name,
-                'subject' => $this->task_being_done,
+                'subject' => 'Hazard Report' . ' ' . $this->task_being_done,
                 'line' =>  $this->report_byName . ' ' . 'has submitted a hazard report, please review',
                 'line2' => 'Please review this report',
                 'line3' => 'Thank you',
@@ -333,7 +333,7 @@ class CreateAndUpdate extends Component
             $report_to = User::whereId($value->id)->get();
             $offerData = [
                 'greeting' => 'Hi' . ' ' . $this->report_toName,
-                'subject' => $this->task_being_done,
+                'subject' => 'Hazard Report' . ' ' . $this->task_being_done,
                 'line' =>  $this->report_byName . '' . 'has sent a hazard report to you, please review it',
                 'line2' => 'Please check by click the button below',
                 'line3' => 'Thank you',

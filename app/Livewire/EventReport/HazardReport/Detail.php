@@ -378,7 +378,7 @@ class Detail extends Component
                 $users = User::whereId($value->id)->get();
                 $offerData = [
                     'greeting' => 'Hi' . '' .   $value->lookup_name,
-                    'subject' => $this->task_being_done,
+                    'subject' => 'Hazard Report' . ' ' . $this->task_being_done,
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a hazard report, please review',
                     'line2' => 'Please review this report',
                     'line3' => 'Thank you',
@@ -393,7 +393,7 @@ class Detail extends Component
                 $report_to = User::whereId($value->id)->get();
                 $offerData = [
                     'greeting' => 'Hi' . '' . $this->report_toName,
-                    'subject' => "Hazard Report",
+                    'subject' => 'Hazard Report' . ' ' . $this->task_being_done,
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a hazard report, please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
@@ -408,7 +408,7 @@ class Detail extends Component
                 $report_to = User::whereId($value->id)->get();
                 $offerData = [
                     'greeting' => 'Hi' . '' . $this->report_toName,
-                    'subject' => "Hazard Report",
+                    'subject' => 'Hazard Report' . ' ' . $this->task_being_done,
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a hazard report, please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
