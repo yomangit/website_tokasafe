@@ -407,29 +407,17 @@ class Detail extends Component
             foreach ($Users as $key => $value) {
                 $report_to = User::whereId($value->id)->get();
                 $offerData = [
-                    'greeting' => 'Dear' . '' . $this->report_toName,
+                    'greeting' => 'Hi' . '' . $this->report_toName,
                     'subject' => "Hazard Report",
                     'line' =>  Auth::user()->lookup_name . ' ' . 'has update a hazard report, please review',
                     'line2' => 'Please check by click the button below',
                     'line3' => 'Thank you',
                     'actionUrl' => url("https://tokasafe.archimining.com/eventReport/hazardReportDetail/$url"),
                 ];
-                Notification::send($report_to, new toModerator($offerData));
+                Notification::send($report_to, new toERM($offerData));
             }
         }
-        $Users = User::where('id', $this->report_to)->whereNotNull('email')->get();
-        foreach ($Users as $key => $value) {
-            $report_to = User::whereId($value->id)->get();
-            $offerData = [
-                'greeting' => 'Dear' . '' . $this->report_toName,
-                'subject' => $this->task_being_done,
-                'line' =>  $value->lookup_name . ' ' . 'has update a hazard report, please review',
-                'line2' => 'Please check by click the button below',
-                'line3' => 'Thank you',
-                'actionUrl' => url("https://tokasafe.archimining.com/eventReport/hazardReportDetail/$url"),
-            ];
-            Notification::send($report_to, new toModerator($offerData));
-        }
+
         $this->dispatch('hzrd_updated', $this->data_id);
     }
     public function destroy()
