@@ -54,9 +54,12 @@ use App\Livewire\EventReport\IncidentReport\CreateAndUpdate as CreateAndUpdateIn
 
 
 $newReference =  Str::random(9);
-$reference_pto = 'OHS-PTO-'.$newReference;
+$reference_pto = 'OHS-PTO-' . $newReference;
 
 Route::get('/language/{locale}', function ($locale) {
+    if (! in_array($locale, ['en', 'id'])) {
+        abort(400);
+    }
     session()->put('locale', $locale);
     return redirect()->back();
 })->name('locale');
@@ -67,7 +70,7 @@ Route::get(
         return view('welcome');
     }
 );
-Route::get('/config-clear', function() {
+Route::get('/config-clear', function () {
     $exitCode = Artisan::call('config:clear');
     return '<h1>Clear Config cleared</h1>';
 });
@@ -124,16 +127,14 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('eventReport/hazardReportform/{workflow_template_id?}', hazardReportform::class)->name('hazardReportform');
     Route::get('eventReport/hazardReportDetail/{id}', hazardReportDetail::class)->name('hazardReportDetail');
 
-     // event report pto route
-     Route::get('eventReport/PTOReport', ptoReport::class)->name('ptoReport');
-     Route::get('eventReport/PTOReport/detail/{id}', ptoDetail::class)->name('ptoDetail');
-     Route::get('eventReport/PTOReport/form/{reference?}/{workflow_template_id?}', PTOForm::class)->name('ptoForm');
+    // event report pto route
+    Route::get('eventReport/PTOReport', ptoReport::class)->name('ptoReport');
+    Route::get('eventReport/PTOReport/detail/{id}', ptoDetail::class)->name('ptoDetail');
+    Route::get('eventReport/PTOReport/form/{reference?}/{workflow_template_id?}', PTOForm::class)->name('ptoForm');
 
     // Manhours
-    
+
     Route::get('manhours/manhoursRegister', manhoursRegister::class)->name('manhoursRegister');
-    
-    
 });
 
 Route::fallback(function () {
