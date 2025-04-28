@@ -51,8 +51,8 @@
                         :error="$errors->get('workgroup_name')" class="cursor-pointer" tabindex="0" role="button" />
                     <div tabindex="0"
                         class="z-10 w-full shadow dropdown-content card card-compact bg-primary text-primary-content">
-                        <div class="flex flex-col w-full gap-1 lg:flex-row">
-                            <div class="grid flex-grow h-40 card bg-base-300 rounded-box ">
+                        {{-- <div class="flex flex-col w-full gap-1 lg:flex-row"> --}}
+                        {{-- <div class="grid flex-grow h-40 card bg-base-300 rounded-box ">
                                 <ul class="list-none text-[9px] list-inside overflow-auto">
                                     <li class="px-2 cursor-pointer hover:bg-base-200">Company</li>
                                     @foreach ($ParentCompany as $item)
@@ -81,27 +81,27 @@
                                         </li>
                                     @endforeach
                                 </ul>
-                            </div>
-                            <div class="grid flex-grow h-40 overflow-auto card bg-base-300 rounded-box">
-                                <ul class="w-56 px-4 py-4 list-disc list-inside bg-base-200 rounded-box">
+                            </div> --}}
+                        <div class="grid flex-grow h-40 overflow-auto card bg-base-300 rounded-box">
+                            <ul class="w-56 px-4 py-4 list-disc list-inside bg-base-200 rounded-box">
 
-                                    @forelse ($Division as $item)
-                                        <li wire:click="select_division({{ $item->id }})"
-                                            class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer">
-                                            {{ $item->DeptByBU->BusinesUnit->Company->name_company }}-{{ $item->DeptByBU->Department->department_name }}
-                                            @if (!empty($item->company_id))
-                                                -{{ $item->Company->name_company }}
-                                            @endif
-                                            @if (!empty($item->section_id))
-                                                -{{ $item->Section->name }}
-                                            @endif
-                                        </li>
-                                    @empty
-                                        <li class='font-semibold text-center text-rose-500'>Division not found!! </li>
-                                    @endforelse
-                                </ul>
-                            </div>
+                                @forelse ($Division as $item)
+                                    <li wire:click="select_division({{ $item->id }})"
+                                        class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer">
+                                        {{ $item->DeptByBU->BusinesUnit->Company->name_company }}-{{ $item->DeptByBU->Department->department_name }}
+                                        @if (!empty($item->company_id))
+                                            -{{ $item->Company->name_company }}
+                                        @endif
+                                        @if (!empty($item->section_id))
+                                            -{{ $item->Section->name }}
+                                        @endif
+                                    </li>
+                                @empty
+                                    <li class='font-semibold text-center text-rose-500'>Division not found!! </li>
+                                @endforelse
+                            </ul>
                         </div>
+                        {{-- </div> --}}
                     </div>
                 </div>
                 <x-label-error :messages="$errors->get('workgroup_name')" />
