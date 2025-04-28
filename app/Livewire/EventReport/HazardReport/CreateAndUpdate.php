@@ -51,27 +51,46 @@ class CreateAndUpdate extends Component
     }
     public function rules()
     {
-        return [
-            'event_type_id' => ['required'],
-            'sub_event_type_id' => ['required'],
-            'workgroup_name' => ['required'],
-            'report_byName' => ['required'],
-            'report_toName' => ['required'],
-            'date' => ['required'],
-            'site_id' => ['required'],
-            'company_involved' => ['required'],
-            'task_being_done' => ['required'],
-            'documentation' => 'nullable|mimes:jpg,jpeg,png,svg,gif,xlsx,pdf,docx',
-            'description' => ['required'],
-            'immediate_corrective_action' => ['required'],
-            'suggested_corrective_action' => ['required'],
-            'corrective_action_suggested' => ['required'],
-            'event_location_id' => ['required'],
-            'risk_consequence_id' => ['required'],
-            'risk_likelihood_id' => ['required'],
-            'report_by_nolist' => ['nullable'],
-            'report_to_nolist' => ['nullable'],
-        ];
+        if (Auth::check()) {
+            if (Auth::user()->role_user_permit_id == 1) {
+                return [
+                    'event_type_id' => ['required'],
+                    'sub_event_type_id' => ['required'],
+                    'workgroup_name' => ['required'],
+                    'report_byName' => ['required'],
+                    'report_toName' => ['required'],
+                    'date' => ['required'],
+                    'site_id' => ['required'],
+                    'company_involved' => ['required'],
+                    'task_being_done' => ['required'],
+                    'documentation' => 'nullable|mimes:jpg,jpeg,png,svg,gif,xlsx,pdf,docx',
+                    'description' => ['required'],
+                    'immediate_corrective_action' => ['required'],
+                    'suggested_corrective_action' => ['required'],
+                    'corrective_action_suggested' => ['required'],
+                    'event_location_id' => ['required'],
+                    'risk_consequence_id' => ['required'],
+                    'risk_likelihood_id' => ['required'],
+                    'report_by_nolist' => ['nullable'],
+                    'report_to_nolist' => ['nullable'],
+                ];
+            }
+        } else {
+            return [
+
+                'workgroup_name' => ['required'],
+                'report_byName' => ['required'],
+                'date' => ['required'],
+                'task_being_done' => ['required'],
+                'documentation' => 'nullable|mimes:jpg,jpeg,png,svg,gif,xlsx,pdf,docx',
+                'description' => ['required'],
+                'immediate_corrective_action' => ['required'],
+                'suggested_corrective_action' => ['required'],
+                'corrective_action_suggested' => ['required'],
+                'event_location_id' => ['required'],
+                'report_by_nolist' => ['nullable'],
+            ];
+        }
     }
     public function messages()
     {
@@ -277,33 +296,62 @@ class CreateAndUpdate extends Component
         } else {
             $file_name = "";
         }
-        $HazardReport = HazardReport::create([
-            'reference' => $this->reference,
-            'event_type_id' => $this->event_type_id,
-            'sub_event_type_id' => $this->sub_event_type_id,
-            'division_id' => $this->division_id,
-            'report_by' => $this->report_by,
-            'report_to' => $this->report_to,
-            'site_id' => $this->site_id,
-            'company_involved' => $this->company_involved,
-            'risk_consequence_id' => $this->risk_consequence_id,
-            'risk_likelihood_id' => $this->risk_likelihood_id,
-            'event_location_id' => $this->event_location_id,
-            'workgroup_name' => $this->workgroup_name,
-            'report_byName' => $this->report_byName,
-            'report_toName' => $this->report_toName,
-            'date' => DateTime::createFromFormat('d-m-Y : H:i', $this->date)->format('Y-m-d : H:i'),
-            'task_being_done' => $this->task_being_done,
-            'documentation' =>  $file_name,
-            'description' => $this->description,
-            'immediate_corrective_action' => $this->immediate_corrective_action,
-            'suggested_corrective_action' => $this->suggested_corrective_action,
-            'corrective_action_suggested' => $this->corrective_action_suggested,
-            'report_by_nolist' => $this->report_to_nolist,
-            'report_to_nolist' => $this->report_to_nolist,
-            'workflow_detail_id' => $this->workflow_detail_id,
-            'submitter' => Auth::user()->id
-        ]);
+        if (Auth::check()) {
+            if (Auth::user()->role_user_permit_id == 1) {
+                $filds = [
+                    'reference' => $this->reference,
+                    'event_type_id' => $this->event_type_id,
+                    'sub_event_type_id' => $this->sub_event_type_id,
+                    'division_id' => $this->division_id,
+                    'report_by' => $this->report_by,
+                    'report_to' => $this->report_to,
+                    'site_id' => $this->site_id,
+                    'company_involved' => $this->company_involved,
+                    'risk_consequence_id' => $this->risk_consequence_id,
+                    'risk_likelihood_id' => $this->risk_likelihood_id,
+                    'event_location_id' => $this->event_location_id,
+                    'workgroup_name' => $this->workgroup_name,
+                    'report_byName' => $this->report_byName,
+                    'report_toName' => $this->report_toName,
+                    'date' => DateTime::createFromFormat('d-m-Y : H:i', $this->date)->format('Y-m-d : H:i'),
+                    'task_being_done' => $this->task_being_done,
+                    'documentation' =>  $file_name,
+                    'description' => $this->description,
+                    'immediate_corrective_action' => $this->immediate_corrective_action,
+                    'suggested_corrective_action' => $this->suggested_corrective_action,
+                    'corrective_action_suggested' => $this->corrective_action_suggested,
+                    'report_by_nolist' => $this->report_to_nolist,
+                    'report_to_nolist' => $this->report_to_nolist,
+                    'workflow_detail_id' => $this->workflow_detail_id,
+                    'submitter' => Auth::user()->id
+                ];
+            }
+        } else {
+            $filds = [
+                'reference' => $this->reference,
+                'report_by' => $this->report_by,
+                'division_id' => $this->division_id,
+                'date' => DateTime::createFromFormat('d-m-Y : H:i', $this->date)->format('Y-m-d : H:i'),
+                'event_location_id' => $this->event_location_id,
+                'site_id' => $this->site_id,
+                'company_involved' => $this->company_involved,
+                'risk_consequence_id' => $this->risk_consequence_id,
+                'risk_likelihood_id' => $this->risk_likelihood_id,
+                'workgroup_name' => $this->workgroup_name,
+                'report_byName' => $this->report_byName,
+                'task_being_done' => $this->task_being_done,
+                'documentation' =>  $file_name,
+                'description' => $this->description,
+                'immediate_corrective_action' => $this->immediate_corrective_action,
+                'suggested_corrective_action' => $this->suggested_corrective_action,
+                'corrective_action_suggested' => $this->corrective_action_suggested,
+                'report_by_nolist' => $this->report_to_nolist,
+                'workflow_detail_id' => $this->workflow_detail_id,
+                'submitter' => Auth::user()->id
+            ];
+        }
+
+        $HazardReport = HazardReport::create($filds);
         $this->dispatch(
             'alert',
             [
