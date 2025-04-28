@@ -51,9 +51,8 @@
                         :error="$errors->get('workgroup_name')" class="cursor-pointer" tabindex="0" role="button" />
                     <div tabindex="0"
                         class="z-10 w-full shadow dropdown-content card card-compact bg-primary text-primary-content">
-
                         <div class="w-full h-40 overflow-auto bg-base-300 rounded-box">
-                            <ul class="px-4 py-4 list-disc list-inside  bg-base-200 rounded-box">
+                            <ul class="px-4 py-4 list-disc list-inside bg-base-200 rounded-box">
                                 @forelse ($Division as $item)
                                     <li wire:click="select_division({{ $item->id }})"
                                         class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer">
@@ -70,7 +69,7 @@
                                 @endforelse
                             </ul>
                         </div>
-                        {{-- </div> --}}
+
                     </div>
                 </div>
                 <x-label-error :messages="$errors->get('workgroup_name')" />
