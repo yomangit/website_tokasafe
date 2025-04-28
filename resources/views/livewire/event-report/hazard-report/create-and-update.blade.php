@@ -51,38 +51,8 @@
                         :error="$errors->get('workgroup_name')" class="cursor-pointer" tabindex="0" role="button" />
                     <div tabindex="0"
                         class="z-10 w-full shadow dropdown-content card card-compact bg-primary text-primary-content">
-                        {{-- <div class="flex flex-col w-full gap-1 lg:flex-row"> --}}
-                        {{-- <div class="grid flex-grow h-40 card bg-base-300 rounded-box ">
-                                <ul class="list-none text-[9px] list-inside overflow-auto">
-                                    <li class="px-2 cursor-pointer hover:bg-base-200">Company</li>
-                                    @foreach ($ParentCompany as $item)
-                                        <li wire:click="parentCompany({{ $item->id }})"
-                                            class="px-4 cursor-pointer hover:bg-base-200 ">
-                                            {{ $item->name_category_company }}</li>
-                                    @endforeach
-                                    <li class="px-2 cursor-pointer hover:bg-base-200">Business Unit</li>
-                                    @foreach ($BusinessUnit as $item)
-                                        <li wire:click="businessUnit({{ $item->name_company_id }})"
-                                            class="px-4 cursor-pointer hover:bg-base-200">
-                                            {{ $item->Company->name_company }}</li>
-                                    @endforeach
-                                    <li class="px-2 cursor-pointer hover:bg-base-200">Department</li>
-                                    @foreach ($Department as $item)
-                                        <li wire:click="department({{ $item->id }})"
-                                            class="px-4 cursor-pointer hover:bg-base-200">
-                                            {{ $item->BusinesUnit->Company->name_company }}-{{ $item->Department->department_name }}
-                                        </li>
-                                    @endforeach
-                                    <li class="px-2 cursor-pointer hover:bg-base-200">Division</li>
-                                    @foreach ($Divisi as $divisi)
-                                        <li wire:click="divisi({{ $divisi->company_id }})"
-                                            class="px-4 cursor-pointer hover:bg-base-200">
-                                            {{ $divisi->DeptByBU->BusinesUnit->Company->name_company . '-' . $divisi->DeptByBU->Department->department_name . '-' . $divisi->Company->name_company }}
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div> --}}
-                        <div class="grid flex-grow h-40 overflow-auto card bg-base-300 rounded-box">
+
+                        <div class="h-40 overflow-auto  card bg-base-300 rounded-box">
                             <ul class="w-full px-4 py-4 list-disc list-inside bg-base-200 rounded-box">
                                 @forelse ($Division as $item)
                                     <li wire:click="select_division({{ $item->id }})"
