@@ -74,7 +74,8 @@ Route::get('/config-clear', function () {
     $exitCode = Artisan::call('config:clear');
     return '<h1>Clear Config cleared</h1>';
 });
-Route::get('eventReport/incidentReportsform/{workflow_template_id?}', CreateAndUpdateIncidentReport::class)->name('incidentReportform');
+Route::get('eventReport/hazardReportform/{workflow_template_id?}', hazardReportform::class)->name('hazardReportform');
+
 Route::get('manhours/manhoursTable', WebAccess::class)->name('WebAccess');
 Route::middleware(['auth', 'auth.session'])->group(function () {
 
@@ -125,7 +126,6 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('eventReport/incidentReportDetail/{id}', incidentReportDetail::class)->name('incidentReportDetail');
     // event report Hazard route
     Route::get('eventReport/hazardReport', hazardReport::class)->name('hazardReport');
-    Route::get('eventReport/hazardReportform/{workflow_template_id?}', hazardReportform::class)->name('hazardReportform');
     Route::get('eventReport/hazardReportDetail/{id}', hazardReportDetail::class)->name('hazardReportDetail');
 
     // event report pto route
