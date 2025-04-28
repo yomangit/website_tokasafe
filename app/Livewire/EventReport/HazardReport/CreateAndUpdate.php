@@ -43,7 +43,7 @@ class CreateAndUpdate extends Component
 
     public function mount()
     {
-        if (auth()) {
+        if (Auth::check()) {
             $reportBy = (Auth::user()->lookup_name) ? Auth::user()->lookup_name : Auth::user()->name;
             $this->report_byName = $reportBy;
             $this->report_by = Auth::user()->id;
