@@ -75,7 +75,7 @@ class Detail extends Component
                 $this->reference = $HazardReport->reference;
                 $this->workflow_detail_id = $HazardReport->workflow_detail_id;
                 $this->event_type_id = $HazardReport->event_type_id;
-                $this->event_category = $HazardReport->eventType->event_category_id;
+                $this->event_category = ($this->event_type_id == null) ? "" : $HazardReport->eventType->event_category_id;
                 $this->sub_event_type_id = $HazardReport->sub_event_type_id;
                 $this->report_toName = ($HazardReport->report_to) ? $HazardReport->reportsTo->lookup_name : $HazardReport->report_toName;
                 $this->report_byName = ($HazardReport->report_by) ? $HazardReport->reportBy->lookup_name : $HazardReport->report_byName;
