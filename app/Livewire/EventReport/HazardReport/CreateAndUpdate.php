@@ -88,7 +88,7 @@ class CreateAndUpdate extends Component
                 'suggested_corrective_action' => ['required'],
                 'corrective_action_suggested' => ['required'],
                 'event_location_id' => ['required'],
-                'report_by_nolist' => ['nullable'],
+
             ];
         }
     }
