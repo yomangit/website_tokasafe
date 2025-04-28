@@ -118,8 +118,10 @@ class CreateAndUpdate extends Component
         } else {
             $Event_type = [];
         }
-        if (Auth::user()->role_user_permit_id == 1) {
-            $this->show = true;
+        if (Auth::check()) {
+            if (Auth::user()->role_user_permit_id == 1) {
+                $this->show = true;
+            }
         }
         if ($this->division_id) {
 
