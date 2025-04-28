@@ -52,7 +52,7 @@
                     <div tabindex="0"
                         class="z-10 w-full shadow dropdown-content card card-compact bg-primary text-primary-content">
 
-                        <div class="h-40 overflow-auto  card bg-base-300 rounded-box">
+                        <div class="h-40 overflow-auto bg-base-300 rounded-box">
                             <ul class="w-full px-4 py-4 list-disc list-inside bg-base-200 rounded-box">
                                 @forelse ($Division as $item)
                                     <li wire:click="select_division({{ $item->id }})"
