@@ -53,8 +53,8 @@ use App\Livewire\EventReport\HazardReport\CreateAndUpdate as hazardReportform;
 use App\Livewire\EventReport\IncidentReport\CreateAndUpdate as CreateAndUpdateIncidentReport;
 
 
-$newReference =  Str::random(9);
-$reference_pto = 'OHS-PTO-' . $newReference;
+// $newReference =  Str::random(9);
+// $reference_pto = 'OHS-PTO-' . $newReference;
 
 Route::get('/language/{locale}', function ($locale) {
     if (! in_array($locale, ['en', 'id'])) {
