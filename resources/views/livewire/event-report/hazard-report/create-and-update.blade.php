@@ -219,7 +219,7 @@
         @guest
             <fieldset>
                 <x-label-req :value="__('immediate corrective action')" />
-                <input wire:model.live="type_of_activities" name="status" id="draft"
+                <input wire:model.live="type_of_activities" name="status" id="draft" checked
                     class="radio-xs peer/draft checked:bg-indigo-500 radio" type="radio" name="13"
                     value="Other activities" />
                 <label for="draft"
