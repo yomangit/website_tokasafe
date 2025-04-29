@@ -396,7 +396,6 @@ class CreateAndUpdate extends Component
 
             ];
         }
-
         $HazardReport = HazardReport::create($filds);
         $this->dispatch(
             'alert',
