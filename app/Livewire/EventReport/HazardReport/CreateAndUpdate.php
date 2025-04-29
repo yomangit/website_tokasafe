@@ -228,7 +228,7 @@ class CreateAndUpdate extends Component
     public function select_division($id)
     {
         $this->division_id = $id;
-        $this->hidden = 'hidden';
+        $this->hiddenWorkgroup = 'hidden';
     }
     public function select_location($id)
     {
