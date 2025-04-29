@@ -162,7 +162,7 @@
                     <x-input wire:click='clickLocation' wire:model.live='location_search' :error="$errors->get('event_location_id')"
                         class="cursor-pointer" tabindex="0" role="button" />
                     <div tabindex="0"
-                        class="z-10 w-full h-40 overflow-y-auto shadow dropdown-content card card-compact bg-primary text-primary-content">
+                        class="z-10 w-full h-40 overflow-y-auto shadow dropdown-content card card-compact bg-primary text-primary-content {{ $hidden }}">
                         <ul class="px-4 py-4 list-disc list-inside bg-base-200 rounded-box">
                             @forelse ($Location as $item)
                                 <li wire:click="select_location({{ $item->id }})"
