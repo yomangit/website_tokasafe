@@ -406,7 +406,9 @@ class CreateAndUpdate extends Component
                 'backgroundColor' => "linear-gradient(to right, #06b6d4, #22c55e)",
             ]
         );
-        $this->redirectRoute('hazardReportDetail', ['id' => $HazardReport->id]);
+        if (Auth::check()) {
+            $this->redirectRoute('hazardReportDetail', ['id' => $HazardReport->id]);
+        }
         // Notification
         $getModerator = (Auth::check() ? EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->where('user_id', 'NOT LIKE', Auth::user()->id)->pluck('user_id')->toArray() : EventUserSecurity::where('responsible_role_id', $this->ResponsibleRole)->pluck('user_id')->toArray());
         $User = User::whereIn('id', $getModerator)->get();
