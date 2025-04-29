@@ -396,17 +396,20 @@
             <x-label-no-req :value="__('documentation')" />
             <div class="relative">
                 <x-input-file wire:model.live='documentation' :error="$errors->get('documentation')" />
-                <div class="absolute inset-y-0 right-0 avatar">
+                <div class="absolute inset-y-0 right-0 avatar" wire:target="documentation"
+                    wire:loading.class="hidden">
                     <div class="w-6 rounded">
-
                         @include('livewire.event-report.svg-file')
                     </div>
                 </div>
+                <span wire:target="documentation"
+                    wire:loading.class="absolute inset-y-0 right-0 loading loading-spinner text-warning"></span>
             </div>
             <x-label-error :messages="$errors->get('documentation')" />
         </div>
         <div class="modal-action ">
-            <x-btn-save-active>{{ __('Submit') }} </x-btn-save-active>
+            <x-btn-save-active wire:target="documentation" wire:loading.class="btn-disabled">{{ __('Submit') }}
+            </x-btn-save-active>
         </div>
     </form>
     <script nonce="{{ csp_nonce() }}">

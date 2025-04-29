@@ -249,7 +249,6 @@
                     <x-input-file wire:model.live='documentation' :error="$errors->get('documentation')" />
                     <div class="absolute inset-y-0 right-0 avatar">
                         <div class="w-6 rounded">
-
                             @include('livewire.event-report.svg-file')
                         </div>
                     </div>
