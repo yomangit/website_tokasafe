@@ -19,7 +19,7 @@
             Event Category</x-btn-admin-template>
     @endif
     <div
-        class="py-1 text-sm font-extrabold text-transparent divider divider-info bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">
+        class="py-1 text-sm font-extrabold text-transparent divider divider-info bg-clip-text bg-gradient-to-r from-emerald-500 to-orange-500">
         {{ $divider }}</div>
     <form class="" wire:submit.prevent='store'>
         @csrf
