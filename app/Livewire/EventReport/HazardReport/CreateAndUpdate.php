@@ -217,7 +217,7 @@ class CreateAndUpdate extends Component
     }
     public function changeConditionLocation()
     {
-        $this->division_id = null;
+        $this->event_location_id = null;
     }
     public function select_division($id)
     {
