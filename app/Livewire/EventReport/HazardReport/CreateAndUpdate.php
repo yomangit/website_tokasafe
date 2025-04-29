@@ -208,6 +208,11 @@ class CreateAndUpdate extends Component
         $this->dropdownLocation = 'dropdown dropdown-open dropdown-end';
         $this->hidden = 'block';
     }
+    public function clickWorkgroup()
+    {
+        $this->dropdownLocation = 'dropdown dropdown-open dropdown-end';
+        $this->hidden = 'block';
+    }
     public function changeConditionDivision()
     {
         $this->business_unit = null;
@@ -222,6 +227,7 @@ class CreateAndUpdate extends Component
     public function select_division($id)
     {
         $this->division_id = $id;
+        $this->hidden = 'hidden';
     }
     public function select_location($id)
     {
