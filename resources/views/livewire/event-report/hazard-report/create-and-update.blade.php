@@ -50,11 +50,11 @@
             @endauth
             <div class="w-full max-w-md xl:max-w-xl form-control">
                 <x-label-req :value="__('report_by')" />
-                <div class="dropdown dropdown-end">
-                    <x-input wire:model.live='report_byName' :error="$errors->get('report_byName')" class="cursor-pointer" tabindex="0"
-                        role="button" />
+                <div class="{{ $dropdownReportBy }}">
+                    <x-input wire:click='clickReportBy' wire:model.live='report_byName' :error="$errors->get('report_byName')"
+                        class="cursor-pointer" tabindex="0" role="button" />
                     <div tabindex="0"
-                        class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow">
+                        class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow {{ $hiddenReportBy }}">
                         <div class="relative">
 
                             <div class="h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"

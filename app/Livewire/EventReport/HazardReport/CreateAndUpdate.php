@@ -42,6 +42,7 @@ class CreateAndUpdate extends Component
     public $event_type_id,  $sub_event_type_id,  $report_by, $report_byName, $report_by_nolist, $report_to, $report_toName, $report_to_nolist, $date, $event_location_id, $site_id, $company_involved, $task_being_done, $documentation, $description, $immediate_corrective_action, $suggested_corrective_action, $preliminary_cause, $corrective_action_suggested;
     public $dropdownLocation = 'dropdown', $hidden = 'block';
     public $dropdownWorkgroup = 'dropdown', $hiddenWorkgroup = 'block';
+    public $dropdownReportBy = 'dropdown', $hiddenReportBy = 'block';
     public function mount()
     {
         $this->show_immidiate = 'ya';
@@ -209,6 +210,11 @@ class CreateAndUpdate extends Component
         $this->dropdownLocation = 'dropdown dropdown-open dropdown-end';
         $this->hidden = 'block';
     }
+    public function clickReportBy()
+    {
+        $this->dropdownReportBy = 'dropdown dropdown-open dropdown-end';
+        $this->hiddenReportBy = 'block';
+    }
     public function clickWorkgroup()
     {
         $this->dropdownWorkgroup = 'dropdown dropdown-open dropdown-end';
@@ -229,6 +235,7 @@ class CreateAndUpdate extends Component
     {
         $this->division_id = $id;
         $this->hiddenWorkgroup = 'hidden';
+        $this->hiddenReportBy = 'hidden';
     }
     public function select_location($id)
     {
@@ -301,6 +308,7 @@ class CreateAndUpdate extends Component
         $ReportBy = User::whereId($id)->first();
         $this->report_byName = $ReportBy->lookup_name;
         $this->report_by_nolist = null;
+        $this->hiddenReportBy = 'hidden';
     }
     public function reportedTo($id)
     {
