@@ -301,7 +301,7 @@ class Detail extends Component
     }
     public function download()
     {
-        return response()->download(public_path('/storage/documents/hzd' . $this->documentation));
+        return response()->download(public_path('/storage/documents/hzd/' . $this->documentation));
     }
     public function reportedBy($id)
     {
