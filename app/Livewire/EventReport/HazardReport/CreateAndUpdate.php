@@ -221,7 +221,7 @@ class CreateAndUpdate extends Component
     public function select_location($id)
     {
         $this->event_location_id = $id;
-        $this->hidden;
+        $this->hidden = 'hidden';
     }
     public function parentCompany($id)
     {
