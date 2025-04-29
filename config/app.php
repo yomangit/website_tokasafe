@@ -52,7 +52,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://tokasafe.archimining.com'),
+    'url' => env('APP_URL', 'http://localhost'),
+
 
     /*
     |--------------------------------------------------------------------------
