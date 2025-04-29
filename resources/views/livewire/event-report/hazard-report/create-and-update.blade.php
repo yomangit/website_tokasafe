@@ -90,7 +90,7 @@
                         wire:keydown.self="changeConditionDivision" :error="$errors->get('workgroup_name')" class="cursor-pointer"
                         tabindex="0" role="button" />
                     <div tabindex="0"
-                        class="z-10 w-full h-40 overflow-y-auto shadow dropdown-content card card-compact bg-base-200 text-primary-content">
+                        class="z-10 w-full h-40 overflow-y-auto shadow dropdown-content card card-compact bg-base-200 text-primary-content {{ $hidden }}">
                         <ul class="px-4 py-4 list-disc list-inside bg-base-200 rounded-box">
                             @forelse ($Division as $item)
                                 <li wire:click="select_division({{ $item->id }})"
