@@ -84,7 +84,7 @@
                 <x-label-error :messages="$errors->get('report_byName')" />
             </div>
             <div class="w-full max-w-md xl:max-w-xl form-control">
-                <x-label-req :value="__('Responsibility Workgroup')" />
+                <x-label-req :value="__('Perusahaan terkait')" />
                 <div class="dropdown dropdown-end">
                     <x-input wire:model.live='workgroup_name' wire:keydown.self="changeConditionDivision"
                         :error="$errors->get('workgroup_name')" class="cursor-pointer" tabindex="0" role="button" />
@@ -188,26 +188,26 @@
                         </x-select>
                         <x-label-error :messages="$errors->get('company_involved')" />
                     </div>
+                    <div class="w-full max-w-md xl:max-w-xl form-control">
+                        <x-label-req :value="__('task')" />
+                        <x-input wire:model.live='task_being_done' :error="$errors->get('task_being_done')" />
+                        <x-label-error :messages="$errors->get('task_being_done')" />
+                    </div>
+                    <div class="w-full max-w-md xl:max-w-xl form-control">
+                        <x-label-no-req :value="__('documentation')" />
+                        <div class="relative">
+                            <x-input-file wire:model.live='documentation' :error="$errors->get('documentation')" />
+                            <div class="absolute inset-y-0 right-0 avatar">
+                                <div class="w-6 rounded">
+
+                                    @include('livewire.event-report.svg-file')
+                                </div>
+                            </div>
+                        </div>
+                        <x-label-error :messages="$errors->get('documentation')" />
+                    </div>
                 @endif
             @endauth
-            <div class="w-full max-w-md xl:max-w-xl form-control">
-                <x-label-req :value="__('task')" />
-                <x-input wire:model.live='task_being_done' :error="$errors->get('task_being_done')" />
-                <x-label-error :messages="$errors->get('task_being_done')" />
-            </div>
-            <div class="w-full max-w-md xl:max-w-xl form-control">
-                <x-label-no-req :value="__('documentation')" />
-                <div class="relative">
-                    <x-input-file wire:model.live='documentation' :error="$errors->get('documentation')" />
-                    <div class="absolute inset-y-0 right-0 avatar">
-                        <div class="w-6 rounded">
-
-                            @include('livewire.event-report.svg-file')
-                        </div>
-                    </div>
-                </div>
-                <x-label-error :messages="$errors->get('documentation')" />
-            </div>
         </div>
         <div>
             <div wire:ignore class="w-full form-control">
@@ -224,145 +224,147 @@
                 </div>
                 <x-label-error :messages="$errors->get('immediate_corrective_action')" />
             </div>
+            @auth
+                @if (auth()->user()->role_user_permit_id == 1)
+                    <div>
+                        <div wire:ignore class="w-full form-control">
+                            <x-label-req :value="__('suggested corrective action')" />
+                            <x-text-area id="suggested_corrective_action" :error="$errors->get('suggested_corrective_action')" />
+                        </div>
+                        <x-label-error :messages="$errors->get('suggested_corrective_action')" />
+                    </div>
+            </div>
             <div>
                 <div wire:ignore class="w-full form-control">
-                    <x-label-req :value="__('suggested corrective action')" />
-                    <x-text-area id="suggested_corrective_action" :error="$errors->get('suggested_corrective_action')" />
+                    <x-label-req :value="__('corrective action suggested')" />
+                    <x-text-area id="key_learning" :error="$errors->get('corrective_action_suggested')" />
                 </div>
-                <x-label-error :messages="$errors->get('suggested_corrective_action')" />
+                <x-label-error :messages="$errors->get('corrective_action_suggested')" />
             </div>
-        </div>
-        <div>
-            <div wire:ignore class="w-full form-control">
-                <x-label-req :value="__('corrective action suggested')" />
-                <x-text-area id="key_learning" :error="$errors->get('corrective_action_suggested')" />
-            </div>
-            <x-label-error :messages="$errors->get('corrective_action_suggested')" />
-        </div>
-        @auth
-            @if (auth()->user()->role_user_permit_id == 1)
-                <div
-                    class="flex flex-col-reverse items-center mt-2 border-2 rounded-sm md:flex-row md:divide-x-2 divide-late-400/25 border-slate-400/25">
 
-                    <div class="flex-auto p-2 divide-y-2 divide-slate-400/25">
 
-                        <div class="flex items-center">
-                            <div class="flex-none px-2 w-52">
-                                <div class="w-full max-w-md xl:max-w-xl form-control">
-                                    <x-label-req :value="__('potential consequence')" />
+            <div
+                class="flex flex-col-reverse items-center mt-2 border-2 rounded-sm md:flex-row md:divide-x-2 divide-late-400/25 border-slate-400/25">
 
-                                    <x-select wire:model.live='risk_consequence_id' :error="$errors->get('risk_consequence_id')">
-                                        <option value="">Select an option</option>
-                                        @foreach ($RiskConsequence as $consequence)
-                                            <option value="{{ $consequence->id }}">
-                                                {{ $consequence->risk_consequence_name }}
-                                            </option>
-                                        @endforeach
-                                    </x-select>
-                                    <x-label-error :messages="$errors->get('risk_consequence_id')" />
-                                </div>
-                            </div>
-                            <div class="w-full px-2">
-                                <p class="text-justify ">
-                                    {{ $risk_consequence_doc }}
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="flex-none px-2 w-52">
-                                <div class="w-full max-w-md xl:max-w-xl form-control">
-                                    <x-label-req :value="__('Potential Likelihood')" />
-                                    <x-select wire:model.live='risk_likelihood_id' :error="$errors->get('risk_likelihood_id')">
-                                        <option value="">Select an option</option>
-                                        @foreach ($RiskLikelihood as $likelihood)
-                                            <option value="{{ $likelihood->id }}">
-                                                {{ $likelihood->risk_likelihoods_name }}
-                                            </option>
-                                        @endforeach
-                                    </x-select>
-                                    <x-label-error :messages="$errors->get('risk_likelihood_id')" />
-                                </div>
-                            </div>
-                            <div class="px-2 ">
-                                <p class="text-justify ">{{ $risk_likelihood_notes }}</p>
-                            </div>
-                        </div>
+                <div class="flex-auto p-2 divide-y-2 divide-slate-400/25">
 
-                    </div>
+                    <div class="flex items-center">
+                        <div class="flex-none px-2 w-52">
+                            <div class="w-full max-w-md xl:max-w-xl form-control">
+                                <x-label-req :value="__('potential consequence')" />
 
-                    <div class="flex-none md:w-72 ">
-                        <div class="m-1 overflow-x-auto">
-                            <table class="table bg-base-300 table-xs">
-                                <caption class="caption-top">
-                                    Table Initial Risk Assessment
-                                </caption>
-                                <thead>
-                                    <tr class="">
-                                        <th colspan="2" class="p-0 text-center border-2 border-black">Legand</th>
-                                        @foreach ($RiskAssessments as $risk_assessment)
-                                            <td
-                                                class="rotate_text text-start text-xs border-2 border-black   {{ $risk_assessment->colour }}">
-                                                {{ $risk_assessment->risk_assessments_name }}
-
-                                            </td>
-                                        @endforeach
-                                    </tr>
-                                    <tr class="">
-                                        <th class="text-center border-2 border-black">Likelihood</th>
-                                        @foreach ($RiskConsequence as $risk_consequence)
-                                            <th class="border-2 border-black rotate_text text-start">
-                                                {{ $risk_consequence->risk_consequence_name }}</th>
-                                        @endforeach
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($RiskLikelihood as $risk_likelihood)
-                                        <tr>
-                                            <th class=" p-0 text-[10px] font-semibold border-2 border-black">
-                                                {{ $risk_likelihood->risk_likelihoods_name }}
-                                            </th>
-                                            @foreach ($risk_likelihood->RiskConsequence()->get() as $risk_consequence)
-                                                <th class="p-0 text-xs font-semibold text-center border-2 border-black ">
-                                                    <label
-                                                        wire:click="riskId({{ $risk_likelihood->id }}, {{ $risk_consequence->id }},{{ $TableRisk->where('risk_likelihood_id', $risk_likelihood->id)->where('risk_consequence_id', $risk_consequence->id)->first()->risk_assessment_id }})"
-                                                        class="btn p-0 mt-1 btn-block btn-xs @if (
-                                                            $tablerisk_id ==
-                                                                $TableRisk->where('risk_likelihood_id', $risk_likelihood->id)->where('risk_consequence_id', $risk_consequence->id)->first()->id) border-4 border-neutral @endif {{ $TableRisk->where('risk_likelihood_id', $risk_likelihood->id)->where('risk_consequence_id', $risk_consequence->id)->first()->RiskAssessment->colour }}">
-                                                    </label>
-                                                </th>
-                                            @endforeach
-                                        </tr>
+                                <x-select wire:model.live='risk_consequence_id' :error="$errors->get('risk_consequence_id')">
+                                    <option value="">Select an option</option>
+                                    @foreach ($RiskConsequence as $consequence)
+                                        <option value="{{ $consequence->id }}">
+                                            {{ $consequence->risk_consequence_name }}
+                                        </option>
                                     @endforeach
-
-                                </tbody>
-                            </table>
+                                </x-select>
+                                <x-label-error :messages="$errors->get('risk_consequence_id')" />
+                            </div>
+                        </div>
+                        <div class="w-full px-2">
+                            <p class="text-justify ">
+                                {{ $risk_consequence_doc }}
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="flex-none px-2 w-52">
+                            <div class="w-full max-w-md xl:max-w-xl form-control">
+                                <x-label-req :value="__('Potential Likelihood')" />
+                                <x-select wire:model.live='risk_likelihood_id' :error="$errors->get('risk_likelihood_id')">
+                                    <option value="">Select an option</option>
+                                    @foreach ($RiskLikelihood as $likelihood)
+                                        <option value="{{ $likelihood->id }}">
+                                            {{ $likelihood->risk_likelihoods_name }}
+                                        </option>
+                                    @endforeach
+                                </x-select>
+                                <x-label-error :messages="$errors->get('risk_likelihood_id')" />
+                            </div>
+                        </div>
+                        <div class="px-2 ">
+                            <p class="text-justify ">{{ $risk_likelihood_notes }}</p>
                         </div>
                     </div>
 
                 </div>
 
-                <table class="table table-xs">
-                    @foreach ($RiskAssessment as $item)
-                        <tr>
-                            <th class="w-40 text-xs border-2 border-slate-400">Potential Risk Rating</th>
-                            <td class="pl-2 text-xs border-2 border-slate-400">
-                                {{ $item->RiskAssessment->risk_assessments_name }}</td>
-                        </tr>
-                        <tr>
-                            <th class="w-40 text-xs border-2 border-slate-400">Notify</th>
-                            <td class="pl-2 text-xs border-2 border-slate-400">
-                                {{ $item->RiskAssessment->reporting_obligation }}</td>
-                        </tr>
-                        <tr>
-                            <th class="w-40 text-xs border-2 border-slate-400">Deadline</th>
-                            <td class="pl-2 text-xs border-2 border-slate-400">{{ $item->RiskAssessment->notes }}</td>
-                        </tr>
-                        <tr>
-                            <th class="w-40 text-xs border-2 border-slate-400">Coordinator</th>
-                            <td class="pl-2 text-xs border-2 border-slate-400">{{ $item->RiskAssessment->coordinator }}
-                            </td>
-                        </tr>
-                    @endforeach
-                </table>
+                <div class="flex-none md:w-72 ">
+                    <div class="m-1 overflow-x-auto">
+                        <table class="table bg-base-300 table-xs">
+                            <caption class="caption-top">
+                                Table Initial Risk Assessment
+                            </caption>
+                            <thead>
+                                <tr class="">
+                                    <th colspan="2" class="p-0 text-center border-2 border-black">Legand</th>
+                                    @foreach ($RiskAssessments as $risk_assessment)
+                                        <td
+                                            class="rotate_text text-start text-xs border-2 border-black   {{ $risk_assessment->colour }}">
+                                            {{ $risk_assessment->risk_assessments_name }}
+
+                                        </td>
+                                    @endforeach
+                                </tr>
+                                <tr class="">
+                                    <th class="text-center border-2 border-black">Likelihood</th>
+                                    @foreach ($RiskConsequence as $risk_consequence)
+                                        <th class="border-2 border-black rotate_text text-start">
+                                            {{ $risk_consequence->risk_consequence_name }}</th>
+                                    @endforeach
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($RiskLikelihood as $risk_likelihood)
+                                    <tr>
+                                        <th class=" p-0 text-[10px] font-semibold border-2 border-black">
+                                            {{ $risk_likelihood->risk_likelihoods_name }}
+                                        </th>
+                                        @foreach ($risk_likelihood->RiskConsequence()->get() as $risk_consequence)
+                                            <th class="p-0 text-xs font-semibold text-center border-2 border-black ">
+                                                <label
+                                                    wire:click="riskId({{ $risk_likelihood->id }}, {{ $risk_consequence->id }},{{ $TableRisk->where('risk_likelihood_id', $risk_likelihood->id)->where('risk_consequence_id', $risk_consequence->id)->first()->risk_assessment_id }})"
+                                                    class="btn p-0 mt-1 btn-block btn-xs @if (
+                                                        $tablerisk_id ==
+                                                            $TableRisk->where('risk_likelihood_id', $risk_likelihood->id)->where('risk_consequence_id', $risk_consequence->id)->first()->id) border-4 border-neutral @endif {{ $TableRisk->where('risk_likelihood_id', $risk_likelihood->id)->where('risk_consequence_id', $risk_consequence->id)->first()->RiskAssessment->colour }}">
+                                                </label>
+                                            </th>
+                                        @endforeach
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <table class="table table-xs">
+                @foreach ($RiskAssessment as $item)
+                    <tr>
+                        <th class="w-40 text-xs border-2 border-slate-400">Potential Risk Rating</th>
+                        <td class="pl-2 text-xs border-2 border-slate-400">
+                            {{ $item->RiskAssessment->risk_assessments_name }}</td>
+                    </tr>
+                    <tr>
+                        <th class="w-40 text-xs border-2 border-slate-400">Notify</th>
+                        <td class="pl-2 text-xs border-2 border-slate-400">
+                            {{ $item->RiskAssessment->reporting_obligation }}</td>
+                    </tr>
+                    <tr>
+                        <th class="w-40 text-xs border-2 border-slate-400">Deadline</th>
+                        <td class="pl-2 text-xs border-2 border-slate-400">{{ $item->RiskAssessment->notes }}</td>
+                    </tr>
+                    <tr>
+                        <th class="w-40 text-xs border-2 border-slate-400">Coordinator</th>
+                        <td class="pl-2 text-xs border-2 border-slate-400">{{ $item->RiskAssessment->coordinator }}
+                        </td>
+                    </tr>
+                @endforeach
+            </table>
             @endif
         @endauth
         <div class="modal-action ">
