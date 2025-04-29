@@ -157,12 +157,7 @@
             </div>
             <div class="w-full max-w-md xl:max-w-xl form-control">
                 <x-label-req :value="__('eventLocation')" />
-                {{-- <x-select wire:model.live='event_location_id' :error="$errors->get('event_location_id')">
-                    <option value="" selected>Select an option</option>
-                    @forelse ($Location as $location)
-                        <option value="{{ $location->id }}" selected>{{ $location->location_name }}</option>
-                    @endforeach
-                </x-select> --}}
+
                 <div class="dropdown dropdown-end">
                     <x-input wire:model.live='location_search' :error="$errors->get('event_location_id')" class="cursor-pointer" tabindex="0"
                         role="button" />
