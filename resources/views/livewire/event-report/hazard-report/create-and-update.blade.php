@@ -193,19 +193,6 @@
                         <x-input wire:model.live='task_being_done' :error="$errors->get('task_being_done')" />
                         <x-label-error :messages="$errors->get('task_being_done')" />
                     </div>
-                    <div class="w-full max-w-md xl:max-w-xl form-control">
-                        <x-label-no-req :value="__('documentation')" />
-                        <div class="relative">
-                            <x-input-file wire:model.live='documentation' :error="$errors->get('documentation')" />
-                            <div class="absolute inset-y-0 right-0 avatar">
-                                <div class="w-6 rounded">
-
-                                    @include('livewire.event-report.svg-file')
-                                </div>
-                            </div>
-                        </div>
-                        <x-label-error :messages="$errors->get('documentation')" />
-                    </div>
                 @endif
             @endauth
         </div>
@@ -391,6 +378,19 @@
                 </table>
             @endif
         @endauth
+        <div class="w-full max-w-md xl:max-w-xl form-control">
+            <x-label-no-req :value="__('documentation')" />
+            <div class="relative">
+                <x-input-file wire:model.live='documentation' :error="$errors->get('documentation')" />
+                <div class="absolute inset-y-0 right-0 avatar">
+                    <div class="w-6 rounded">
+
+                        @include('livewire.event-report.svg-file')
+                    </div>
+                </div>
+            </div>
+            <x-label-error :messages="$errors->get('documentation')" />
+        </div>
         <div class="modal-action ">
             <x-btn-save-active>{{ __('Submit') }} </x-btn-save-active>
         </div>
