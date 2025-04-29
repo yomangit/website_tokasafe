@@ -122,7 +122,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
 
     // event report Incident route
     Route::get('eventReport/incidentReport', IncidentReport::class)->name('incidentReport');
-
+    Route::get('eventReport/incidentReportsform/{workflow_template_id?}', CreateAndUpdateIncidentReport::class)->name('incidentReportform');
     Route::get('eventReport/incidentReportDetail/{id}', incidentReportDetail::class)->name('incidentReportDetail');
     // event report Hazard route
     Route::get('eventReport/hazardReport', hazardReport::class)->name('hazardReport');
