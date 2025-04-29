@@ -224,7 +224,7 @@
                 <input id="published" class="peer/published" type="radio" name="status" />
                 <label for="published" class="peer-checked/published:text-sky-500">Published</label>
 
-                <div wire:ignore class="w-full form-control peer/published">
+                <div wire:ignore class="hidden w-full form-control peer-checked/published:block">
                     <x-label-req :value="__('immediate corrective action')" />
                     <x-text-area id="immediate_corrective_action" :error="$errors->get('immediate_corrective_action')" />
                 </div>
