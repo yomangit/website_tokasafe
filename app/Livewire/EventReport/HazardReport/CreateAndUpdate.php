@@ -339,6 +339,9 @@ class CreateAndUpdate extends Component
         } else {
             $file_name = "";
         }
+        if ($this->show_immidiate === 'no') {
+            $this->immediate_corrective_action = null;
+        }
         if (Auth::check()) {
             if (Auth::user()->role_user_permit_id == 1) {
                 $filds = [
