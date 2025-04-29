@@ -180,6 +180,7 @@ class CreateAndUpdate extends Component
         $this->TableRiskFunction();
         $this->EventSubType = (isset($this->event_type_id)) ?  $this->EventSubType = Eventsubtype::where('event_type_id', $this->event_type_id)->get() : [];
         if ($this->event_location_id) {
+            $this->location_search = LocationEvent::whereId($this->event_location_id)->searchFor(trim($this->location_search))->first()->location_name;
             $location_id = LocationEvent::whereId($this->event_location_id)->searchFor(trim($this->location_search))->get();
         } else {
             $location_id = LocationEvent::searchFor(trim($this->location_search))->get();
