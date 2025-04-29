@@ -216,7 +216,7 @@
             </div>
             <x-label-error :messages="$errors->get('description')" />
         </div>
-        <div class="grid gap-2 sm:grid-cols-2">
+        @guest
             <div>
                 <div wire:ignore class="w-full form-control">
                     <x-label-req :value="__('immediate corrective action')" />
@@ -224,8 +224,18 @@
                 </div>
                 <x-label-error :messages="$errors->get('immediate_corrective_action')" />
             </div>
+        @endguest
+        <div class="grid gap-2 sm:grid-cols-2">
             @auth
                 @if (auth()->user()->role_user_permit_id == 1)
+                    <div>
+                        <div wire:ignore class="w-full form-control">
+                            <x-label-req :value="__('immediate corrective action')" />
+                            <x-text-area id="immediate_corrective_action" :error="$errors->get('immediate_corrective_action')" />
+                        </div>
+                        <x-label-error :messages="$errors->get('immediate_corrective_action')" />
+                    </div>
+
                     <div>
                         <div wire:ignore class="w-full form-control">
                             <x-label-req :value="__('suggested corrective action')" />
