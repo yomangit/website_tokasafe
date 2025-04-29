@@ -217,13 +217,19 @@
             <x-label-error :messages="$errors->get('description')" />
         </div>
         @guest
-            <div>
-                <div wire:ignore class="w-full form-control">
+            <fieldset>
+                <input id="draft" class="peer/draft" type="radio" name="status" checked />
+                <label for="draft" class="peer-checked/draft:text-sky-500">Draft</label>
+
+                <input id="published" class="peer/published" type="radio" name="status" />
+                <label for="published" class="peer-checked/published:text-sky-500">Published</label>
+
+                <div wire:ignore class="w-full form-control peer/published">
                     <x-label-req :value="__('immediate corrective action')" />
                     <x-text-area id="immediate_corrective_action" :error="$errors->get('immediate_corrective_action')" />
                 </div>
                 <x-label-error :messages="$errors->get('immediate_corrective_action')" />
-            </div>
+            </fieldset>
         @endguest
         <div class="grid gap-2 sm:grid-cols-2">
             @auth
