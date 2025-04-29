@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Tokasafe'),
 
     /*
     |--------------------------------------------------------------------------
@@ -84,8 +84,8 @@ return [
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
     'available_locales' => [
-        'English' => 'en',
-        'Indonesian' => 'id'
+        'Indonesian' => 'id',
+        'English' => 'en'
     ],
 
 
