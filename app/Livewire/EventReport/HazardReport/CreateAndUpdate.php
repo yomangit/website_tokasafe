@@ -215,6 +215,10 @@ class CreateAndUpdate extends Component
         $this->select_divisi = null;
         $this->division_id = null;
     }
+    public function changeConditionLocation()
+    {
+        $this->division_id = null;
+    }
     public function select_division($id)
     {
         $this->division_id = $id;
