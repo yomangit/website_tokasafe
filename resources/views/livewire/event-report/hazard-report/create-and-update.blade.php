@@ -218,13 +218,12 @@
         </div>
         @guest
             <fieldset>
-                <input id="draft" class="peer/draft" type="radio" name="status" checked />
-                <label for="draft" class="peer-checked/draft:text-sky-500">Draft</label>
-
-                <input id="published" class="peer/published" type="radio" name="status" />
-                <label for="published" class="peer-checked/published:text-sky-500">Published</label>
-
-                <div wire:ignore class="hidden w-full form-control peer-checked/published:block">
+                <input wire:model.live="type_of_activities" name="radio-13" id="draft"
+                    class="radio-xs peer/draft checked:bg-indigo-500 radio" type="radio" name="13"
+                    value="Other activities" />
+                <label for="draft"
+                    class="text-xs font-semibold peer-checked/draft:text-indigo-500">{{ __('Other activities') }}</label>
+                <div class="hidden w-full max-w-lg peer-checked/draft:block form-control">
                     <x-label-req :value="__('immediate corrective action')" />
                     <x-text-area id="immediate_corrective_action" :error="$errors->get('immediate_corrective_action')" />
                 </div>
