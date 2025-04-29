@@ -28,8 +28,8 @@ class AddContentSecurityPolicyHeaders
             'Content-Security-Policy' => "img-src 'self'",
             'Content-Security-Policy' => "media-src 'self'",
             'Content-Security-Policy' => "object-src 'self'",
-            'Content-Security-Policy' => "script-src 'self'",
-            'Content-Security-Policy' => "style-src 'self'",
+            //'Content-Security-Policy' => "script-src 'self'",
+            //'Content-Security-Policy' => "style-src 'self'",
 
         ]);
     }
