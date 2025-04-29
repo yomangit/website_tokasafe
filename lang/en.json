@@ -27,6 +27,8 @@
      "immediate_action_taken": "immediate action taken",
      "task": " task being done",
      "companyinvolved": "company involved",
+     "Yes": "Yes",
+    "No": "No",
      "report_by": "Reported by",
      "report_to": "Reported To",
      "name_notList": "(Name) if not on the list",
