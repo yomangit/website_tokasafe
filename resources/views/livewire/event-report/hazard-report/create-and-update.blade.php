@@ -158,7 +158,7 @@
             <div class="w-full max-w-md xl:max-w-xl form-control">
                 <x-label-req :value="__('eventLocation')" />
 
-                <div class="dropdown dropdown-end">
+                <div class="{{ $dropdownLocation }}">
                     <x-input wire:model.live='location_search' :error="$errors->get('event_location_id')" class="cursor-pointer" tabindex="0"
                         role="button" />
                     <div tabindex="0"
