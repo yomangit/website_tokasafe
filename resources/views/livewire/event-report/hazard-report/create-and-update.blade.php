@@ -85,12 +85,12 @@
             </div>
             <div class="w-full max-w-md xl:max-w-xl form-control">
                 <x-label-req :value="__('Perusahaan terkait')" />
-                <div class="{{ $dropdownLocation }}">
+                <div class="{{ $dropdownWorkgroup }}">
                     <x-input wire:click='clickWorkgroup' wire:model.live='workgroup_name'
                         wire:keydown.self="changeConditionDivision" :error="$errors->get('workgroup_name')" class="cursor-pointer"
                         tabindex="0" role="button" />
                     <div tabindex="0"
-                        class="z-10 w-full h-40 overflow-y-auto shadow dropdown-content card card-compact bg-base-200 text-primary-content {{ $hidden }}">
+                        class="z-10 w-full h-40 overflow-y-auto shadow dropdown-content card card-compact bg-base-200 text-primary-content {{ $hiddenWorkgroup }}">
                         <ul class="px-4 py-4 list-disc list-inside bg-base-200 rounded-box">
                             @forelse ($Division as $item)
                                 <li wire:click="select_division({{ $item->id }})"
