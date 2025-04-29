@@ -172,7 +172,7 @@
                             @forelse ($Location as $item)
                                 <li wire:click="select_location({{ $item->id }})"
                                     class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer">
-                                    {{ $location->location_name }}
+                                    {{ $item->location_name }}
                                 </li>
                             @empty
                                 <li class='font-semibold text-center text-rose-500'>Location not found!! </li>
