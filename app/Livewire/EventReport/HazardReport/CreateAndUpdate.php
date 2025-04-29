@@ -206,6 +206,7 @@ class CreateAndUpdate extends Component
     public function clickLocation()
     {
         $this->dropdownLocation = 'dropdown dropdown-open dropdown-end';
+        $this->hidden = 'block';
     }
     public function changeConditionDivision()
     {
@@ -217,7 +218,6 @@ class CreateAndUpdate extends Component
     public function select_division($id)
     {
         $this->division_id = $id;
-        $this->hidden = 'block';
     }
     public function select_location($id)
     {
