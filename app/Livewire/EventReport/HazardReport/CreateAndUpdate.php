@@ -37,7 +37,7 @@ class CreateAndUpdate extends Component
     public $searchLikelihood = '', $searchConsequence = '', $tablerisk_id, $risk_assessment_id, $workflow_detail_id, $reference, $select_divisi;
     public $risk_likelihood_id, $risk_likelihood_notes;
     public $risk_consequence_id, $risk_consequence_doc, $risk_probability_doc, $show = false;
-    public $workgroup_id, $workgroup_name, $if_immediate = false;
+    public $workgroup_id, $workgroup_name, $show_immidiate;
     public $search_workgroup = '', $search_report_by = '', $search_report_to = '', $fileUpload;
     public $event_type_id,  $sub_event_type_id,  $report_by, $report_byName, $report_by_nolist, $report_to, $report_toName, $report_to_nolist, $date, $event_location_id, $site_id, $company_involved, $task_being_done, $documentation, $description, $immediate_corrective_action, $suggested_corrective_action, $preliminary_cause, $corrective_action_suggested;
 
@@ -76,20 +76,27 @@ class CreateAndUpdate extends Component
                 ];
             }
         } else {
-            return [
+            if ($this->show_immidiate === '1') {
+                return [
+                    'workgroup_name' => ['required'],
+                    'report_byName' => ['required'],
+                    'date' => ['required'],
+                    'documentation' => 'nullable|mimes:jpg,jpeg,png,svg,gif,xlsx,pdf,docx',
+                    'description' => ['required'],
+                    'immediate_corrective_action' => ['required'],
+                    'event_location_id' => ['required'],
+                ];
+            } else {
+                return [
+                    'workgroup_name' => ['required'],
+                    'report_byName' => ['required'],
+                    'date' => ['required'],
+                    'documentation' => 'nullable|mimes:jpg,jpeg,png,svg,gif,xlsx,pdf,docx',
+                    'description' => ['required'],
+                    'event_location_id' => ['required'],
 
-                'workgroup_name' => ['required'],
-                'report_byName' => ['required'],
-                'date' => ['required'],
-                'task_being_done' => ['required'],
-                'documentation' => 'nullable|mimes:jpg,jpeg,png,svg,gif,xlsx,pdf,docx',
-                'description' => ['required'],
-                'immediate_corrective_action' => ['required'],
-                'suggested_corrective_action' => ['required'],
-                'corrective_action_suggested' => ['required'],
-                'event_location_id' => ['required'],
-
-            ];
+                ];
+            }
         }
     }
     public function messages()

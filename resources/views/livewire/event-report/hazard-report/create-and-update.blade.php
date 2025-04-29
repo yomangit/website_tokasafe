@@ -219,12 +219,13 @@
         @guest
             <fieldset>
                 <x-label-req :value="__('immediate corrective action')" />
-                <input wire:model.live="type_of_activities" name="status" id="draft" checked
+                <input wire:model.live="show_immidiate" value='ya' name="status" id="draft" checked
                     class="radio-xs peer/draft checked:bg-indigo-500 radio" type="radio" name="13"
                     value="Other activities" />
                 <label for="draft"
                     class="text-xs font-semibold peer-checked/draft:text-indigo-500">{{ __('Yes') }}</label>
-                <input id="published" class="peer/published radio-xs radio" type="radio" name="status" />
+                <input wire:model.live="show_immidiate" value="no" id="published"
+                    class="peer/published radio-xs radio" type="radio" name="status" />
                 <label for="published"
                     class="text-xs font-semibold peer-checked/published:text-sky-500">{{ __('No') }}</label>
                 <div wire:ignore class="hidden w-full peer-checked/draft:block form-control">
