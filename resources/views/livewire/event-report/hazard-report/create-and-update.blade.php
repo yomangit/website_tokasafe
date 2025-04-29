@@ -157,12 +157,29 @@
             </div>
             <div class="w-full max-w-md xl:max-w-xl form-control">
                 <x-label-req :value="__('eventLocation')" />
-                <x-select wire:model.live='event_location_id' :error="$errors->get('event_location_id')">
+                {{-- <x-select wire:model.live='event_location_id' :error="$errors->get('event_location_id')">
                     <option value="" selected>Select an option</option>
                     @forelse ($Location as $location)
                         <option value="{{ $location->id }}" selected>{{ $location->location_name }}</option>
                     @endforeach
-                </x-select>
+                </x-select> --}}
+                <div class="dropdown dropdown-end">
+                    <x-input wire:model.live='location_search' :error="$errors->get('event_location_id')" class="cursor-pointer" tabindex="0"
+                        role="button" />
+                    <div tabindex="0"
+                        class="z-10 w-full h-40 overflow-y-auto shadow dropdown-content card card-compact bg-primary text-primary-content">
+                        <ul class="px-4 py-4 list-disc list-inside bg-base-200 rounded-box">
+                            @forelse ($Location as $item)
+                                <li wire:click="select_location({{ $item->id }})"
+                                    class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer">
+                                    {{ $location->location_name }}
+                                </li>
+                            @empty
+                                <li class='font-semibold text-center text-rose-500'>Location not found!! </li>
+                            @endforelse
+                        </ul>
+                    </div>
+                </div>
                 <x-label-error :messages="$errors->get('event_location_id')" />
             </div>
             @auth

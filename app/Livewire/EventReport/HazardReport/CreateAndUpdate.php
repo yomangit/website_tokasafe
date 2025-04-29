@@ -38,7 +38,7 @@ class CreateAndUpdate extends Component
     public $risk_likelihood_id, $risk_likelihood_notes;
     public $risk_consequence_id, $risk_consequence_doc, $risk_probability_doc, $show = false;
     public $workgroup_id, $workgroup_name, $show_immidiate;
-    public $search_workgroup = '', $search_report_by = '', $search_report_to = '', $fileUpload;
+    public $search_workgroup = '', $search_report_by = '', $search_report_to = '', $fileUpload, $location_search = '';
     public $event_type_id,  $sub_event_type_id,  $report_by, $report_byName, $report_by_nolist, $report_to, $report_toName, $report_to_nolist, $date, $event_location_id, $site_id, $company_involved, $task_being_done, $documentation, $description, $immediate_corrective_action, $suggested_corrective_action, $preliminary_cause, $corrective_action_suggested;
 
     public function mount()
@@ -179,6 +179,11 @@ class CreateAndUpdate extends Component
         }
         $this->TableRiskFunction();
         $this->EventSubType = (isset($this->event_type_id)) ?  $this->EventSubType = Eventsubtype::where('event_type_id', $this->event_type_id)->get() : [];
+        if ($this->event_location_id) {
+            $location_id = LocationEvent::whereId($this->event_location_id)->searchFor(trim($this->location_search))->get();
+        } else {
+            $location_id = LocationEvent::searchFor(trim($this->location_search))->get();
+        }
 
         return view('livewire.event-report.hazard-report.create-and-update', [
             'RiskAssessments' => RiskAssessment::get(),
@@ -194,7 +199,7 @@ class CreateAndUpdate extends Component
             'Division' => $divisi_search,
             'Report_By' => User::searchFor(trim($this->report_byName))->paginate(100, ['*'], 'Report_By'),
             'Report_To' => User::searchFor(trim($this->report_toName))->paginate(100, ['*'], 'Report_To'),
-            'Location' => LocationEvent::get()
+            'Location' => $location_id
         ])->extends('base.index', ['header' => 'Hazard Report', 'title' => 'Hazard Report'])->section('content');
     }
     public function changeConditionDivision()
@@ -207,6 +212,10 @@ class CreateAndUpdate extends Component
     public function select_division($id)
     {
         $this->division_id = $id;
+    }
+    public function select_location($id)
+    {
+        $this->event_location_id = $id;
     }
     public function parentCompany($id)
     {
