@@ -40,9 +40,9 @@ class CreateAndUpdate extends Component
     public $workgroup_id, $workgroup_name, $show_immidiate;
     public $search_workgroup = '', $search_report_by = '', $search_report_to = '', $fileUpload, $location_search = '';
     public $event_type_id,  $sub_event_type_id,  $report_by, $report_byName, $report_by_nolist, $report_to, $report_toName, $report_to_nolist, $date, $event_location_id, $site_id, $company_involved, $task_being_done, $documentation, $description, $immediate_corrective_action, $suggested_corrective_action, $preliminary_cause, $corrective_action_suggested;
-    public $dropdownLocation = 'dropdown', $hidden = 'block';
-    public $dropdownWorkgroup = 'dropdown', $hiddenWorkgroup = 'block';
-    public $dropdownReportBy = 'dropdown', $hiddenReportBy = 'block';
+    public $hidden = 'block';
+    public $hiddenWorkgroup = 'block';
+    public  $hiddenReportBy = 'block';
     public function mount()
     {
         $this->show_immidiate = 'ya';
@@ -207,17 +207,14 @@ class CreateAndUpdate extends Component
     }
     public function clickLocation()
     {
-        $this->dropdownLocation = 'dropdown dropdown-open dropdown-end';
         $this->hidden = 'block';
     }
     public function clickReportBy()
     {
-        $this->dropdownReportBy = 'dropdown dropdown-open dropdown-end';
         $this->hiddenReportBy = 'block';
     }
     public function clickWorkgroup()
     {
-        $this->dropdownWorkgroup = 'dropdown dropdown-open dropdown-end';
         $this->hiddenWorkgroup = 'block';
     }
     public function changeConditionDivision()
