@@ -54,10 +54,11 @@
                     <x-input wire:click='clickReportBy' wire:model.live='report_byName' :error="$errors->get('report_byName')"
                         class="cursor-pointer" tabindex="0" role="button" />
                     <div tabindex="0"
-                        class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow {{ $hiddenReportBy }}">
+                        class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow {{ $hiddenReportBy }}"
+                        wire:keydown.outside>
                         <div class="relative">
 
-                            <div class="h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
+                            <div class="h-full max-h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
                                 wire:target='report_byName' wire:loading.class='hidden'>
                                 @forelse ($Report_By as $report_by)
                                     <div wire:click="reportedBy({{ $report_by->id }})"
