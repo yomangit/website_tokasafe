@@ -200,8 +200,8 @@ class CreateAndUpdate extends Component
             'Department' => DeptByBU::with(['Department', 'BusinesUnit'])->orderBy('busines_unit_id', 'asc')->get(),
             'Divisi' => Division::whereNotNull('company_id')->with(['DeptByBU.BusinesUnit.Company', 'DeptByBU.Department', 'Company'])->groupBy('company_id')->get(),
             'Division' => $divisi_search,
-            'Report_By' => User::searchFor(trim($this->report_byName))->paginate(100, ['*'], 'Report_By'),
-            'Report_To' => User::searchFor(trim($this->report_toName))->paginate(100, ['*'], 'Report_To'),
+            'Report_By' => User::searchNama(trim($this->report_byName))->paginate(100, ['*'], 'Report_By'),
+            'Report_To' => User::searchNama(trim($this->report_toName))->paginate(100, ['*'], 'Report_To'),
             'Location' => $location_id
         ])->extends('base.index', ['header' => 'Hazard Report', 'title' => 'Hazard Report'])->section('content');
     }
