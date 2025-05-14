@@ -50,15 +50,14 @@
             @endauth
             <div class="w-full max-w-md xl:max-w-xl form-control">
                 <x-label-req :value="__('report_by')" />
-                <div class="{{ $dropdownReportBy }}">
+                <div class="dropdown dropdown-end">
                     <x-input wire:click='clickReportBy' wire:model.live='report_byName' :error="$errors->get('report_byName')"
                         class="cursor-pointer" tabindex="0" role="button" />
                     <div tabindex="0"
-                        class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow {{ $hiddenReportBy }}"
-                        wire:keydown.outside>
+                        class="dropdown-content card card-compact  bg-base-300 text-primary-content z-[1] w-full  p-2 shadow {{ $hiddenReportBy }}">
                         <div class="relative">
 
-                            <div class="h-full max-h-40 mb-2 overflow-auto scroll-smooth focus:scroll-auto"
+                            <div class="h-full mb-2 overflow-auto max-h-40 scroll-smooth focus:scroll-auto"
                                 wire:target='report_byName' wire:loading.class='hidden'>
                                 @forelse ($Report_By as $report_by)
                                     <div wire:click="reportedBy({{ $report_by->id }})"
@@ -86,13 +85,13 @@
             </div>
             <div class="w-full max-w-md xl:max-w-xl form-control">
                 <x-label-req :value="__('Perusahaan terkait')" />
-                <div class="{{ $dropdownWorkgroup }}">
+                <div class="dropdown dropdown-end">
                     <x-input wire:click='clickWorkgroup' wire:model.live='workgroup_name'
                         wire:keydown.self="changeConditionDivision" :error="$errors->get('workgroup_name')" class="cursor-pointer"
                         tabindex="0" role="button" />
                     <div tabindex="0"
-                        class="z-10 w-full h-40 overflow-y-auto shadow dropdown-content card card-compact bg-base-200 text-primary-content {{ $hiddenWorkgroup }}">
-                        <ul class="px-4 py-4 list-disc list-inside bg-base-200 rounded-box">
+                        class="z-10 w-full   overflow-y-auto shadow dropdown-content card card-compact bg-base-200 text-primary-content {{ $hiddenWorkgroup }}">
+                        <ul class="h-full px-4 py-4 list-disc list-inside max-h-40 bg-base-200 rounded-box">
                             @forelse ($Division as $item)
                                 <li wire:click="select_division({{ $item->id }})"
                                     class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer">
@@ -160,13 +159,13 @@
             <div class="w-full max-w-md xl:max-w-xl form-control">
                 <x-label-req :value="__('eventLocation')" />
 
-                <div class="{{ $dropdownLocation }}">
+                <div class="dropdown dropdown-end">
                     <x-input wire:click='clickLocation' wire:model.live='location_search'
                         wire:keydown.self='changeConditionLocation' :error="$errors->get('event_location_id')" class="cursor-pointer"
                         tabindex="0" role="button" />
                     <div tabindex="0"
-                        class="z-10 w-full h-40 overflow-y-auto shadow dropdown-content card card-compact bg-base-200 text-primary-content {{ $hidden }}">
-                        <ul class="px-4 py-4 list-disc list-inside bg-base-200 rounded-box">
+                        class="z-10 w-full   overflow-y-auto shadow dropdown-content card card-compact bg-base-200 text-primary-content {{ $hidden }}">
+                        <ul class="h-full px-4 py-4 list-disc list-inside max-h-40 bg-base-200 rounded-box">
                             @forelse ($Location as $item)
                                 <li wire:click="select_location({{ $item->id }})"
                                     class = "text-[9px] text-wrap hover:bg-primary subpixel-antialiased text-left cursor-pointer">
@@ -432,9 +431,6 @@
                 window.addEventListener('articleStore', event => {
                     newEditor.setData('');
                 })
-            })
-            .catch(error => {
-                console.error(error);
             });
         // involved person
         ClassicEditor
@@ -456,60 +452,51 @@
                 window.addEventListener('articleStore', event => {
                     newEditor.setData('');
                 })
-            })
-            .catch(error => {
-                console.error(error);
             });
         // involved Equipment
-        ClassicEditor
-            .create(document.querySelector('#suggested_corrective_action'), {
-                toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
+        // ClassicEditor
+        //     .create(document.querySelector('#suggested_corrective_action'), {
+        //         toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
 
-            })
-            .then(newEditor => {
-                newEditor.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-                        newEditor.editing.view.document.getRoot()
-                    );
-                });
-                newEditor.model.document.on('change:data', () => {
-                    @this.set('suggested_corrective_action', newEditor.getData())
-                });
-                window.addEventListener('articleStore', event => {
-                    newEditor.setData('');
-                })
-            })
-            .catch(error => {
-                console.error(error);
-            });
-        // preliminary cause
+        //     })
+        //     .then(newEditor => {
+        //         newEditor.editing.view.change((writer) => {
+        //             writer.setStyle(
+        //                 "height",
+        //                 "155px",
+        //                 newEditor.editing.view.document.getRoot()
+        //             );
+        //         });
+        //         newEditor.model.document.on('change:data', () => {
+        //             @this.set('suggested_corrective_action', newEditor.getData())
+        //         });
+        //         window.addEventListener('articleStore', event => {
+        //             newEditor.setData('');
+        //         })
+        //     });
+        // // preliminary cause
 
-        // key learning
-        ClassicEditor
-            .create(document.querySelector('#key_learning'), {
-                toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
+        // // key learning
+        // ClassicEditor
+        //     .create(document.querySelector('#key_learning'), {
+        //         toolbar: ['undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList', 'link']
 
-            })
-            .then(newEditor => {
-                newEditor.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "155px",
-                        newEditor.editing.view.document.getRoot()
-                    );
-                });
-                newEditor.model.document.on('change:data', () => {
-                    @this.set('corrective_action_suggested', newEditor.getData())
-                });
-                window.addEventListener('articleStore', event => {
-                    newEditor.setData('');
-                })
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        //     })
+        //     .then(newEditor => {
+        //         newEditor.editing.view.change((writer) => {
+        //             writer.setStyle(
+        //                 "height",
+        //                 "155px",
+        //                 newEditor.editing.view.document.getRoot()
+        //             );
+        //         });
+        //         newEditor.model.document.on('change:data', () => {
+        //             @this.set('corrective_action_suggested', newEditor.getData())
+        //         });
+        //         window.addEventListener('articleStore', event => {
+        //             newEditor.setData('');
+        //         })
+        //     });
     </script>
 
 </div>
