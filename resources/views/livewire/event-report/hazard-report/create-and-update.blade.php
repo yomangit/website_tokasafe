@@ -19,7 +19,7 @@
     <div
         class="py-1 text-sm font-extrabold text-transparent divider divider-info bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">
         {{ $divider }}</div>
-    <form wire:target="store" wire:loading.class="skeleton" wire:submit.prevent='store'>
+    <form wire:target="store" wire:loading.class="skeleton" wire:submit.prevent='store' enctype="multipart/form-data">
         @csrf
         <div class="grid gap-1 sm:grid-cols-2 lg:grid-cols-3">
             @auth
@@ -400,6 +400,7 @@
                     wire:loading.class="hidden">
                     <div class="w-6 rounded">
                         @include('livewire.event-report.svg-file')
+                        {{ $documentation }}
                     </div>
                 </div>
                 <span wire:target="documentation"

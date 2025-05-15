@@ -335,7 +335,9 @@ class CreateAndUpdate extends Component
         if (!empty($this->documentation)) {
             $file_name = $this->documentation->getClientOriginalName();
             $this->fileUpload = pathinfo($file_name, PATHINFO_EXTENSION);
-            $this->documentation->storeAs('public/documents/hzd', $file_name);
+            $destinationPath = public_path() . '/documents/hzd';
+            // $this->documentation->storeAs('public/documents/hzd', $file_name);
+            $this->documentation->move($destinationPath, $file_name);
         } else {
             $file_name = "";
         }
